@@ -1,11 +1,14 @@
 const fetchMusic = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/music`, {
-    cache: "no-store",
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=shinyhats&api_key=${process.env.LAST_FM_KEY}&limit=2&extended=1&format=json`,
+    {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.json();
 };
 
