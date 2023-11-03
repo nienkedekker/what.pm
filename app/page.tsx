@@ -1,95 +1,83 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+const fetchMusic = async () => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/music`, {
+    cache: "no-store",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.json();
+};
 
-export default function Home() {
+const link = "font-medium text-blue-600 dark:text-blue-200 hover:underline";
+const par = "font-sans leading-6 text-gray-700 dark:text-gray-200 m-2";
+
+export default async function Home() {
+  const musicData = await fetchMusic();
+  const recentTrack = musicData?.recenttracks?.track[0];
+  const {
+    name: title,
+    url,
+    artist: { name: artist },
+    date,
+  } = recentTrack;
+  const songTime = typeof date === "undefined" ? "now playing" : "last listened to";
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <>
+      <main className="max-w-3xl mx-auto md:h-screen flex items-center justify-center">
+        <section className="flex flex-col md:flex-row gap-6 justify-center items-center ">
+          <picture>
+            <source media="(max-width: 768px)" srcSet="/moi-landscape.png" />
+            <source media="(min-width: 769px)" srcSet="/moi.jpg" />
+            <img
+              src="/moi.jpg"
+              alt="Nienke sitting in a restaurant"
+              className="md:rounded-lg max-w-full md:max-w-xs ml-auto mr-auto"
             />
-          </a>
-        </div>
-      </div>
+          </picture>
+          <div className="m-6 md:m-0">
+            <h1 className="mb-4 mx-2 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+              Hi, I'm Nienke!
+            </h1>
+            <p className={par}>
+              I'm a software developer based in Amsterdam. I've been building websites all my life.
+            </p>
+            <p className={par}>
+              The past three years I've been focused on building complex web apps with React,
+              TypeScript, and WebRTC.
+            </p>
+            <p className={par}>
+              To contact me, send me an{" "}
+              <a href="mailto:nienkedekker(at)gmail(dot).com" className={link}>
+                email
+              </a>
+              . I'm also on{" "}
+              <a href="https://github.com/nienkedekker" className={link}>
+                Github
+              </a>{" "}
+              and{" "}
+              <a href="https://www.linkedin.com/in/nienke-dekker-15348ab1/" className={link}>
+                LinkedIn
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+      </main>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      {musicData && (
+        <footer className="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-neutral-900 dark:border-neutral-600">
+          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            <span className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              {songTime}:{" "}
+            </span>
+            <a href={url} className="font-medium hover:underline">
+              {artist} - {title}
+            </a>
+          </span>
+        </footer>
+      )}
+    </>
+  );
 }
