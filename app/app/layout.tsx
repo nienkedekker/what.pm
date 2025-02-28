@@ -2,6 +2,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import AuthButton from "@/components/header-auth";
+import YearNavigation from "@/components/year-navigation";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,6 +30,8 @@ export default function RootLayout({
         >
           <div className="min-h-screen flex flex-col justify-between">
             <nav className="border-b border-b-foreground/10 h-16">
+              <YearNavigation />
+
               <AuthButton />
             </nav>
             <main className="flex-grow">{children}</main>

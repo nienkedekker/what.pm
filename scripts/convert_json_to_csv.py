@@ -55,6 +55,7 @@ for item in data:
         "id": str(uuid.uuid4()),  # Generate a new UUID
         "title": item["title"],
         "author": item.get("author", None),
+        "director": item.get("director", None),
         "season": season_value,  # Use already converted integer value
         "published_year": to_int(item["published_year"]),  # Force integer conversion
         "belongs_to_year": to_int(item["belongs_to_year"]),  # Prevent float issues
