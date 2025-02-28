@@ -7,9 +7,9 @@ export default async function YearPage(props: {
   const year = parseInt(params.year, 10);
 
   return (
-    <main className="p-8">
+    <main className="mx-auto container">
       <h1 className="text-2xl font-bold">📚 Items from {year}</h1>
-      <ItemsList year={year} />;
+      <ItemsList year={year} />
     </main>
   );
 }

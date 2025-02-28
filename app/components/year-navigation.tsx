@@ -14,7 +14,7 @@ export default async function YearNavigation() {
   }
 
   return (
-    <nav className="p-4 border-b">
+    <div className="">
       <ul className="flex gap-4">
         <li>
           <Link href="/">🏠 Home</Link>
@@ -27,6 +27,6 @@ export default async function YearNavigation() {
           </li>
         ))}
       </ul>
-    </nav>
+    </div>
   );
 }
