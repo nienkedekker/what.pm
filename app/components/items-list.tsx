@@ -7,7 +7,7 @@ export default async function ItemsList({ year }: { year: number }) {
     .from("items")
     .select("*")
     .eq("belongs_to_year", year)
-    .order("updated_date", { ascending: false });
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error("Error fetching items:", error);
@@ -20,49 +20,63 @@ export default async function ItemsList({ year }: { year: number }) {
   const shows = items.filter((item) => item.itemtype === "Show");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-36 p-4">
       {/* Books Column */}
-      <div>
-        <h2 className="text-xl font-bold">Books</h2>
-        <ol className="list-decimal list-outside text-gray-400 space-y-3">
-          {books.map((book) => (
-            <li key={book.id} className="">
-              <span className="text-gray-900">
-                {book.author ? `${book.author}, ` : ""}
-                {book.title}
-              </span>
-            </li>
-          ))}
-        </ol>
+      <div className="flex flex-col gap-6">
+        <h2 className="font-bold -ml-4">Books</h2>
+        {books.length > 0 ? (
+          <ol className="list-decimal list-outside text-gray-400 space-y-4">
+            {books.map((book) => (
+              <li key={book.id} className="pl-4">
+                <span className="text-gray-900">
+                  {book.author},{" "}
+                  <span className="text-sky-900">{book.title}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-gray-500">No books logged this year.</p>
+        )}
       </div>
 
       {/* Movies Column */}
-      <div>
-        <h2 className="text-xl font-bold mb-2">🎬 Movies</h2>
-        <ol>
-          {movies.map((movie) => (
-            <li key={movie.id} className="p-2 border-b">
-              {movie.title}{" "}
-              {movie.director || movie.published_year
-                ? `(${movie.director ? movie.director : "Unknown Director"}, ${
-                    movie.published_year
-                  })`
-                : ""}
-            </li>
-          ))}
-        </ol>
+      <div className="flex flex-col gap-6">
+        <h2 className="font-bold -ml-4">Movies</h2>
+        {movies.length > 0 ? (
+          <ol className="list-decimal list-outside text-gray-400 space-y-4">
+            {movies.map((movie) => (
+              <li key={movie.id} className="pl-4">
+                <span className="text-gray-900">
+                  <span className="text-sky-900">{movie.title}</span> (
+                  {movie.director || "Unknown Director"}, {movie.published_year}
+                  )
+                </span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-gray-500 italic">No movies logged this year.</p>
+        )}
       </div>
 
       {/* Shows Column */}
-      <div>
-        <h2 className="text-xl font-bold mb-2">📺 TV Shows</h2>
-        <ol>
-          {shows.map((show) => (
-            <li key={show.id} className="p-2 border-b">
-              {show.title} {show.season ? `(Season ${show.season})` : ""}
-            </li>
-          ))}
-        </ol>
+      <div className="flex flex-col gap-6">
+        <h2 className="font-bold -ml-4">TV Shows</h2>
+        {shows.length > 0 ? (
+          <ol className="list-decimal list-outside text-gray-400 space-y-4">
+            {shows.map((show) => (
+              <li key={show.id} className="pl-4">
+                <span className="text-gray-900">
+                  <span className="text-sky-900">{show.title}</span> (season{" "}
+                  {show.season || "Unknown"})
+                </span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-gray-500 italic">No TV shows logged this year.</p>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { Database } from "../types";
 
 export default async function YearNavigation() {
   const supabase = await createClient();

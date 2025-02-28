@@ -3,6 +3,13 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import AuthButton from "@/components/header-auth";
 import YearNavigation from "@/components/year-navigation";
+import { Inter } from "next/font/google";
+import { ReactNode } from "react";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -17,11 +24,11 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+    <html lang="en" suppressHydrationWarning className={inter.className}>
+      <body className="bg-background text-foreground text-sm/7">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
