@@ -1,5 +1,54 @@
 import { createClientForServer } from "@/utils/supabase/server";
 import Link from "next/link";
+import DeleteItemDialog from "@/components/delete-item-dialog";
+import { Button } from "@/components/ui/button";
+import { Item } from "@/types"; // Import existing type
+
+interface CategoryListProps {
+  categoryTitle: string;
+  items: Item[];
+}
+
+export function CategoryList({ categoryTitle, items }: CategoryListProps) {
+  return (
+    <div className="flex flex-col gap-6">
+      <h2 className="font-bold -ml-4">{categoryTitle}</h2>
+      {items.length > 0 ? (
+        <ol className="list-decimal list-outside text-gray-400 space-y-4">
+          {items.map((item) => (
+            <li key={item.id} className="pl-4">
+              <span className="text-gray-900">
+                {item.itemtype === "Book" && `${item.author}, `}
+                <span className="text-sky-900">{item.title}</span>
+                {item.itemtype === "Movie" &&
+                  ` (${item.director || "Unknown Director"}, ${item.published_year})`}
+                {item.itemtype === "Show" &&
+                  ` (season ${item.season || "Unknown"})`}
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  asChild
+                  className="text-xs p-0 cursor-pointer"
+                  variant="link"
+                >
+                  <Link href={`/item/${item.id}/update`}>Update</Link>
+                </Button>
+                <DeleteItemDialog
+                  itemId={item.id}
+                  belongsToYear={item.belongs_to_year}
+                />
+              </div>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="text-gray-500 italic -ml-4">
+          No {categoryTitle.toLowerCase()} logged this year.
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default async function ItemsList({ year }: { year: number }) {
   const supabase = await createClientForServer();
@@ -14,71 +63,21 @@ export default async function ItemsList({ year }: { year: number }) {
     return <p>Failed to load data.</p>;
   }
 
-  // Group items by type
-  const books = items.filter((item) => item.itemtype === "Book");
-  const movies = items.filter((item) => item.itemtype === "Movie");
-  const shows = items.filter((item) => item.itemtype === "Show");
+  const categories = [
+    { title: "Books", type: "Book" },
+    { title: "Movies", type: "Movie" },
+    { title: "TV Shows", type: "Show" },
+  ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-36 p-4">
-      {/* Books Column */}
-      <div className="flex flex-col gap-6">
-        <h2 className="font-bold -ml-4">Books</h2>
-        {books.length > 0 ? (
-          <ol className="list-decimal list-outside text-gray-400 space-y-4">
-            {books.map((book) => (
-              <li key={book.id} className="pl-4">
-                <span className="text-gray-900">
-                  {book.author},{" "}
-                  <span className="text-sky-900">{book.title}</span>
-                </span>
-                <Link href={`/item/${book.id}/update`}>View</Link>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-gray-500">No books logged this year.</p>
-        )}
-      </div>
-
-      {/* Movies Column */}
-      <div className="flex flex-col gap-6">
-        <h2 className="font-bold -ml-4">Movies</h2>
-        {movies.length > 0 ? (
-          <ol className="list-decimal list-outside text-gray-400 space-y-4">
-            {movies.map((movie) => (
-              <li key={movie.id} className="pl-4">
-                <span className="text-gray-900">
-                  <span className="text-sky-900">{movie.title}</span> (
-                  {movie.director || "Unknown Director"}, {movie.published_year}
-                  )
-                </span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-gray-500 italic">No movies logged this year.</p>
-        )}
-      </div>
-
-      {/* Shows Column */}
-      <div className="flex flex-col gap-6">
-        <h2 className="font-bold -ml-4">TV Shows</h2>
-        {shows.length > 0 ? (
-          <ol className="list-decimal list-outside text-gray-400 space-y-4">
-            {shows.map((show) => (
-              <li key={show.id} className="pl-4">
-                <span className="text-gray-900">
-                  <span className="text-sky-900">{show.title}</span> (season{" "}
-                  {show.season || "Unknown"})
-                </span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-gray-500 italic">No TV shows logged this year.</p>
-        )}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      {categories.map(({ title, type }) => (
+        <CategoryList
+          key={type}
+          categoryTitle={title}
+          items={items.filter((item) => item.itemtype === type)}
+        />
+      ))}
     </div>
   );
 }

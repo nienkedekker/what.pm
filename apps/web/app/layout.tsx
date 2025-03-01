@@ -36,7 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col justify-between">
-            <nav className="border-b border-b-foreground/10 h-16 flex flex-col gap-4 h-36">
+            <nav className="border-b border-b-foreground/10 flex flex-col gap-4 h-36">
               <h1>what</h1>
               <div>
                 Home / About / Etc <AuthButton />

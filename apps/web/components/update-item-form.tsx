@@ -1,54 +1,20 @@
-"use client";
-import { FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { createClientForBrowser } from "@/utils/supabase/client";
+import { updateItemAction } from "@/app/actions";
+import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Item, ItemUpdate } from "@/types";
+import { Item } from "@/types";
 
 interface UpdateItemFormProps {
   item: Item;
 }
 
-export default function UpdateItemForm({ item }: UpdateItemFormProps) {
-  const router = useRouter();
-  const supabase = createClientForBrowser();
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    // Construct updated item object
-    const updatedItem: ItemUpdate = {
-      title: formData.get("title") as string,
-      published_year: Number(formData.get("publishedYear")),
-      redo: formData.get("redo") === "on",
-    };
-
-    if (item.itemtype === "Book") {
-      updatedItem.author = formData.get("author") as string;
-    } else if (item.itemtype === "Movie") {
-      updatedItem.director = formData.get("director") as string;
-    } else if (item.itemtype === "Show") {
-      updatedItem.season = Number(formData.get("season")) || null;
-    }
-
-    const { error } = await supabase
-      .from("items")
-      .update(updatedItem)
-      .eq("id", item.id);
-
-    if (error) {
-      console.error("Error updating item:", error);
-    } else {
-      router.push(`/year/${item.belongs_to_year}`);
-    }
-  };
-
+export default async function UpdateItemForm({ item }: UpdateItemFormProps) {
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form action={updateItemAction} className="space-y-4">
+      <input type="hidden" name="id" value={item.id} />
+      <input type="hidden" name="itemtype" value={item.itemtype} />
+
       <Label>Title</Label>
       <Input type="text" name="title" defaultValue={item.title} required />
 
@@ -96,14 +62,20 @@ export default function UpdateItemForm({ item }: UpdateItemFormProps) {
         required
       />
 
+      <Label>Belongs To Year</Label>
+      <Input
+        type="number"
+        name="belongsToYear"
+        defaultValue={item.belongs_to_year}
+        required
+      />
+
       <div className="flex items-center space-x-2">
         <Checkbox id="redo" name="redo" defaultChecked={item.redo ?? false} />
         <Label htmlFor="redo">Redo?</Label>
       </div>
 
-      <Button type="submit" className="w-full">
-        Update Item
-      </Button>
+      <SubmitButton>Update Item</SubmitButton>
     </form>
   );
 }

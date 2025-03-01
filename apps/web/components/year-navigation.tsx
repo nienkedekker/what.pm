@@ -11,6 +11,8 @@ export default async function YearNavigation() {
 
   if (error) {
     console.error("Error fetching years:", error);
+    console.error("Supabase Error:", error.code, error.message, error.details);
+
     return <p>Failed to load years.</p>;
   }
 

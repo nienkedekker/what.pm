@@ -1,54 +1,14 @@
-"use client";
-import { FormEvent } from "react";
-import { createClientForBrowser } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ItemInsert } from "@/types";
+import { createItemAction } from "@/app/actions";
+import { SubmitButton } from "@/components/submit-button";
 
 export default function CreateItemForm() {
-  const router = useRouter();
-  const supabase = createClientForBrowser();
-  const currentYear = new Date().getFullYear();
-
-  const handleSubmit = async (
-    e: FormEvent<HTMLFormElement>,
-    itemType: "Book" | "Movie" | "Show",
-  ) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const newItem: ItemInsert = {
-      title: formData.get("title") as string,
-      itemtype: itemType,
-      belongs_to_year: currentYear,
-      published_year: Number(formData.get("publishedYear")),
-      redo: formData.get("redo") === "on",
-    };
-
-    if (itemType === "Book") {
-      newItem.author = formData.get("author") as string;
-    } else if (itemType === "Movie") {
-      newItem.director = formData.get("director") as string;
-    } else if (itemType === "Show") {
-      newItem.season = Number(formData.get("season")) || null;
-    }
-
-    const { error } = await supabase.from("items").insert(newItem);
-
-    if (error) {
-      console.error("Error creating item:", error);
-    } else {
-      router.push(`/year/${currentYear}`);
-    }
-  };
-
   return (
     <main className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">➕ Add New Item</h1>
+      <h1 className="text-2xl font-bold mb-6">Add New Item</h1>
 
       <Tabs defaultValue="book" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
@@ -59,7 +19,8 @@ export default function CreateItemForm() {
 
         {/* Book Form */}
         <TabsContent value="book">
-          <form onSubmit={(e) => handleSubmit(e, "Book")} className="space-y-4">
+          <form className="space-y-4">
+            <input type="hidden" name="itemtype" value="Book" />
             <Label>Title</Label>
             <Input type="text" name="title" required />
 
@@ -71,21 +32,17 @@ export default function CreateItemForm() {
 
             <div className="flex items-center space-x-2">
               <Checkbox id="redo" name="redo" />
-              <Label htmlFor="redo">Redo?</Label>
+              <Label htmlFor="redo">This was a re-read</Label>
             </div>
 
-            <Button type="submit" className="w-full">
-              Save Book
-            </Button>
+            <SubmitButton formAction={createItemAction}>Save book</SubmitButton>
           </form>
         </TabsContent>
 
         {/* Movie Form */}
         <TabsContent value="movie">
-          <form
-            onSubmit={(e) => handleSubmit(e, "Movie")}
-            className="space-y-4"
-          >
+          <form className="space-y-4">
+            <input type="hidden" name="itemtype" value="Movie" />
             <Label>Title</Label>
             <Input type="text" name="title" required />
 
@@ -97,18 +54,19 @@ export default function CreateItemForm() {
 
             <div className="flex items-center space-x-2">
               <Checkbox id="redo" name="redo" />
-              <Label htmlFor="redo">Redo?</Label>
+              <Label htmlFor="redo">This was a rewatch</Label>
             </div>
 
-            <Button type="submit" className="w-full">
-              Save Movie
-            </Button>
+            <SubmitButton formAction={createItemAction}>
+              Save movie
+            </SubmitButton>
           </form>
         </TabsContent>
 
         {/* TV Show Form */}
         <TabsContent value="show">
-          <form onSubmit={(e) => handleSubmit(e, "Show")} className="space-y-4">
+          <input type="hidden" name="itemtype" value="Show" />
+          <form className="space-y-4">
             <Label>Title</Label>
             <Input type="text" name="title" required />
 
@@ -120,12 +78,12 @@ export default function CreateItemForm() {
 
             <div className="flex items-center space-x-2">
               <Checkbox id="redo" name="redo" />
-              <Label htmlFor="redo">Redo?</Label>
+              <Label htmlFor="redo">This was a rewatch</Label>
             </div>
 
-            <Button type="submit" className="w-full">
-              Save Show
-            </Button>
+            <SubmitButton formAction={createItemAction}>
+              Save movie
+            </SubmitButton>
           </form>
         </TabsContent>
       </Tabs>
