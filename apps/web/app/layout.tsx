@@ -5,6 +5,7 @@ import AuthButton from "@/components/header-auth";
 import YearNavigation from "@/components/year-navigation";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
+import Link from "next/link";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,10 +37,17 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col justify-between">
-            <nav className="border-b border-b-foreground/10 flex flex-col gap-4 h-36">
-              <h1>what</h1>
-              <div>
-                Home / About / Etc <AuthButton />
+            <nav className="border-b border-b-foreground/10 flex flex-col gap-4">
+              <h1 className="mb-4 text-4xl leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+                <span className="px-4 text-white bg-blue-600 rounded-br-xl font-bold  ">
+                  what
+                </span>
+              </h1>
+              <div className="flex gap-4 items-center">
+                <Link href="/">Home</Link>
+                <Link href="/about">About</Link>
+                <Link href="/stats">Stats</Link>
+                <AuthButton />
               </div>
               <YearNavigation />
             </nav>

@@ -17,7 +17,7 @@ export function CategoryList({ categoryTitle, items }: CategoryListProps) {
         <ol className="list-decimal list-outside text-gray-400 space-y-4">
           {items.map((item) => (
             <li key={item.id} className="pl-4">
-              <span className="text-gray-900">
+              <span className="text-gray-700">
                 {item.itemtype === "Book" && `${item.author}, `}
                 <span className="text-sky-900">{item.title}</span>
                 {item.itemtype === "Movie" &&

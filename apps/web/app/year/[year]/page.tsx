@@ -8,7 +8,7 @@ export default async function YearPage(props: {
 
   return (
     <main className="mx-auto container">
-      <h1 className="text-2xl font-bold">📚 Items from {year}</h1>
+      <h1 className="text-2xl font-bold">{year}</h1>
       <ItemsList year={year} />
     </main>
   );

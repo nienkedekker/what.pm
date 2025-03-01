@@ -15,6 +15,9 @@
     "lint": {
       "dependsOn": ["^build"]
     },
+    "format": {
+      "dependsOn": ["^build"]
+    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false,

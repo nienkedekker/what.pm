@@ -1,6 +1,5 @@
 import { createClientForServer } from "@/utils/supabase/server";
 import Link from "next/link";
-import { Database } from "../types";
 
 export default async function YearNavigation() {
   const supabase = await createClientForServer();
@@ -17,11 +16,8 @@ export default async function YearNavigation() {
   }
 
   return (
-    <div className="">
+    <div className="bg-accent text-sm p-3 px-5 text-foreground flex gap-3 items-center">
       <ul className="flex gap-4">
-        <li>
-          <Link href="/">🏠 Home</Link>
-        </li>
         {data?.map(({ belongs_to_year }) => (
           <li key={belongs_to_year}>
             <Link href={`/year/${belongs_to_year}`} className="text-blue-500">

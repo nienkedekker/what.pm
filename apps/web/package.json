@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "generate-supabase-types": "supabase gen types",
     "check-types": "tsc --noEmit"
   },
