@@ -3,7 +3,9 @@ import { cookies } from "next/headers";
 import { Database } from "@/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-export async function createClient(): Promise<SupabaseClient<Database>> {
+export async function createClientForServer(): Promise<
+  SupabaseClient<Database>
+> {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(

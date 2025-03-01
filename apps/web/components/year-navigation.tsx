@@ -1,9 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClientForServer } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Database } from "../types";
 
 export default async function YearNavigation() {
-  const supabase = await createClient();
+  const supabase = await createClientForServer();
   const { data, error } = await supabase
     .from("distinct_years")
     .select("*")

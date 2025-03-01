@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-const hiddenPages = ["/create", "/protected"];
+const protectedPaths = ["/create", "/protected"];
 
 export const updateSession = async (request: NextRequest) => {
   let response = NextResponse.next({
@@ -38,13 +38,8 @@ export const updateSession = async (request: NextRequest) => {
   const user = await supabase.auth.getUser();
   const path = request.nextUrl.pathname;
 
-  // protected routes
-  if (!user) {
-    // Allow access to shared maps, auth, T&C
-    if (hiddenPages.some((hiddenPage) => path.startsWith(hiddenPage))) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
-    return response;
+  if (!user && protectedPaths.includes(path)) {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   return response;

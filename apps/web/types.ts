@@ -22,7 +22,6 @@ export type Database = {
           season: number | null;
           title: string;
           updated_at: string | null;
-          updated_date: string;
         };
         Insert: {
           author?: string | null;
@@ -36,7 +35,6 @@ export type Database = {
           season?: number | null;
           title: string;
           updated_at?: string | null;
-          updated_date: string;
         };
         Update: {
           author?: string | null;
@@ -50,7 +48,6 @@ export type Database = {
           season?: number | null;
           title?: string;
           updated_at?: string | null;
-          updated_date?: string;
         };
         Relationships: [];
       };
@@ -171,3 +168,7 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never;
+
+export type Item = Database["public"]["Tables"]["items"]["Row"];
+export type ItemInsert = Database["public"]["Tables"]["items"]["Insert"];
+export type ItemUpdate = Database["public"]["Tables"]["items"]["Update"];

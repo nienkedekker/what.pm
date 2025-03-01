@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClientForServer } from "@/utils/supabase/server";
 import Link from "next/link";
 
 export default async function ItemsList({ year }: { year: number }) {
-  const supabase = await createClient();
+  const supabase = await createClientForServer();
   const { data: items, error } = await supabase
     .from("items")
     .select("*")
@@ -32,6 +32,7 @@ export default async function ItemsList({ year }: { year: number }) {
                   {book.author},{" "}
                   <span className="text-sky-900">{book.title}</span>
                 </span>
+                <Link href={`/item/${book.id}/update`}>View</Link>
               </li>
             ))}
           </ol>

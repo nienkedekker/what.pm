@@ -1,0 +1,26 @@
+{
+  "name": "whatpm-2025",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "author": "Nienke Dekker",
+  "license": "ISC",
+  "dependencies": {
+    "turbo": "^2.4.4",
+    "prettier": "^3.5.2"
+  },
+  "packageManager": "npm@10.5.0",
+  "engines": {
+    "node": ">=20"
+  }
+}
