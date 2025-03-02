@@ -2,7 +2,7 @@ import { createClientForServer } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import CreateItemForm from "@/components/create-item-form";
 
-export default async function ProtectedPage() {
+export default async function CreatePage() {
   const supabase = await createClientForServer();
 
   const {

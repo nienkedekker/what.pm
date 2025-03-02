@@ -61,7 +61,18 @@ export type Database = {
       };
     };
     Functions: {
-      [_ in never]: never;
+      count_logged_years: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      get_item_counts: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          itemtype: string;
+          total_count: number;
+          current_year_count: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;
@@ -172,3 +183,5 @@ export type CompositeTypes<
 export type Item = Database["public"]["Tables"]["items"]["Row"];
 export type ItemInsert = Database["public"]["Tables"]["items"]["Insert"];
 export type ItemUpdate = Database["public"]["Tables"]["items"]["Update"];
+export type ItemType =
+  Database["public"]["Functions"]["get_item_counts"]["Returns"][number]["itemtype"];

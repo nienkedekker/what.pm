@@ -31,7 +31,7 @@ export function CategoryList({ categoryTitle, items }: CategoryListProps) {
                   className="text-xs p-0 cursor-pointer"
                   variant="link"
                 >
-                  <Link href={`/item/${item.id}/update`}>Update</Link>
+                  <Link href={`/item/${item.id}`}>Update</Link>
                 </Button>
                 <DeleteItemDialog
                   itemId={item.id}
