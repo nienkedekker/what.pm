@@ -33,7 +33,7 @@ export default async function StatsPage({ children }: { children: ReactNode }) {
       color: "hsl(var(--chart-2))",
     },
     Show: {
-      label: "TV Shows",
+      label: "Shows",
       color: "hsl(var(--chart-3))",
     },
   } satisfies ChartConfig;
