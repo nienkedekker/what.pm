@@ -23,7 +23,7 @@ export default async function AuthButton() {
     </>
   ) : (
     <>
-      <Button asChild variant="link" className="text-muted-foreground">
+      <Button asChild variant="link">
         <Link href="/sign-in">Sign in</Link>
       </Button>
     </>

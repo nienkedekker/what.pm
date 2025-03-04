@@ -7,9 +7,11 @@ export default async function YearPage(props: {
   const year = parseInt(params.year, 10);
 
   return (
-    <main>
-      <h1 className="text-4xl font-bold mb-8 -ml-6 px-6">{year}</h1>
+    <div>
+      <h1 className="text-4xl font-bold mb-8 -ml-6 px-6 text-sky-950 dark:text-sky-50">
+        {year}
+      </h1>
       <ItemsList year={year} />
-    </main>
+    </div>
   );
 }
