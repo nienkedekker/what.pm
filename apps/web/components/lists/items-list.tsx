@@ -1,8 +1,8 @@
 import { createClientForServer } from "@/utils/supabase/server";
 import Link from "next/link";
-import DeleteItemDialog from "@/components/delete-item-dialog";
+import DeleteItemDialog from "./delete-item-dialog";
 import { Button } from "@/components/ui/button";
-import { Item } from "@/types"; // Import existing type
+import { Item } from "@/types";
 
 interface CategoryListProps {
   categoryTitle: string;
@@ -14,12 +14,14 @@ export function CategoryList({ categoryTitle, items }: CategoryListProps) {
     <div className="flex flex-col gap-6">
       <h2 className="font-bold -ml-4">{categoryTitle}</h2>
       {items.length > 0 ? (
-        <ol className="list-decimal list-outside text-gray-400 space-y-4">
+        <ol className="list-decimal list-outside text-gray-400 space-y-2">
           {items.map((item) => (
             <li key={item.id} className="pl-4">
-              <span className="text-gray-700">
+              <span className="text-gray-700 dark:text-gray-500">
                 {item.itemtype === "Book" && `${item.author}, `}
-                <span className="text-sky-900">{item.title}</span>
+                <span className="text-sky-900 dark:text-sky-200">
+                  {item.title}
+                </span>
                 {item.itemtype === "Movie" &&
                   ` (${item.director || "Unknown Director"}, ${item.published_year})`}
                 {item.itemtype === "Show" &&
@@ -70,7 +72,7 @@ export default async function ItemsList({ year }: { year: number }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32">
       {categories.map(({ title, type }) => (
         <CategoryList
           key={type}

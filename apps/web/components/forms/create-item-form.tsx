@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { createItemAction } from "@/app/actions";
-import { SubmitButton } from "@/components/submit-button";
+import { SubmitButton } from "./submit-button";
 
 export default function CreateItemForm() {
   return (

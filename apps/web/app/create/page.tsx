@@ -1,6 +1,6 @@
 import { createClientForServer } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import CreateItemForm from "@/components/create-item-form";
+import CreateItemForm from "@/components/forms/create-item-form";
 
 export default async function CreatePage() {
   const supabase = await createClientForServer();

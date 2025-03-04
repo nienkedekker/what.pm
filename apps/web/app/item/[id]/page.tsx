@@ -1,5 +1,5 @@
 import { createClientForServer } from "@/utils/supabase/server";
-import UpdateItemForm from "@/components/update-item-form";
+import UpdateItemForm from "@/components/forms/update-item-form";
 import { notFound } from "next/navigation";
 
 export default async function UpdateItemPage({

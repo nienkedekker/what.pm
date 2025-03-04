@@ -201,3 +201,11 @@ export type ItemInsert = Database["public"]["Tables"]["items"]["Insert"];
 export type ItemUpdate = Database["public"]["Tables"]["items"]["Update"];
 export type ItemType =
   Database["public"]["Functions"]["get_item_counts"]["Returns"][number]["itemtype"];
+export type CumulativeItemEntry =
+  Database["public"]["Functions"]["get_cumulative_item_counts"]["Returns"][number];
+export type ValidItemType = "Book" | "Movie" | "Show";
+export type ItemCountEntry = {
+  itemtype: ValidItemType; // Enforce allowed values
+  total_count: number;
+  current_year_count: number;
+};

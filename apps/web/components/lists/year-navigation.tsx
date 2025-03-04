@@ -16,11 +16,11 @@ export default async function YearNavigation() {
   }
 
   return (
-    <div className="bg-accent text-sm p-3 px-5 text-foreground flex gap-3 items-center">
-      <ul className="flex gap-4">
+    <div className="bg-accent text-sm p-3 px-5 text-foreground">
+      <ul className="flex gap-2 lg:gap-4 flex-wrap">
         {data?.map(({ belongs_to_year }) => (
           <li key={belongs_to_year}>
-            <Link href={`/year/${belongs_to_year}`} className="text-blue-500">
+            <Link href={`/year/${belongs_to_year}`} className="text-sky-600">
               {belongs_to_year}
             </Link>
           </li>

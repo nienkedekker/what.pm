@@ -1,6 +1,6 @@
 import { fetchStatsData } from "@/utils/fetch-stats-data";
-import { ItemCountBarChart } from "@/components/item-count-bar-chart";
-import { CumulativeLineChart } from "@/components/cumulative-line-chart";
+import { ItemCountBarChart } from "@/components/charts/item-count-bar-chart";
+import { CumulativeLineChart } from "@/components/charts/cumulative-line-chart";
 import { ChartConfig } from "@/components/ui/chart";
 
 export default async function StatsPage() {
@@ -32,9 +32,9 @@ export default async function StatsPage() {
   } = statsData;
 
   return (
-    <main className="mx-auto container flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <h1>Stats</h1>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-2 gap-4">
         <ItemCountBarChart
           chartData={chartData ?? []}
           config={chartConfig}
@@ -65,6 +65,6 @@ export default async function StatsPage() {
         chartData={chartDataCum ?? []}
         config={chartConfig}
       />
-    </main>
+    </div>
   );
 }

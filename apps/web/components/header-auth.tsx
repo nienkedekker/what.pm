@@ -16,14 +16,14 @@ export default async function AuthButton() {
         <Link href="/create">Create</Link>
       </Button>
       <form action={signOutAction} className="inline">
-        <Button type="submit" variant="link">
+        <Button type="submit" variant="link" className="cursor-pointer">
           Sign out
         </Button>
       </form>
     </>
   ) : (
     <>
-      <Button asChild size="sm" variant={"outline"}>
+      <Button asChild variant="link" className="text-muted-foreground/80">
         <Link href="/sign-in">Sign in</Link>
       </Button>
     </>

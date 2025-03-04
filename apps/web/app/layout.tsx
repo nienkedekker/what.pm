@@ -2,7 +2,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import AuthButton from "@/components/header-auth";
-import YearNavigation from "@/components/year-navigation";
+import YearNavigation from "@/components/lists/year-navigation";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import Link from "next/link";
@@ -38,27 +38,31 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col justify-between">
-            <nav className="border-b border-b-foreground/10 flex flex-col gap-4">
-              <h1 className="mb-4 text-4xl leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                <span className="px-4 text-white bg-blue-600 rounded-br-xl font-bold  ">
-                  what
-                </span>
+            <nav className="border-b border-b-foreground/10 flex flex-col gap-0">
+              <h1 className="text-4xl leading-none tracking-tighter text-gray-900 md:text-5xl lg:text-6xl bg-black">
+                <Link href="/">
+                  <span className="pl-4 text-white font-bold">what.</span>
+                </Link>
               </h1>
-              <div className="flex gap-4 items-center text-sm px-2">
-                <Button asChild variant="link">
-                  <Link href="/">Home</Link>
-                </Button>
-                <Button asChild variant="link">
-                  <Link href="/about">About</Link>
-                </Button>
-                <Button asChild variant="link">
-                  <Link href="/stats">Stats</Link>
-                </Button>
-                <AuthButton />
+              <div className="flex items-center justify-between text-sm pl-1 bg-sky-200 border-b border-b-foreground/10">
+                <div>
+                  <Button asChild variant="link">
+                    <Link href="/">Home</Link>
+                  </Button>
+                  <Button asChild variant="link">
+                    <Link href="/about">About</Link>
+                  </Button>
+                  <Button asChild variant="link">
+                    <Link href="/stats">Stats</Link>
+                  </Button>
+                </div>
+                <div>
+                  <AuthButton />
+                </div>
               </div>
               <YearNavigation />
             </nav>
-            <main className="flex-grow mx-auto container py-24">
+            <main className="flex-grow mx-auto container py-6 lg:py-16 px-12 lg:px-0">
               {children}
             </main>
             <footer className="border-t">

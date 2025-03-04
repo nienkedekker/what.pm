@@ -1,4 +1,4 @@
-import ItemsList from "@/components/items-list";
+import ItemsList from "@/components/lists/items-list";
 
 export default async function YearPage(props: {
   params: Promise<{ year: string }>;
@@ -7,8 +7,8 @@ export default async function YearPage(props: {
   const year = parseInt(params.year, 10);
 
   return (
-    <main className="mx-auto container">
-      <h1 className="text-2xl font-bold">{year}</h1>
+    <main>
+      <h1 className="text-5xl font-bold mb-12 -ml-6">{year}</h1>
       <ItemsList year={year} />
     </main>
   );
