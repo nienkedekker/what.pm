@@ -33,7 +33,7 @@ export default async function StatsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1>Stats</h1>
+      <h1 className="text-4xl font-bold">Stats</h1>
       <div className="grid lg:grid-cols-2 gap-4">
         <ItemCountBarChart
           chartData={chartData ?? []}

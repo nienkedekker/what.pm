@@ -4,12 +4,13 @@ import Link from "next/link";
 
 export default async function AboutPage() {
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col gap-4">
+      <h1 className="text-4xl font-bold">About</h1>
       <Image
         className="rounded-md border"
         src={tumblr}
         style={{
-          width: "auto",
+          width: "420px",
           height: "auto",
         }}
         alt="A screenshot of a Tumblr post by user so-many-ocs, with the text '[on the verge of having a complete breakdown] i need to make some kind of list or perhaps sort things into categories'"

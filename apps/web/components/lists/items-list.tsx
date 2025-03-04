@@ -21,7 +21,7 @@ export async function CategoryList({
       {items.length > 0 ? (
         <ol className="list-decimal list-outside text-gray-400 space-y-2">
           {items.map((item) => (
-            <li key={item.id} className="pl-4">
+            <li key={item.id} className="pl-2">
               <span className="text-gray-700 dark:text-gray-500">
                 {item.itemtype === "Book" && `${item.author}, `}
                 <span className="text-sky-900 dark:text-sky-200">
@@ -83,7 +83,7 @@ export default async function ItemsList({ year }: { year: number }) {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32 px-6">
       {categories.map(({ title, type }) => (
         <CategoryList
           key={type}

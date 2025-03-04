@@ -8,7 +8,7 @@ export default async function YearPage(props: {
 
   return (
     <main>
-      <h1 className="text-5xl font-bold mb-12 -ml-6">{year}</h1>
+      <h1 className="text-4xl font-bold mb-8 -ml-6 px-6">{year}</h1>
       <ItemsList year={year} />
     </main>
   );
