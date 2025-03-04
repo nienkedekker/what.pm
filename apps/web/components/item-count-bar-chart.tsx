@@ -24,7 +24,7 @@ interface BarChartProps {
   config: ChartConfig;
 }
 
-export function ItemCountBarChartComponent({
+export function ItemCountBarChart({
   chartData,
   title,
   children,
@@ -36,7 +36,7 @@ export function ItemCountBarChartComponent({
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={config}>
+        <ChartContainer config={config} className="max-h-72 w-full">
           <BarChart
             accessibilityLayer
             data={chartData}

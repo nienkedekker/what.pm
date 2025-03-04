@@ -65,12 +65,28 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: number;
       };
+      get_cumulative_item_counts: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          log_year: number;
+          book_total: number;
+          movie_total: number;
+          show_total: number;
+        }[];
+      };
       get_item_counts: {
         Args: Record<PropertyKey, never>;
         Returns: {
           itemtype: string;
           total_count: number;
           current_year_count: number;
+        }[];
+      };
+      get_item_counts_by_decade: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          decade: string;
+          count: number;
         }[];
       };
     };
