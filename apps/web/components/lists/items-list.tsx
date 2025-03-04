@@ -7,9 +7,14 @@ import { Item } from "@/types";
 interface CategoryListProps {
   categoryTitle: string;
   items: Item[];
+  isLoggedIn?: boolean;
 }
 
-export function CategoryList({ categoryTitle, items }: CategoryListProps) {
+export async function CategoryList({
+  categoryTitle,
+  items,
+  isLoggedIn,
+}: CategoryListProps) {
   return (
     <div className="flex flex-col gap-6">
       <h2 className="font-bold -ml-4">{categoryTitle}</h2>
@@ -27,19 +32,21 @@ export function CategoryList({ categoryTitle, items }: CategoryListProps) {
                 {item.itemtype === "Show" &&
                   ` (season ${item.season || "Unknown"})`}
               </span>
-              <div className="flex gap-2">
-                <Button
-                  asChild
-                  className="text-xs p-0 cursor-pointer"
-                  variant="link"
-                >
-                  <Link href={`/item/${item.id}`}>Update</Link>
-                </Button>
-                <DeleteItemDialog
-                  itemId={item.id}
-                  belongsToYear={item.belongs_to_year}
-                />
-              </div>
+              {isLoggedIn && (
+                <div className="flex gap-2">
+                  <Button
+                    asChild
+                    className="text-xs p-0 cursor-pointer"
+                    variant="link"
+                  >
+                    <Link href={`/item/${item.id}`}>Update</Link>
+                  </Button>
+                  <DeleteItemDialog
+                    itemId={item.id}
+                    belongsToYear={item.belongs_to_year}
+                  />
+                </div>
+              )}
             </li>
           ))}
         </ol>
@@ -71,12 +78,17 @@ export default async function ItemsList({ year }: { year: number }) {
     { title: "TV Shows", type: "Show" },
   ];
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32">
       {categories.map(({ title, type }) => (
         <CategoryList
           key={type}
           categoryTitle={title}
+          isLoggedIn={!!user}
           items={items.filter((item) => item.itemtype === type)}
         />
       ))}
