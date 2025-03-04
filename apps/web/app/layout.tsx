@@ -66,7 +66,6 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="border-t">
-              footer
               <ThemeSwitcher />
             </footer>
           </div>
