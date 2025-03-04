@@ -1,17 +1,17 @@
 import { createClientForServer } from "@/utils/supabase/server";
 import UpdateItemForm from "@/components/forms/update-item-form";
 import { notFound } from "next/navigation";
+import { Params } from "@/types";
 
-export default async function UpdateItemPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function Page(props: { params: Params }) {
+  const params = await props.params;
+  const id = params.id;
+
   const supabase = await createClientForServer();
   const { data: item, error } = await supabase
     .from("items")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (!item || error) {

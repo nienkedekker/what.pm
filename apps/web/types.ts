@@ -209,3 +209,8 @@ export type ItemCountEntry = {
   total_count: number;
   current_year_count: number;
 };
+
+export type Params = Promise<{ id: string }>;
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined;
+}>;
