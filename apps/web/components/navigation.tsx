@@ -7,6 +7,7 @@ import { Gamja_Flower } from "next/font/google";
 
 const gamja = Gamja_Flower({
   weight: "400",
+  subsets: ["latin"],
 });
 
 export default function Navigation() {
