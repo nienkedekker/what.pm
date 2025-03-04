@@ -70,7 +70,7 @@ export default async function ItemsList({ year }: { year: number }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
       {categories.map(({ title, type }) => (
         <CategoryList
           key={type}

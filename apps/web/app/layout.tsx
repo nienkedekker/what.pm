@@ -6,6 +6,7 @@ import YearNavigation from "@/components/year-navigation";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,15 +44,23 @@ export default function RootLayout({
                   what
                 </span>
               </h1>
-              <div className="flex gap-4 items-center">
-                <Link href="/">Home</Link>
-                <Link href="/about">About</Link>
-                <Link href="/stats">Stats</Link>
+              <div className="flex gap-4 items-center text-sm px-2">
+                <Button asChild variant="link">
+                  <Link href="/">Home</Link>
+                </Button>
+                <Button asChild variant="link">
+                  <Link href="/about">About</Link>
+                </Button>
+                <Button asChild variant="link">
+                  <Link href="/stats">Stats</Link>
+                </Button>
                 <AuthButton />
               </div>
               <YearNavigation />
             </nav>
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow mx-auto container py-24">
+              {children}
+            </main>
             <footer className="border-t">
               footer
               <ThemeSwitcher />

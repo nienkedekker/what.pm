@@ -12,7 +12,7 @@ export default async function AuthButton() {
 
   return user ? (
     <>
-      <Button asChild>
+      <Button asChild variant="link">
         <Link href="/create">Create</Link>
       </Button>
       <form action={signOutAction} className="inline">
