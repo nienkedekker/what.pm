@@ -4,7 +4,7 @@ import { encodedRedirect } from "@/utils";
 import { createClientForServer } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ItemInsert, ItemUpdate } from "@/types";
+import { Item, ItemInsert, ItemUpdate } from "@/types";
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -121,3 +121,38 @@ export const updateItemAction = async (formData: FormData) => {
 
   return redirect(`/year/${belongsToYear}`);
 };
+
+export type SearchState = {
+  query: string;
+  results: Item[];
+  initial: boolean;
+};
+export async function searchItems(
+  prevState: SearchState,
+  formData: FormData,
+): Promise<SearchState> {
+  const query = formData.get("query") as string;
+
+  if (!query) return { query: "", results: [], initial: false };
+
+  const supabase = await createClientForServer();
+
+  const { data, error } = await supabase
+    .from("items")
+    .select("*")
+    .or(
+      `title.ilike.%${query}%,author.ilike.%${query}%,director.ilike.%${query}%`,
+    )
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Search error:", error);
+    return { query, results: [], initial: false };
+  }
+
+  return {
+    query,
+    results: data as Item[],
+    initial: false,
+  };
+}

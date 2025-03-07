@@ -18,7 +18,7 @@ export default function Navigation() {
           <span className={`${gamja.className}`}>what.</span>
         </Link>
       </h1>
-      <div className="flex items-center justify-between text-sm pl-1 bg-sky-200 dark:bg-zinc-800 border-b border-b-foreground/10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm pl-1 bg-sky-200 dark:bg-zinc-800 border-b border-b-foreground/10">
         <div>
           <Button asChild variant="link">
             <Link href="/">Home</Link>
@@ -28,6 +28,9 @@ export default function Navigation() {
           </Button>
           <Button asChild variant="link">
             <Link href="/stats">Stats</Link>
+          </Button>
+          <Button asChild variant="link">
+            <Link href="/search">Search</Link>
           </Button>
         </div>
         <div className="flex items-center">
