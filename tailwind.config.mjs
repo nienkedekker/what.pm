@@ -4,26 +4,37 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        accent: {
+          DEFAULT: '#c45d3a',
+          light: '#d4826a',
+          dark: '#a34829',
+        },
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['"Goudy Bookletter 1911"', 'Georgia', 'serif'],
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: '65ch',
             a: {
-              color: '#2563eb',
+              color: '#c45d3a',
               textDecoration: 'none',
               '&:hover': {
                 textDecoration: 'underline',
               },
             },
+            h1: { fontFamily: '"Goudy Bookletter 1911", Georgia, serif' },
+            h2: { fontFamily: '"Goudy Bookletter 1911", Georgia, serif' },
+            h3: { fontFamily: '"Goudy Bookletter 1911", Georgia, serif' },
           },
         },
         invert: {
           css: {
             a: {
-              color: '#93c5fd',
+              color: '#d4826a',
             },
           },
         },

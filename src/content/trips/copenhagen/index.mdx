@@ -8,18 +8,20 @@ tags: ["europe", "city-break"]
 
 import { Image } from 'astro:assets';
 
-This is an example trip post. Replace this with your own travel adventures!
-
-{/* Option 1: Simple markdown image from public folder */}
-{/* ![Nyhavn harbor](/images/trips/copenhagen/nyhavn.jpg) */}
-
-{/* Option 2: Optimized image - place image file next to this MDX */}
+{/* Import images that are in the same folder as this file */}
 {/* import nyhavn from './nyhavn.jpg'; */}
-{/* <Image src={nyhavn} alt="Colorful houses along Nyhavn canal" /> */}
+
+This is an example trip post. Replace this with your own travel adventures!
 
 ## Day 1: Arriving in the City
 
 We landed at Copenhagen Airport and took the metro straight to the city center. The first thing that struck me was how bike-friendly everything is.
+
+{/* Use the Image component like this: */}
+{/* <Image src={nyhavn} alt="Colorful houses along Nyhavn canal" /> */}
+
+{/* With optional width constraint: */}
+{/* <Image src={nyhavn} alt="Nyhavn canal" width={800} /> */}
 
 ## Day 2: Exploring Nyhavn
 

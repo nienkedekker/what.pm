@@ -24,7 +24,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
 
   <article>
     <header class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">{title}</h1>
+      <h1 class="font-serif text-3xl font-bold mb-2">{title}</h1>
       <div class="text-gray-600 dark:text-gray-400 text-sm">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         {location && <span> &middot; {location}</span>}

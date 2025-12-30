@@ -12,7 +12,7 @@ const links = [
     {links.map(({ href, label }) => (
       <a
         href={href}
-        class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        class="hover:text-accent dark:hover:text-accent-light transition-colors"
         target={href.startsWith('http') || href.startsWith('mailto') ? '_blank' : undefined}
         rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
       >

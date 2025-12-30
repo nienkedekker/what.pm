@@ -5,6 +5,8 @@ import Footer from '../components/Footer.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
+const { Content: HomeContent } = await import('../content/home.md');
+
 const trips = await getCollection('trips', ({ data }) => !data.draft);
 const notes = await getCollection('notes', ({ data }) => !data.draft);
 
@@ -21,26 +23,17 @@ const recentNotes = notes
   <Header slot="header" />
 
   <section class="mb-12">
-    <h1 class="text-4xl font-bold mb-4">Hi, I'm Nienke!</h1>
-    <div class="space-y-4 text-gray-700 dark:text-gray-300">
-      <p>
-        I'm a software developer based in Amsterdam. I've been building websites all my life.
-      </p>
-      <p>
-        The past three years I've been focused on building complex web apps with React,
-        TypeScript, and WebRTC.
-      </p>
-      <p>
-        This is my digital garden — a place where I share travels and notes.
-      </p>
+    <h1 class="font-serif text-4xl font-bold mb-4">Hi, I'm Nienke!</h1>
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <HomeContent />
     </div>
   </section>
 
   {recentTrips.length > 0 && (
     <section class="mb-12">
       <div class="flex items-baseline justify-between mb-4">
-        <h2 class="text-xl font-semibold">Recent Trips</h2>
-        <a href="/trips" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+        <h2 class="font-serif text-xl font-semibold">Recent Trips</h2>
+        <a href="/trips" class="text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light">
           View all &rarr;
         </a>
       </div>
@@ -61,8 +54,8 @@ const recentNotes = notes
   {recentNotes.length > 0 && (
     <section class="mb-12">
       <div class="flex items-baseline justify-between mb-4">
-        <h2 class="text-xl font-semibold">Recent Notes</h2>
-        <a href="/notes" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+        <h2 class="font-serif text-xl font-semibold">Recent Notes</h2>
+        <a href="/notes" class="text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light">
           View all &rarr;
         </a>
       </div>

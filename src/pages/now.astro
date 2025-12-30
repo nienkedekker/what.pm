@@ -2,36 +2,21 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const { Content: NowContent } = await import('../content/now.md');
 ---
 
 <BaseLayout title="Now" description="What I'm currently up to">
   <Header slot="header" />
 
   <section>
-    <h1 class="text-3xl font-bold mb-2">Now</h1>
+    <h1 class="font-serif text-3xl font-bold mb-2">Now</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-8">
       Last updated: December 2024
     </p>
 
     <div class="prose prose-gray dark:prose-invert max-w-none">
-      <p>
-        This is a <a href="https://nownownow.com/about">now page</a> — a place to share what I'm currently focused on.
-      </p>
-
-      <h2>Work</h2>
-      <p>
-        Building complex web apps with React, TypeScript, and WebRTC.
-      </p>
-
-      <h2>Life</h2>
-      <p>
-        Based in Amsterdam, enjoying the city and planning my next trip.
-      </p>
-
-      <h2>This Site</h2>
-      <p>
-        Just launched this digital garden! I'll be adding travel stories and notes as I go.
-      </p>
+      <NowContent />
     </div>
   </section>
 
