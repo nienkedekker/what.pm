@@ -1,0 +1,46 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Nienke Dekker',
+  description = 'Digital garden of Nienke Dekker - travels and notes'
+} = Astro.props;
+
+const siteTitle = title === 'Nienke Dekker' ? title : `${title} | Nienke Dekker`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+    <title>{siteTitle}</title>
+    <script is:inline>
+      const theme = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    </script>
+  </head>
+  <body class="min-h-screen font-sans antialiased">
+    <div class="max-w-2xl mx-auto px-4 py-8 sm:py-16">
+      <slot name="header" />
+      <main>
+        <slot />
+      </main>
+      <slot name="footer" />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

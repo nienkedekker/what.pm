@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const trips = await getCollection('trips', ({ data }) => !data.draft);
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+
+const recentTrips = trips
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const recentNotes = notes
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <Header slot="header" />
+
+  <section class="mb-12">
+    <h1 class="text-4xl font-bold mb-4">Hi, I'm Nienke!</h1>
+    <div class="space-y-4 text-gray-700 dark:text-gray-300">
+      <p>
+        I'm a software developer based in Amsterdam. I've been building websites all my life.
+      </p>
+      <p>
+        The past three years I've been focused on building complex web apps with React,
+        TypeScript, and WebRTC.
+      </p>
+      <p>
+        This is my digital garden — a place where I share travels and notes.
+      </p>
+    </div>
+  </section>
+
+  {recentTrips.length > 0 && (
+    <section class="mb-12">
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="text-xl font-semibold">Recent Trips</h2>
+        <a href="/trips" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+          View all &rarr;
+        </a>
+      </div>
+      <div>
+        {recentTrips.map((trip) => (
+          <PostCard
+            title={trip.data.title}
+            href={`/trips/${trip.id}`}
+            date={trip.data.date}
+            description={trip.data.description}
+            location={trip.data.location}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {recentNotes.length > 0 && (
+    <section class="mb-12">
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="text-xl font-semibold">Recent Notes</h2>
+        <a href="/notes" class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+          View all &rarr;
+        </a>
+      </div>
+      <div>
+        {recentNotes.map((note) => (
+          <PostCard
+            title={note.data.title}
+            href={`/notes/${note.id}`}
+            date={note.data.date}
+            description={note.data.description}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <Footer slot="footer" />
+</BaseLayout>

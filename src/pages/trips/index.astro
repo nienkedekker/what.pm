@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const trips = await getCollection('trips', ({ data }) => !data.draft);
+const sortedTrips = trips.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Trips" description="Travel stories and adventures">
+  <Header slot="header" />
+
+  <section>
+    <h1 class="text-3xl font-bold mb-2">Trips</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      Travel stories and adventures from around the world.
+    </p>
+
+    {sortedTrips.length > 0 ? (
+      <div>
+        {sortedTrips.map((trip) => (
+          <PostCard
+            title={trip.data.title}
+            href={`/trips/${trip.id}`}
+            date={trip.data.date}
+            description={trip.data.description}
+            location={trip.data.location}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-600 dark:text-gray-400">No trips yet. Check back soon!</p>
+    )}
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

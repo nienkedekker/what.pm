@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+const sortedNotes = notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Notes" description="Thoughts, ideas, and observations">
+  <Header slot="header" />
+
+  <section>
+    <h1 class="text-3xl font-bold mb-2">Notes</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      Short-form thoughts, ideas, and observations.
+    </p>
+
+    {sortedNotes.length > 0 ? (
+      <div>
+        {sortedNotes.map((note) => (
+          <PostCard
+            title={note.data.title}
+            href={`/notes/${note.id}`}
+            date={note.data.date}
+            description={note.data.description}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-600 dark:text-gray-400">No notes yet. Check back soon!</p>
+    )}
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
