@@ -2,6 +2,7 @@
 import { PortableText } from 'astro-portabletext';
 import SanityImage from './sanity-image.astro';
 import SanityGallery from './sanity-gallery.astro';
+import SanityInlineImage from './sanity-inline-image.astro';
 
 interface Props {
   value: any;
@@ -13,6 +14,7 @@ const components = {
   type: {
     image: SanityImage,
     gallery: SanityGallery,
+    inlineImage: SanityInlineImage,
   },
 };
 ---

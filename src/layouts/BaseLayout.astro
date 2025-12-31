@@ -1,4 +1,7 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+import FlyingBirds from '../components/flying-birds.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -43,13 +46,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.d
     {image && <meta name="twitter:image" content={image} />}
 
     <title>{siteTitle}</title>
+    <ViewTransitions />
     <script is:inline>
-      const theme = localStorage.getItem('theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      function setTheme() {
+        const theme = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      }
+      setTheme();
+      document.addEventListener('astro:after-swap', setTheme);
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
+    <FlyingBirds />
     <div class="max-w-2xl mx-auto px-4 py-8 sm:py-16">
       <slot name="header" />
       <main>

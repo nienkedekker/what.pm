@@ -73,6 +73,11 @@ export const page = defineType({
               },
             ],
           },
+          of: [
+            {
+              type: "inlineImage",
+            },
+          ],
         },
         {
           type: "image",

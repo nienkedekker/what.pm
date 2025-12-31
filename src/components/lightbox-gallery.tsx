@@ -18,7 +18,11 @@ export default function LightboxGallery({ images, caption }: Props) {
   const columns = images.length === 1 ? 1 : images.length === 2 ? 2 : 3;
 
   const gridClass =
-    columns === 1 ? "grid-cols-1" : columns === 2 ? "grid-cols-2" : "grid-cols-2 md:grid-cols-3";
+    columns === 1
+      ? "grid-cols-1"
+      : columns === 2
+        ? "grid-cols-1 sm:grid-cols-2"
+        : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
 
   return (
     <>

@@ -5,7 +5,7 @@ import Footer from '../components/footer.astro';
 import PostCard from '../components/post-card.astro';
 import TripMap from '../components/trip-map';
 import { PortableText } from 'astro-portabletext';
-import { ArrowRightIcon } from '@phosphor-icons/react';
+import { ViewAllArrowIcon } from '../components/icons';
 import { sanityClient } from 'sanity:client';
 import { tripsQuery, notesQuery, pageBySlugQuery } from '../sanity/queries';
 
@@ -40,7 +40,7 @@ const recentNotes = notes.slice(0, 3);
   {trips.length > 0 && (
     <section class="mb-12">
       <h2 class="font-serif text-xl font-semibold mb-4">Where I've Been</h2>
-      <TripMap trips={trips} client:load />
+      <TripMap trips={trips} client:only="react" />
     </section>
   )}
 
@@ -49,7 +49,7 @@ const recentNotes = notes.slice(0, 3);
       <div class="flex items-baseline justify-between mb-4">
         <h2 class="font-serif text-xl font-semibold">Recent Trips</h2>
         <a href="/trips" class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors">
-          View all <ArrowRightIcon size={14} weight="bold" />
+          View all <ViewAllArrowIcon client:only="react" />
         </a>
       </div>
       <div>
@@ -71,7 +71,7 @@ const recentNotes = notes.slice(0, 3);
       <div class="flex items-baseline justify-between mb-4">
         <h2 class="font-serif text-xl font-semibold">Recent Notes</h2>
         <a href="/notes" class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors">
-          View all <ArrowRightIcon size={14} weight="bold" />
+          View all <ViewAllArrowIcon client:only="react" />
         </a>
       </div>
       <div>

@@ -23,6 +23,7 @@
     "astro": "^5.0.0",
     "astro-portabletext": "^0.12.0",
     "dotted-map": "^2.2.3",
+    "phosphor-astro": "^2.1.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "sanity": "^5.1.0",

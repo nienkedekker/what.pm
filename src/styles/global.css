@@ -23,12 +23,19 @@
     margin-left: calc(var(--bleed) * -1);
     margin-right: calc(var(--bleed) * -1);
     width: calc(100% + var(--bleed) * 2);
-    max-width: calc(100vw - 2rem);
   }
 
+  /* Full bleed on mobile - edge to edge */
   @media (max-width: 640px) {
     .bleed {
-      --bleed: 1rem;
+      margin-left: -1rem;
+      margin-right: -1rem;
+      width: 100vw;
+      border-radius: 0;
+    }
+
+    .bleed img {
+      border-radius: 0;
     }
   }
 

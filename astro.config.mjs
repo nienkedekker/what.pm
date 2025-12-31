@@ -7,6 +7,10 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://nienke.dev',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
   integrations: [mdx(), tailwind(), sanity({
     projectId: 'vuh5pxn1',
     dataset: 'production',

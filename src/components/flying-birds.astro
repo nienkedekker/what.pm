@@ -1,0 +1,44 @@
+---
+// Decorative birds in the background
+---
+
+<div class="birds-container">
+  <img src="/bird1.png" alt="" class="bird bird-1" aria-hidden="true" />
+  <img src="/bird2.png" alt="" class="bird bird-2" aria-hidden="true" />
+</div>
+
+<style>
+  .birds-container {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .bird {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    opacity: 0.11;
+  }
+
+  .bird-1 {
+    top: 10%;
+    right: 0;
+    transform: translateX(-50%);
+  }
+
+  .bird-2 {
+    bottom: 10%;
+    left: 0;
+    transform: translateX(20%) scaleX(-1);
+  }
+
+  /* Hide on smaller screens where they'd overlap with content */
+  @media (max-width: 1200px) {
+    .birds-container {
+      display: none;
+    }
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
-import { CalendarIcon, MapPinIcon } from '@phosphor-icons/react';
+import CalendarDuotone from 'phosphor-astro/CalendarDuotone.astro';
+import MapPinDuotone from 'phosphor-astro/MapPinDuotone.astro';
 
 interface Props {
   title: string;
@@ -25,12 +26,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
     </h3>
     <div class="mt-1 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
       <span class="flex items-center gap-1">
-        <CalendarIcon size={14} weight="duotone" />
+        <CalendarDuotone class="size-3.5" />
         <time datetime={date.toISOString()}>{formattedDate}</time>
       </span>
       {location && (
         <span class="flex items-center gap-1">
-          <MapPinIcon size={14} weight="duotone" />
+          <MapPinDuotone class="size-3.5" />
           {location}
         </span>
       )}
