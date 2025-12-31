@@ -1,0 +1,26 @@
+---
+import { EnvelopeIcon, GithubLogoIcon, LinkedinLogoIcon, RssIcon } from '@phosphor-icons/react';
+
+const links = [
+  { href: 'mailto:nienkedekker@gmail.com', label: 'Email', icon: EnvelopeIcon },
+  { href: 'https://github.com/nienkedekker', label: 'GitHub', icon: GithubLogoIcon },
+  { href: 'https://www.linkedin.com/in/nienke-dekker-15348ab1/', label: 'LinkedIn', icon: LinkedinLogoIcon },
+  { href: '/rss.xml', label: 'RSS', icon: RssIcon },
+];
+---
+
+<footer class="mt-16 pt-8 border-t border-gray-200 dark:border-neutral-700">
+  <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+    {links.map(({ href, label, icon: Icon }) => (
+      <a
+        href={href}
+        class="flex items-center gap-1.5 hover:text-accent dark:hover:text-accent-light transition-colors"
+        target={href.startsWith('http') || href.startsWith('mailto') ? '_blank' : undefined}
+        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      >
+        <Icon size={16} weight="duotone" />
+        {label}
+      </a>
+    ))}
+  </div>
+</footer>

@@ -1,0 +1,35 @@
+---
+import PostLayout from '../../layouts/PostLayout.astro';
+import PortableTextRenderer from '../../components/portable-text-renderer.astro';
+import { sanityClient } from 'sanity:client';
+import { tripsQuery, tripBySlugQuery } from '../../sanity/queries';
+import { urlFor } from '../../sanity/image';
+
+export async function getStaticPaths() {
+  const trips = await sanityClient.fetch(tripsQuery);
+  return trips.map((trip: any) => ({
+    params: { slug: trip.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+const trip = await sanityClient.fetch(tripBySlugQuery, { slug });
+
+if (!trip) {
+  return Astro.redirect('/404');
+}
+
+const coverImage = trip.cover?.asset
+  ? urlFor(trip.cover).width(1200).height(630).fit('crop').url()
+  : undefined;
+---
+
+<PostLayout
+  title={trip.title}
+  description={trip.description}
+  date={new Date(trip.date)}
+  location={trip.location}
+  image={coverImage}
+>
+  <PortableTextRenderer value={trip.body} />
+</PostLayout>

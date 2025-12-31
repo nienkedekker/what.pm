@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import PostCard from '../../components/PostCard.astro';
-import { getCollection } from 'astro:content';
+import Header from '../../components/header.astro';
+import Footer from '../../components/footer.astro';
+import PostCard from '../../components/post-card.astro';
+import { sanityClient } from 'sanity:client';
+import { notesQuery } from '../../sanity/queries';
 
-const notes = await getCollection('notes', ({ data }) => !data.draft);
-const sortedNotes = notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const notes = await sanityClient.fetch(notesQuery);
 ---
 
 <BaseLayout title="Notes" description="Thoughts, ideas, and observations">
@@ -18,14 +18,14 @@ const sortedNotes = notes.sort((a, b) => b.data.date.getTime() - a.data.date.get
       Short-form thoughts, ideas, and observations.
     </p>
 
-    {sortedNotes.length > 0 ? (
+    {notes.length > 0 ? (
       <div>
-        {sortedNotes.map((note) => (
+        {notes.map((note: any) => (
           <PostCard
-            title={note.data.title}
-            href={`/notes/${note.id}`}
-            date={note.data.date}
-            description={note.data.description}
+            title={note.title}
+            href={`/notes/${note.slug.current}`}
+            date={new Date(note.date)}
+            description={note.description}
           />
         ))}
       </div>

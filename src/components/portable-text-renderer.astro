@@ -1,0 +1,20 @@
+---
+import { PortableText } from 'astro-portabletext';
+import SanityImage from './sanity-image.astro';
+import SanityGallery from './sanity-gallery.astro';
+
+interface Props {
+  value: any;
+}
+
+const { value } = Astro.props;
+
+const components = {
+  type: {
+    image: SanityImage,
+    gallery: SanityGallery,
+  },
+};
+---
+
+<PortableText value={value} components={components} />

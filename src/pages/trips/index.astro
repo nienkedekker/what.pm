@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import PostCard from '../../components/PostCard.astro';
-import { getCollection } from 'astro:content';
+import Header from '../../components/header.astro';
+import Footer from '../../components/footer.astro';
+import PostCard from '../../components/post-card.astro';
+import { sanityClient } from 'sanity:client';
+import { tripsQuery } from '../../sanity/queries';
 
-const trips = await getCollection('trips', ({ data }) => !data.draft);
-const sortedTrips = trips.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const trips = await sanityClient.fetch(tripsQuery);
 ---
 
 <BaseLayout title="Trips" description="Travel stories and adventures">
@@ -18,15 +18,15 @@ const sortedTrips = trips.sort((a, b) => b.data.date.getTime() - a.data.date.get
       Travel stories and adventures from around the world.
     </p>
 
-    {sortedTrips.length > 0 ? (
+    {trips.length > 0 ? (
       <div>
-        {sortedTrips.map((trip) => (
+        {trips.map((trip: any) => (
           <PostCard
-            title={trip.data.title}
-            href={`/trips/${trip.id}`}
-            date={trip.data.date}
-            description={trip.data.description}
-            location={trip.data.location}
+            title={trip.title}
+            href={`/trips/${trip.slug.current}`}
+            date={new Date(trip.date)}
+            description={trip.description}
+            location={trip.location}
           />
         ))}
       </div>

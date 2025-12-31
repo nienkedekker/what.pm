@@ -1,0 +1,36 @@
+---
+import { urlFor } from '../sanity/image';
+import LightboxGallery from './lightbox-gallery';
+
+interface Props {
+  node: {
+    images?: Array<{
+      asset?: {
+        _ref: string;
+      };
+      alt?: string;
+    }>;
+    caption?: string;
+  };
+}
+
+const { node } = Astro.props;
+
+const images = (node?.images || [])
+  .filter((image) => image?.asset)
+  .map((image) => ({
+    thumbnailUrl: urlFor(image).width(900).quality(85).auto('format').url(),
+    fullUrl: urlFor(image).quality(100).url(),
+    alt: image.alt || '',
+  }));
+---
+
+{images.length > 0 && (
+  <figure class="bleed my-8">
+    <LightboxGallery
+      client:load
+      images={images}
+      caption={node.caption}
+    />
+  </figure>
+)}

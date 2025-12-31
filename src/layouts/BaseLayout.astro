@@ -2,14 +2,17 @@
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = 'Nienke Dekker',
-  description = 'Digital garden of Nienke Dekker - travels and notes'
+  description = 'Digital garden of Nienke Dekker - travels and notes',
+  image,
 } = Astro.props;
 
 const siteTitle = title === 'Nienke Dekker' ? title : `${title} | Nienke Dekker`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.dev');
 ---
 
 <!doctype html>
@@ -24,6 +27,21 @@ const siteTitle = title === 'Nienke Dekker' ? title : `${title} | Nienke Dekker`
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    {image && <meta name="twitter:image" content={image} />}
+
     <title>{siteTitle}</title>
     <script is:inline>
       const theme = localStorage.getItem('theme') ||

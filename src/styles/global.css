@@ -15,3 +15,26 @@
     @apply bg-orange-200/60 dark:bg-orange-900/40;
   }
 }
+
+@layer components {
+  /* Bleed effect - images break out of the text container */
+  .bleed {
+    --bleed: 4rem;
+    margin-left: calc(var(--bleed) * -1);
+    margin-right: calc(var(--bleed) * -1);
+    width: calc(100% + var(--bleed) * 2);
+    max-width: calc(100vw - 2rem);
+  }
+
+  @media (max-width: 640px) {
+    .bleed {
+      --bleed: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bleed {
+      --bleed: 6rem;
+    }
+  }
+}

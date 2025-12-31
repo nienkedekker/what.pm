@@ -3,7 +3,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "types": [
+      "@sanity/astro/module"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }
