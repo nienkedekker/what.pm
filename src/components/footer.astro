@@ -4,6 +4,7 @@ import GithubLogoDuotone from 'phosphor-astro/GithubLogoDuotone.astro';
 import LinkedinLogoDuotone from 'phosphor-astro/LinkedinLogoDuotone.astro';
 import RssDuotone from 'phosphor-astro/RssDuotone.astro';
 import NowPlaying from './now-playing';
+import HitCounter from './hit-counter';
 
 const links = [
   { href: 'mailto:nienkedekker@gmail.com', label: 'Email', Icon: EnvelopeDuotone },
@@ -29,7 +30,7 @@ const links = [
         </a>
       ))}
     </div>
-    <div class="flex flex-wrap gap-2 pt-2">
+    <div class="flex flex-wrap items-center gap-2 pt-2">
       <img src="/buttons/poweredbymac.gif" alt="Powered by Mac" />
       <img src="/buttons/cookiefree.gif" alt="Cookie free" />
       <button id="bookmark-btn" class="cursor-pointer" title="Bookmark this page">
@@ -37,13 +38,19 @@ const links = [
       </button>
       <img src="/buttons/3computer.jpg" alt="Computer" />
     </div>
+    <HitCounter client:load />
   </div>
 </footer>
 
 <script>
-  document.getElementById('bookmark-btn')?.addEventListener('click', () => {
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    const shortcut = isMac ? '⌘+D' : 'Ctrl+D';
-    alert(`RIP window.external.AddFavorite :( Press ${shortcut} to bookmark this page!`);
-  });
+  function setupBookmarkButton() {
+    document.getElementById('bookmark-btn')?.addEventListener('click', () => {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const shortcut = isMac ? '⌘+D' : 'Ctrl+D';
+      alert(`RIP window.external.AddFavorite :( Press ${shortcut} to bookmark this page!`);
+    });
+  }
+
+  setupBookmarkButton();
+  document.addEventListener('astro:after-swap', setupBookmarkButton);
 </script>

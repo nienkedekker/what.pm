@@ -9,10 +9,14 @@ import { guestbookEntriesQuery } from '../sanity/queries';
 const entries = await sanityClient.fetch(guestbookEntriesQuery);
 
 function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
+  }) + ' at ' + date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
   });
 }
 ---
@@ -23,7 +27,7 @@ function formatDate(dateString: string) {
   <section>
     <h1 class="font-serif text-3xl font-bold mb-2">Guestbook</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-8">
-      Leave a message! Say hi, share a thought, or just let me know you stopped by.
+      Leave a message! Don't be weird please.
     </p>
 
     <GuestbookForm client:load />

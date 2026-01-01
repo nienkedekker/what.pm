@@ -41,14 +41,14 @@ export default function GuestbookForm() {
   };
 
   const inputClass =
-    'w-full px-3 py-2 border border-gray-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-accent-light focus:border-transparent transition-colors';
+    'w-full px-2 py-1 font-mono text-sm bg-white text-black border-2 border-t-gray-600 border-l-gray-600 border-b-white border-r-white focus:outline-none focus:ring-2 focus:ring-blue-500';
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-gray-50 dark:bg-neutral-800/50 rounded-lg">
+    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium mb-1">
-            Name <span className="text-red-500">*</span>
+          <label htmlFor="name" className="block text-sm font-bold mb-1 text-black">
+            Name <span className="text-red-600">*</span>
           </label>
           <input
             type="text"
@@ -63,8 +63,8 @@ export default function GuestbookForm() {
           />
         </div>
         <div>
-          <label htmlFor="website" className="block text-sm font-medium mb-1">
-            Website <span className="text-gray-400 dark:text-gray-500">(optional)</span>
+          <label htmlFor="website" className="block text-sm font-bold mb-1 text-black">
+            Website <span className="text-gray-600">(optional)</span>
           </label>
           <input
             type="url"
@@ -78,8 +78,8 @@ export default function GuestbookForm() {
         </div>
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium mb-1">
-          Message <span className="text-red-500">*</span>
+        <label htmlFor="message" className="block text-sm font-bold mb-1 text-black">
+          Message <span className="text-red-600">*</span>
         </label>
         <textarea
           id="message"
@@ -92,17 +92,17 @@ export default function GuestbookForm() {
           className={inputClass + ' resize-none'}
           disabled={status === 'submitting'}
         />
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs text-gray-700 mt-1 font-mono">
           {message.length}/500 characters
         </p>
       </div>
 
       {status === 'error' && (
-        <p className="text-red-500 text-sm">{errorMessage}</p>
+        <p className="text-red-600 text-sm font-bold">{errorMessage}</p>
       )}
 
       {status === 'success' && (
-        <p className="text-green-600 dark:text-green-400 text-sm">
+        <p className="text-green-700 text-sm font-bold">
           Thanks for signing! Reloading...
         </p>
       )}
@@ -124,7 +124,7 @@ export default function GuestbookForm() {
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="px-4 py-2 bg-accent dark:bg-accent-light text-white dark:text-gray-900 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-4 py-1.5 bg-[#c0c0c0] text-black font-bold border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 hover:bg-[#d0d0d0] active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === 'submitting' ? 'Signing...' : 'Sign Guestbook'}
       </button>

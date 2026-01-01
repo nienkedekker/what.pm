@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { ChatIcon } from "@sanity/icons";
+import { CommentIcon } from "@sanity/icons";
 
 export const guestbookEntry = defineType({
   name: "guestbookEntry",
   title: "Guestbook Entry",
   type: "document",
-  icon: ChatIcon,
+  icon: CommentIcon,
   fields: [
     defineField({
       name: "name",

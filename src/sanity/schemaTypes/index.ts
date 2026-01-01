@@ -4,5 +4,6 @@ import { page } from "./page";
 import { gallery } from "./gallery";
 import { inlineImage } from "./inlineImage";
 import { guestbookEntry } from "./guestbookEntry";
+import { siteStats } from "./siteStats";
 
-export const schemaTypes = [note, trip, page, gallery, inlineImage, guestbookEntry];
+export const schemaTypes = [note, trip, page, gallery, inlineImage, guestbookEntry, siteStats];
