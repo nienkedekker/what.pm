@@ -61,3 +61,13 @@ export const tripBySlugQuery = groq`
     body
   }
 `;
+
+export const guestbookEntriesQuery = groq`
+  *[_type == "guestbookEntry"] | order(createdAt desc) {
+    _id,
+    name,
+    website,
+    message,
+    createdAt
+  }
+`;

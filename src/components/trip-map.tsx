@@ -8,6 +8,7 @@ interface Trip {
   title: string;
   slug: { current: string };
   location: string;
+  date: string;
 }
 
 interface Props {
@@ -105,15 +106,21 @@ function getCoords(location: string): { lat: number; lng: number } | null {
 }
 
 export default function TripMap({ trips }: Props) {
-  const { svgMap, tripsWithCoords, mapDimensions } = useMemo(() => {
+  const now = new Date();
+
+  const { svgMap, tripsWithCoords, mapDimensions, pastCount, futureCount } = useMemo(() => {
     const map = new DottedMap({ height: 55, grid: "diagonal" });
 
     const tripsWithCoords = trips
       .map((trip) => ({
         ...trip,
         coords: getCoords(trip.location),
+        isFuture: new Date(trip.date) > now,
       }))
       .filter((trip) => trip.coords !== null);
+
+    const pastCount = tripsWithCoords.filter((t) => !t.isFuture).length;
+    const futureCount = tripsWithCoords.filter((t) => t.isFuture).length;
 
     // Get pin positions for overlay
     const pinPositions = tripsWithCoords
@@ -135,7 +142,10 @@ export default function TripMap({ trips }: Props) {
         map.addPin({
           lat: trip.coords.lat,
           lng: trip.coords.lng,
-          svgOptions: { color: "#d97706", radius: 0.6 },
+          svgOptions: {
+            color: trip.isFuture ? "#0ea5e9" : "#d97706",
+            radius: 0.6
+          },
         });
       }
     });
@@ -151,6 +161,8 @@ export default function TripMap({ trips }: Props) {
       svgMap: svg,
       tripsWithCoords: pinPositions,
       mapDimensions: { width: map.image.width, height: map.image.height },
+      pastCount,
+      futureCount,
     };
   }, [trips]);
 
@@ -167,24 +179,36 @@ export default function TripMap({ trips }: Props) {
           <a
             key={trip.slug.current}
             href={`/trips/${trip.slug.current}`}
-            className="absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full hover:scale-125 transition-transform cursor-pointer group"
+            className={`absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full hover:scale-125 transition-transform cursor-pointer group ${
+              trip.isFuture
+                ? "[&>span]:bg-sky-500/20 [&>span]:group-hover:bg-sky-500/40 dark:[&>span]:bg-sky-400/20 dark:[&>span]:group-hover:bg-sky-400/40"
+                : "[&>span]:bg-amber-500/20 [&>span]:group-hover:bg-amber-500/40 dark:[&>span]:bg-amber-400/20 dark:[&>span]:group-hover:bg-amber-400/40"
+            }`}
             style={{
               left: `${(trip.point.x / mapDimensions.width) * 100}%`,
               top: `${(trip.point.y / mapDimensions.height) * 100}%`,
             }}
-            title={`${trip.title} — ${trip.location}`}
+            title={`${trip.title} — ${trip.location}${trip.isFuture ? " (upcoming)" : ""}`}
           >
-            <span className="absolute inset-0 rounded-full bg-amber-500/20 group-hover:bg-amber-500/40 dark:bg-amber-400/20 dark:group-hover:bg-amber-400/40 transition-colors" />
+            <span className="absolute inset-0 rounded-full transition-colors" />
           </a>
         ))}
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5 bg-white/80 dark:bg-neutral-900/80 px-2 py-1 rounded">
-        <span className="w-2 h-2 rounded-full bg-amber-600"></span>
-        <span>
-          {tripsWithCoords.length} {tripsWithCoords.length === 1 ? "trip" : "trips"}
-        </span>
+      <div className="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-3 bg-white/80 dark:bg-neutral-900/80 px-2 py-1 rounded">
+        {pastCount > 0 && (
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber-600"></span>
+            {pastCount} visited
+          </span>
+        )}
+        {futureCount > 0 && (
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+            {futureCount} planned
+          </span>
+        )}
       </div>
     </div>
   );

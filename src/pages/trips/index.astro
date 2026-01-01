@@ -27,6 +27,7 @@ const trips = await sanityClient.fetch(tripsQuery);
             date={new Date(trip.date)}
             description={trip.description}
             location={trip.location}
+            monthOnly
           />
         ))}
       </div>

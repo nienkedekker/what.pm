@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/header.astro';
+import Footer from '../components/footer.astro';
+import PortableTextRenderer from '../components/portable-text-renderer.astro';
+import { sanityClient } from 'sanity:client';
+import { pageBySlugQuery } from '../sanity/queries';
+
+const linksPage = await sanityClient.fetch(pageBySlugQuery, { slug: 'links' });
+
+const formattedDate = linksPage?.lastUpdated
+  ? new Date(linksPage.lastUpdated).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<BaseLayout title="Links" description={linksPage?.description}>
+  <Header slot="header" />
+
+  <section>
+    <h1 class="font-serif text-3xl font-bold mb-2">Links</h1>
+    {formattedDate && (
+      <p class="text-gray-600 dark:text-gray-400 mb-8">
+        Last updated: {formattedDate}
+      </p>
+    )}
+
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      {linksPage?.body && <PortableTextRenderer value={linksPage.body} />}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

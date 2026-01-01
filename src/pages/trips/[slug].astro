@@ -30,6 +30,7 @@ const coverImage = trip.cover?.asset
   date={new Date(trip.date)}
   location={trip.location}
   image={coverImage}
+  monthOnly
 >
   <PortableTextRenderer value={trip.body} />
 </PostLayout>
