@@ -38,6 +38,7 @@ const locationCoords: Record<string, { lat: number; lng: number }> = {
   scotland: { lat: 56.4907, lng: -4.2026 },
   "edinburgh, scotland": { lat: 55.9533, lng: -3.1883 },
   "reykjavik, iceland": { lat: 64.1466, lng: -21.9426 },
+  "tbilisi, georgia": { lat: 41.6938, lng: 44.8015 },
   // Asia
   "tokyo, japan": { lat: 35.6762, lng: 139.6503 },
   "kyoto, japan": { lat: 35.0116, lng: 135.7681 },
