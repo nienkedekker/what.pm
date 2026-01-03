@@ -15,12 +15,27 @@ interface CommentsSectionProps {
   parentSlug: string;
 }
 
+const sparkles = ['✦', '✧', '★', '☆', '✶', '✷', '❋', '✺'];
+const getRandomSparkle = () => sparkles[Math.floor(Math.random() * sparkles.length)];
+
+const emptyStateMessages = [
+  "It's quiet here... too quiet",
+  "No comments yet — be the first brave soul!",
+  "*crickets* ...say something!",
+  "This post is lonely, keep it company!",
+  "Be the first to leave your mark ✎",
+];
+
 export default function CommentsSection({ parentType, parentSlug }: CommentsSectionProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [ownedCommentIds, setOwnedCommentIds] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [emptyMessage] = useState(() =>
+    emptyStateMessages[Math.floor(Math.random() * emptyStateMessages.length)]
+  );
+  const [sparkle] = useState(getRandomSparkle);
 
   const fetchComments = async () => {
     try {
@@ -93,11 +108,29 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
 
   return (
     <section className="mt-16 pt-8 border-t border-stone-200 dark:border-stone-700">
-      <h2 className="font-serif text-2xl font-bold mb-6">
+      {/* Retro marquee */}
+      <div className="mb-6 overflow-hidden bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 py-1">
+        <div className="animate-marquee whitespace-nowrap font-mono text-sm text-stone-500 dark:text-stone-400">
+          <span className="mx-4">{sparkle} Welcome to the comment zone {sparkle}</span>
+          <span className="mx-4">~*~ Thanks for reading ~*~</span>
+          <span className="mx-4">♪ Leave a note, make my day ♪</span>
+          <span className="mx-4">{sparkle} Welcome to the comment zone {sparkle}</span>
+          <span className="mx-4">~*~ Thanks for reading ~*~</span>
+          <span className="mx-4">♪ Leave a note, make my day ♪</span>
+        </div>
+      </div>
+
+      <h2 className="font-serif text-2xl font-bold mb-2">
         {comments.length > 0
           ? `${comments.length} ${comments.length === 1 ? 'comment' : 'comments'}`
           : 'Comments'}
       </h2>
+
+      {comments.length > 0 && (
+        <p className="text-sm text-stone-400 dark:text-stone-500 mb-6 font-mono">
+          ↳ you could be #{comments.length + 1}!
+        </p>
+      )}
 
       {/* Form at the top */}
       <div className="mb-10">
@@ -120,15 +153,17 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
 
       {/* Comments */}
       {loading ? (
-        <p className="text-stone-500 dark:text-stone-400 italic">Loading...</p>
+        <p className="text-stone-500 dark:text-stone-400 font-mono text-sm">
+          ⌛ Loading comments...
+        </p>
       ) : comments.length > 0 ? (
         <div className="space-y-8">
-          {comments.map((comment) => (
+          {comments.map((comment, index) => (
             <article key={comment._id} className="group">
               <div className="flex items-start gap-3">
-                {/* Little avatar circle with first letter */}
-                <div className="shrink-0 size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-sm">
-                  {comment.name.charAt(0).toUpperCase()}
+                {/* Numbered avatar */}
+                <div className="shrink-0 size-10 rounded-sm bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-mono font-bold text-sm border-2 border-orange-200 dark:border-orange-800">
+                  #{index + 1}
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -145,26 +180,26 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
                     ) : (
                       <span className="font-semibold">{comment.name}</span>
                     )}
-                    <span className="text-sm text-stone-400 dark:text-stone-500">
-                      {formatDate(comment.createdAt)}
+                    <span className="text-sm text-stone-400 dark:text-stone-500 font-mono">
+                      ✧ {formatDate(comment.createdAt)}
                       {comment.updatedAt && ' · edited'}
                     </span>
 
                     {ownedCommentIds.has(comment._id) && (
-                      <span className="text-sm space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-sm space-x-2 opacity-0 group-hover:opacity-100 transition-opacity font-mono">
                         <button
                           onClick={() => setEditingId(comment._id)}
                           className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300"
                           disabled={deletingId === comment._id}
                         >
-                          edit
+                          [edit]
                         </button>
                         <button
                           onClick={() => handleDelete(comment._id)}
                           className="text-stone-400 hover:text-red-500 dark:hover:text-red-400"
                           disabled={deletingId === comment._id}
                         >
-                          {deletingId === comment._id ? '...' : 'delete'}
+                          {deletingId === comment._id ? '[...]' : '[del]'}
                         </button>
                       </span>
                     )}
@@ -179,9 +214,18 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
           ))}
         </div>
       ) : (
-        <p className="text-stone-500 dark:text-stone-400 italic">
-          No comments yet — be the first!
+        <p className="text-stone-500 dark:text-stone-400 font-mono text-sm">
+          {emptyMessage}
         </p>
+      )}
+
+      {/* Retro footer */}
+      {comments.length > 0 && (
+        <div className="mt-8 pt-4 border-t border-dashed border-stone-200 dark:border-stone-700 text-center">
+          <p className="font-mono text-xs text-stone-400 dark:text-stone-500">
+            ✿ Total visitors who commented: {comments.length} ✿
+          </p>
+        </div>
       )}
     </section>
   );

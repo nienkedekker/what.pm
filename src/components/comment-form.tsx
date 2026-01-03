@@ -194,7 +194,7 @@ export default function CommentForm({
           required
           maxLength={1000}
           rows={4}
-          placeholder="What's on your mind?"
+          placeholder="Leave a comment..."
           className={inputClass + ' resize-none'}
           disabled={status === 'submitting'}
         />
