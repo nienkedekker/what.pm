@@ -5,6 +5,7 @@ import Footer from "../../components/footer.astro";
 import PostCard from "../../components/post-card.astro";
 import { sanityClient } from "sanity:client";
 import { notesQuery } from "../../sanity/queries";
+import { getSparkle } from "../../utils/sparkles";
 
 const notes = await sanityClient.fetch(notesQuery);
 ---
@@ -21,16 +22,21 @@ const notes = await sanityClient.fetch(notesQuery);
 
     {
       notes.length > 0 ? (
-        <div>
-          {notes.map((note: any) => (
-            <PostCard
-              title={note.title}
-              href={`/notes/${note.slug.current}`}
-              date={new Date(note.date)}
-              description={note.description}
-            />
+        <ul class="list-none space-y-2">
+          {notes.map((note: any, index: number) => (
+            <li
+              class="note-item group/note"
+              style={`--sparkle: "${getSparkle(index)}"`}
+            >
+              <PostCard
+                title={note.title}
+                href={`/notes/${note.slug.current}`}
+                date={new Date(note.date)}
+                description={note.description}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <p class="text-gray-600 dark:text-gray-400">
           No notes yet. Check back soon!
@@ -41,3 +47,31 @@ const notes = await sanityClient.fetch(notesQuery);
 
   <Footer slot="footer" />
 </BaseLayout>
+
+<style>
+  .note-item {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .note-item::before {
+    content: var(--sparkle);
+    color: rgb(168 162 158); /* stone-400 */
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .note-item:hover::before {
+    color: rgb(251 146 60); /* orange-400 */
+  }
+
+  :global(.dark) .note-item::before {
+    color: rgb(120 113 108); /* stone-500 */
+  }
+
+  :global(.dark) .note-item:hover::before {
+    color: rgb(251 146 60); /* orange-400 */
+  }
+</style>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CommentForm from "./comment-form";
+import { getRandomSparkle } from "../utils/sparkles";
 
 interface Comment {
   _id: string;
@@ -15,9 +16,6 @@ interface CommentsSectionProps {
   parentType: "trip" | "note";
   parentSlug: string;
 }
-
-const sparkles = ["✦", "✧", "★", "☆", "✶", "✷", "❋", "✺"];
-const getRandomSparkle = () => sparkles[Math.floor(Math.random() * sparkles.length)];
 
 export default function CommentsSection({ parentType, parentSlug }: CommentsSectionProps) {
   const [comments, setComments] = useState<Comment[]>([]);
