@@ -22,7 +22,6 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
   const [ownedCommentIds, setOwnedCommentIds] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // Fetch comments via our API endpoint
   const fetchComments = async () => {
     try {
       const response = await fetch(
@@ -41,7 +40,6 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
     fetchComments();
   }, [parentType, parentSlug]);
 
-  // Check which comments the user owns (has edit tokens for)
   useEffect(() => {
     const owned = new Set<string>();
     comments.forEach((comment) => {
@@ -54,7 +52,7 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
   }, [comments]);
 
   const handleDelete = async (commentId: string) => {
-    if (!confirm('Are you sure you want to delete this comment?')) {
+    if (!confirm('Delete this comment?')) {
       return;
     }
 
@@ -70,44 +68,38 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to delete comment');
+        throw new Error(data.error || 'Failed to delete');
       }
 
-      // Remove token from localStorage
       localStorage.removeItem(`comment_token_${commentId}`);
-
-      // Refetch comments
       await fetchComments();
       setDeletingId(null);
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete comment');
+      alert(err instanceof Error ? err.message : 'Failed to delete');
       setDeletingId(null);
     }
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return (
-      date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }) +
-      ' at ' +
-      date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-      })
-    );
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
 
   const editingComment = editingId ? comments.find((c) => c._id === editingId) : null;
 
   return (
-    <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-      <h2 className="font-serif text-2xl font-bold mb-6">Comments</h2>
+    <section className="mt-16 pt-8 border-t border-stone-200 dark:border-stone-700">
+      <h2 className="font-serif text-2xl font-bold mb-6">
+        {comments.length > 0
+          ? `${comments.length} ${comments.length === 1 ? 'comment' : 'comments'}`
+          : 'Comments'}
+      </h2>
 
-      {/* Comment form - now at the top */}
+      {/* Form at the top */}
       <div className="mb-10">
         <CommentForm
           parentType={parentType}
@@ -120,69 +112,76 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
           onCancelEdit={() => setEditingId(null)}
           onSuccess={() => {
             setEditingId(null);
-            fetchComments();
+            // Small delay to let Sanity propagate the new comment
+            setTimeout(() => fetchComments(), 2000);
           }}
         />
       </div>
 
-      {/* Comments list */}
+      {/* Comments */}
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">Loading comments...</p>
+        <p className="text-stone-500 dark:text-stone-400 italic">Loading...</p>
       ) : comments.length > 0 ? (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {comments.map((comment) => (
-            <article
-              key={comment._id}
-              className="border-b border-gray-100 dark:border-neutral-800 pb-6 last:border-0"
-            >
-              <div className="flex items-baseline justify-between gap-2 mb-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-medium">
+            <article key={comment._id} className="group">
+              <div className="flex items-start gap-3">
+                {/* Little avatar circle with first letter */}
+                <div className="shrink-0 size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-sm">
+                  {comment.name.charAt(0).toUpperCase()}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                     {comment.website ? (
                       <a
                         href={comment.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-accent dark:hover:text-accent-light transition-colors"
+                        className="font-semibold text-orange-700 dark:text-orange-400 hover:underline"
                       >
                         {comment.name}
                       </a>
                     ) : (
-                      comment.name
+                      <span className="font-semibold">{comment.name}</span>
                     )}
-                  </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {formatDate(comment.createdAt)}
-                    {comment.updatedAt && ' (edited)'}
-                  </span>
-                </div>
+                    <span className="text-sm text-stone-400 dark:text-stone-500">
+                      {formatDate(comment.createdAt)}
+                      {comment.updatedAt && ' · edited'}
+                    </span>
 
-                {ownedCommentIds.has(comment._id) && (
-                  <div className="flex gap-3 text-sm">
-                    <button
-                      onClick={() => setEditingId(comment._id)}
-                      className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-                      disabled={deletingId === comment._id}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(comment._id)}
-                      className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
-                      disabled={deletingId === comment._id}
-                    >
-                      {deletingId === comment._id ? 'Deleting...' : 'Delete'}
-                    </button>
+                    {ownedCommentIds.has(comment._id) && (
+                      <span className="text-sm space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => setEditingId(comment._id)}
+                          className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300"
+                          disabled={deletingId === comment._id}
+                        >
+                          edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(comment._id)}
+                          className="text-stone-400 hover:text-red-500 dark:hover:text-red-400"
+                          disabled={deletingId === comment._id}
+                        >
+                          {deletingId === comment._id ? '...' : 'delete'}
+                        </button>
+                      </span>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{comment.message}</p>
+                  <p className="mt-1 text-stone-700 dark:text-stone-300 whitespace-pre-wrap">
+                    {comment.message}
+                  </p>
+                </div>
+              </div>
             </article>
           ))}
         </div>
       ) : (
-        <p className="text-gray-600 dark:text-gray-400">No comments yet. Be the first to comment!</p>
+        <p className="text-stone-500 dark:text-stone-400 italic">
+          No comments yet — be the first!
+        </p>
       )}
     </section>
   );

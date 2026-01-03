@@ -54,7 +54,6 @@ export default function CommentForm({
 
     try {
       if (isEditing) {
-        // Update existing comment
         const editToken = localStorage.getItem(`comment_token_${editingComment.id}`);
         if (!editToken) {
           throw new Error('Edit token not found');
@@ -75,7 +74,6 @@ export default function CommentForm({
           throw new Error(data.error || 'Something went wrong');
         }
       } else {
-        // Create new comment
         const response = await fetch('/api/comments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -97,12 +95,10 @@ export default function CommentForm({
 
         const data = await response.json();
 
-        // Save edit token to localStorage
         if (data.editToken) {
           localStorage.setItem(`comment_token_${data.id}`, data.editToken);
         }
 
-        // Save user info for future comments
         localStorage.setItem('comment_name', name);
         localStorage.setItem('comment_email', email);
         if (website) {
@@ -113,7 +109,6 @@ export default function CommentForm({
       setStatus('success');
       setMessage('');
 
-      // Callback after short delay
       setTimeout(() => {
         if (onSuccess) {
           onSuccess();
@@ -128,18 +123,19 @@ export default function CommentForm({
   };
 
   const inputClass =
-    'w-full px-3 py-2 text-sm bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent dark:focus:ring-accent-light focus:border-transparent transition-colors';
-
-  const labelClass = 'block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300';
+    'w-full px-2 py-1 font-mono text-sm bg-white text-black border-2 border-t-gray-600 border-l-gray-600 border-b-white border-r-white focus:outline-none focus:ring-2 focus:ring-orange-400';
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-4 bg-[#c0c0c0] border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600"
+    >
       {!isEditing && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="comment-name" className={labelClass}>
-                Name <span className="text-red-500">*</span>
+              <label htmlFor="comment-name" className="block text-sm font-bold mb-1 text-black">
+                Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -154,9 +150,9 @@ export default function CommentForm({
               />
             </div>
             <div>
-              <label htmlFor="comment-email" className={labelClass}>
-                Email <span className="text-red-500">*</span>
-                <span className="text-gray-400 dark:text-gray-500 font-normal"> (not displayed)</span>
+              <label htmlFor="comment-email" className="block text-sm font-bold mb-1 text-black">
+                Email <span className="text-red-600">*</span>
+                <span className="text-gray-600 font-normal"> (secret!)</span>
               </label>
               <input
                 type="email"
@@ -171,8 +167,8 @@ export default function CommentForm({
             </div>
           </div>
           <div>
-            <label htmlFor="comment-website" className={labelClass}>
-              Website <span className="text-gray-400 dark:text-gray-500 font-normal">(optional)</span>
+            <label htmlFor="comment-website" className="block text-sm font-bold mb-1 text-black">
+              Website <span className="text-gray-600 font-normal">(optional)</span>
             </label>
             <input
               type="url"
@@ -188,8 +184,8 @@ export default function CommentForm({
       )}
 
       <div>
-        <label htmlFor="comment-message" className={labelClass}>
-          {isEditing ? 'Edit your comment' : 'Comment'} <span className="text-red-500">*</span>
+        <label htmlFor="comment-message" className="block text-sm font-bold mb-1 text-black">
+          {isEditing ? 'Edit your comment' : 'Comment'} <span className="text-red-600">*</span>
         </label>
         <textarea
           id="comment-message"
@@ -198,20 +194,18 @@ export default function CommentForm({
           required
           maxLength={1000}
           rows={4}
-          placeholder="Leave a comment..."
+          placeholder="What's on your mind?"
           className={inputClass + ' resize-none'}
           disabled={status === 'submitting'}
         />
-        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{message.length}/1000</p>
+        <p className="text-xs text-gray-700 mt-1 font-mono">{message.length}/1000</p>
       </div>
 
-      {status === 'error' && (
-        <p className="text-red-600 dark:text-red-400 text-sm">{errorMessage}</p>
-      )}
+      {status === 'error' && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
 
       {status === 'success' && (
-        <p className="text-green-600 dark:text-green-400 text-sm">
-          {isEditing ? 'Comment updated!' : 'Comment posted!'}
+        <p className="text-green-700 text-sm font-bold">
+          {isEditing ? 'Updated!' : 'Posted!'} ✓ <span className="font-normal text-gray-600">showing in a sec...</span>
         </p>
       )}
 
@@ -231,18 +225,18 @@ export default function CommentForm({
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-4 py-2 text-sm font-medium bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-md hover:bg-gray-700 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-1.5 bg-[#c0c0c0] text-black font-bold border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 hover:bg-[#d0d0d0] active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'submitting'
             ? isEditing
               ? 'Saving...'
               : 'Posting...'
             : isEditing
-              ? 'Save Changes'
+              ? 'Save'
               : 'Post Comment'}
         </button>
 
@@ -251,7 +245,7 @@ export default function CommentForm({
             type="button"
             onClick={onCancelEdit}
             disabled={status === 'submitting'}
-            className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-1.5 bg-[#c0c0c0] text-black font-bold border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 hover:bg-[#d0d0d0] active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
