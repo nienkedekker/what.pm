@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { value } = Astro.props;
-const { reference } = value;
+const reference = value?.reference;
 
 // Build URL based on document type
 function getUrl(type: string, slug: string): string {
