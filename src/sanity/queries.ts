@@ -1,12 +1,29 @@
 import groq from "groq";
 
+// Expands internal links in Portable Text body
+const bodyWithInternalLinks = `
+  body[] {
+    ...,
+    markDefs[] {
+      ...,
+      _type == "internalLink" => {
+        ...,
+        "reference": reference-> {
+          _type,
+          "slug": slug.current
+        }
+      }
+    }
+  }
+`;
+
 export const pageBySlugQuery = groq`
   *[_type == "page" && slug.current == $slug][0] {
     _id,
     title,
     description,
     lastUpdated,
-    body
+    ${bodyWithInternalLinks}
   }
 `;
 
@@ -31,7 +48,7 @@ export const noteBySlugQuery = groq`
     date,
     cover,
     tags,
-    body
+    ${bodyWithInternalLinks}
   }
 `;
 
@@ -58,7 +75,7 @@ export const tripBySlugQuery = groq`
     location,
     cover,
     tags,
-    body
+    ${bodyWithInternalLinks}
   }
 `;
 

@@ -76,7 +76,7 @@ export const note = defineType({
               {
                 name: "link",
                 type: "object",
-                title: "Link",
+                title: "External Link",
                 fields: [
                   {
                     name: "href",
@@ -86,6 +86,19 @@ export const note = defineType({
                       rule.uri({
                         scheme: ["http", "https", "mailto"],
                       }),
+                  },
+                ],
+              },
+              {
+                name: "internalLink",
+                type: "object",
+                title: "Internal Link",
+                fields: [
+                  {
+                    name: "reference",
+                    type: "reference",
+                    title: "Reference",
+                    to: [{ type: "page" }, { type: "note" }, { type: "trip" }],
                   },
                 ],
               },
