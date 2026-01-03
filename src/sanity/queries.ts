@@ -88,3 +88,14 @@ export const guestbookEntriesQuery = groq`
     createdAt
   }
 `;
+
+export const commentsByParentQuery = groq`
+  *[_type == "comment" && parentType == $parentType && parentSlug == $parentSlug] | order(createdAt asc) {
+    _id,
+    name,
+    website,
+    message,
+    createdAt,
+    updatedAt
+  }
+`;

@@ -71,15 +71,25 @@ export const comment = defineType({
   ],
   preview: {
     select: {
-      title: "name",
-      subtitle: "message",
+      name: "name",
+      message: "message",
       parentType: "parentType",
       parentSlug: "parentSlug",
+      createdAt: "createdAt",
     },
-    prepare({ title, subtitle, parentType, parentSlug }) {
+    prepare({ name, message, parentType, parentSlug, createdAt }) {
+      const date = createdAt
+        ? new Date(createdAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+      const truncatedMessage =
+        message && message.length > 50 ? message.substring(0, 50) + "..." : message;
       return {
-        title,
-        subtitle: `${parentType}/${parentSlug}: ${subtitle}`,
+        title: `${name} on ${parentType}/${parentSlug}`,
+        subtitle: `${date} — ${truncatedMessage}`,
       };
     },
   },
