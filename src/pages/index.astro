@@ -1,15 +1,15 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/header.astro';
-import Footer from '../components/footer.astro';
-import PostCard from '../components/post-card.astro';
-import TripMap from '../components/trip-map';
-import { PortableText } from 'astro-portabletext';
-import ArrowRightBold from 'phosphor-astro/ArrowRightBold.astro';
-import { sanityClient } from 'sanity:client';
-import { tripsQuery, notesQuery, pageBySlugQuery } from '../sanity/queries';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import PostCard from "../components/post-card.astro";
+import TripMap from "../components/trip-map";
+import { PortableText } from "astro-portabletext";
+import ArrowRightBold from "phosphor-astro/ArrowRightBold.astro";
+import { sanityClient } from "sanity:client";
+import { tripsQuery, notesQuery, pageBySlugQuery } from "../sanity/queries";
 
-const homePage = await sanityClient.fetch(pageBySlugQuery, { slug: 'home' });
+const homePage = await sanityClient.fetch(pageBySlugQuery, { slug: "home" });
 const trips = await sanityClient.fetch(tripsQuery);
 const notes = await sanityClient.fetch(notesQuery);
 
@@ -27,7 +27,7 @@ const recentNotes = notes.slice(0, 3);
       <img
         src="/nienke.jpg"
         alt="Nienke gazing wistfully over the port of Hydra"
-        class="size-48 sm:size-64 object-cover shrink-0"
+        class="size-48 sm:size-64 object-cover shrink-0 rounded-lg"
       />
       <div>
         <div class="prose prose-gray dark:prose-invert max-w-none">
@@ -37,56 +37,68 @@ const recentNotes = notes.slice(0, 3);
     </div>
   </section>
 
-  {trips.length > 0 && (
-    <section class="mb-12">
-      <h2 class="font-serif text-xl font-semibold mb-4">Where I've Been</h2>
-      <TripMap trips={trips} client:only="react" />
-    </section>
-  )}
+  {
+    trips.length > 0 && (
+      <section class="mb-12">
+        <h2 class="font-serif text-xl font-semibold mb-4">Where I've Been</h2>
+        <TripMap trips={trips} client:only="react" />
+      </section>
+    )
+  }
 
-  {recentTrips.length > 0 && (
-    <section class="mb-12">
-      <div class="flex items-baseline justify-between mb-4">
-        <h2 class="font-serif text-xl font-semibold">Recent Trips</h2>
-        <a href="/trips" class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors">
-          View all <ArrowRightBold class="size-3.5" />
-        </a>
-      </div>
-      <div>
-        {recentTrips.map((trip: any) => (
-          <PostCard
-            title={trip.title}
-            href={`/trips/${trip.slug.current}`}
-            date={new Date(trip.date)}
-            description={trip.description}
-            location={trip.location}
-            monthOnly
-          />
-        ))}
-      </div>
-    </section>
-  )}
+  {
+    recentTrips.length > 0 && (
+      <section class="mb-12">
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="font-serif text-xl font-semibold">Recent Trips</h2>
+          <a
+            href="/trips"
+            class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors"
+          >
+            View all <ArrowRightBold class="size-3.5" />
+          </a>
+        </div>
+        <div>
+          {recentTrips.map((trip: any) => (
+            <PostCard
+              title={trip.title}
+              href={`/trips/${trip.slug.current}`}
+              date={new Date(trip.date)}
+              description={trip.description}
+              location={trip.location}
+              monthOnly
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
-  {recentNotes.length > 0 && (
-    <section class="mb-12">
-      <div class="flex items-baseline justify-between mb-4">
-        <h2 class="font-serif text-xl font-semibold">Recent Notes</h2>
-        <a href="/notes" class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors">
-          View all <ArrowRightBold class="size-3.5" />
-        </a>
-      </div>
-      <div>
-        {recentNotes.map((note: any) => (
-          <PostCard
-            title={note.title}
-            href={`/notes/${note.slug.current}`}
-            date={new Date(note.date)}
-            description={note.description}
-          />
-        ))}
-      </div>
-    </section>
-  )}
+  {
+    recentNotes.length > 0 && (
+      <section class="mb-12">
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="font-serif text-xl font-semibold">Recent Notes</h2>
+          <a
+            href="/notes"
+            class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors"
+          >
+            View all <ArrowRightBold class="size-3.5" />
+          </a>
+        </div>
+        <div>
+          {recentNotes.map((note: any) => (
+            <PostCard
+              title={note.title}
+              href={`/notes/${note.slug.current}`}
+              date={new Date(note.date)}
+              description={note.description}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   <Footer slot="footer" />
 </BaseLayout>

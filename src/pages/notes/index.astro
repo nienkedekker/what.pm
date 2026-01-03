@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/header.astro';
-import Footer from '../../components/footer.astro';
-import PostCard from '../../components/post-card.astro';
-import { sanityClient } from 'sanity:client';
-import { notesQuery } from '../../sanity/queries';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import PostCard from "../../components/post-card.astro";
+import { sanityClient } from "sanity:client";
+import { notesQuery } from "../../sanity/queries";
 
 const notes = await sanityClient.fetch(notesQuery);
 ---
@@ -15,23 +15,28 @@ const notes = await sanityClient.fetch(notesQuery);
   <section>
     <h1 class="font-serif text-3xl font-bold mb-2">Notes</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-8 text-sm">
-      This is like, thoughts I had, and I'd post them on Twitter if Twitter was still Twitter, but it's not, so here we are.
+      This is like, thoughts I had, and I'd post them on Twitter if Twitter was
+      still Twitter, but it's not, so here we are.
     </p>
 
-    {notes.length > 0 ? (
-      <div>
-        {notes.map((note: any) => (
-          <PostCard
-            title={note.title}
-            href={`/notes/${note.slug.current}`}
-            date={new Date(note.date)}
-            description={note.description}
-          />
-        ))}
-      </div>
-    ) : (
-      <p class="text-gray-600 dark:text-gray-400">No notes yet. Check back soon!</p>
-    )}
+    {
+      notes.length > 0 ? (
+        <div>
+          {notes.map((note: any) => (
+            <PostCard
+              title={note.title}
+              href={`/notes/${note.slug.current}`}
+              date={new Date(note.date)}
+              description={note.description}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="text-gray-600 dark:text-gray-400">
+          No notes yet. Check back soon!
+        </p>
+      )
+    }
   </section>
 
   <Footer slot="footer" />

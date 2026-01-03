@@ -1,12 +1,36 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/header.astro';
-import Footer from '../../components/footer.astro';
-import PostCard from '../../components/post-card.astro';
-import { sanityClient } from 'sanity:client';
-import { tripsQuery } from '../../sanity/queries';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import PostCard from "../../components/post-card.astro";
+import { sanityClient } from "sanity:client";
+import { tripsQuery } from "../../sanity/queries";
 
 const trips = await sanityClient.fetch(tripsQuery);
+
+const sparkles = [
+  "✦",
+  "✧",
+  "★",
+  "☆",
+  "✶",
+  "✷",
+  "❋",
+  "✺",
+  "✹",
+  "✵",
+  "❂",
+  "✿",
+  "❀",
+  "✾",
+  "❁",
+  "⁂",
+  "※",
+  "⚝",
+  "✡",
+  "⛤",
+];
+const getSparkle = (index: number) => sparkles[index % sparkles.length];
 ---
 
 <BaseLayout title="Trips" description="Travel stories and adventures">
@@ -15,26 +39,70 @@ const trips = await sanityClient.fetch(tripsQuery);
   <section>
     <h1 class="font-serif text-3xl font-bold mb-2">Trips</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-8 text-sm">
-      Places I've been, places I'm planning to go.
+      Places I've been, places I'm going. {trips.length}
+      {trips.length === 1 ? "adventure" : "adventures"} logged.
     </p>
 
-    {trips.length > 0 ? (
-      <div>
-        {trips.map((trip: any) => (
-          <PostCard
-            title={trip.title}
-            href={`/trips/${trip.slug.current}`}
-            date={new Date(trip.date)}
-            description={trip.description}
-            location={trip.location}
-            monthOnly
-          />
-        ))}
-      </div>
-    ) : (
-      <p class="text-gray-600 dark:text-gray-400">No trips yet. Check back soon!</p>
-    )}
+    {
+      trips.length > 0 ? (
+        <div class="space-y-2">
+          {trips.map((trip: any, index: number) => (
+            <div class="group/trip relative">
+              <span
+                class="absolute -left-6 top-5 text-stone-400 dark:text-stone-500 opacity-60 group-hover/trip:opacity-100 transition-opacity text-sm"
+                aria-hidden="true"
+              >
+                {getSparkle(index)}
+              </span>
+              <PostCard
+                title={trip.title}
+                href={`/trips/${trip.slug.current}`}
+                date={new Date(trip.date)}
+                description={trip.description}
+                location={trip.location}
+                monthOnly
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="text-gray-600 dark:text-gray-400">
+          No trips yet. Check back soon!
+        </p>
+      )
+    }
   </section>
 
   <Footer slot="footer" />
 </BaseLayout>
+
+<style>
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.8);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  .animate-twinkle-delayed {
+    animation: twinkle 2s ease-in-out infinite 1s;
+  }
+</style>

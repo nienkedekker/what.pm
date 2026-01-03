@@ -1,39 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function HitCounter() {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
     // Check if we've already counted this session
-    const hasVisited = sessionStorage.getItem('counted');
+    const hasVisited = sessionStorage.getItem("counted");
 
     if (hasVisited) {
       // Just fetch the count without incrementing
-      fetch('/api/hit-counter')
-        .then(res => res.json())
-        .then(data => setCount(data.count))
+      fetch("/api/hit-counter")
+        .then((res) => res.json())
+        .then((data) => setCount(data.count))
         .catch(() => setCount(0));
     } else {
       // Increment and fetch
-      fetch('/api/hit-counter', { method: 'POST' })
-        .then(res => res.json())
-        .then(data => {
+      fetch("/api/hit-counter", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
           setCount(data.count);
-          sessionStorage.setItem('counted', 'true');
+          sessionStorage.setItem("counted", "true");
         })
         .catch(() => setCount(0));
     }
   }, []);
 
   if (count === null) {
-    return (
-      <div className="font-mono text-xs text-gray-500 dark:text-gray-400">
-        Loading...
-      </div>
-    );
+    return <div className="font-mono text-xs text-gray-500 dark:text-gray-400">Loading...</div>;
   }
 
-  const formattedCount = count.toString().padStart(6, '0');
+  const formattedCount = count.toString().padStart(6, "0");
 
   return (
     <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">

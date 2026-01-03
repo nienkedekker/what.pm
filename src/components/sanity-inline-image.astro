@@ -1,5 +1,5 @@
 ---
-import { urlFor } from '../sanity/image';
+import { urlFor } from "../sanity/image";
 
 interface Props {
   node: {
@@ -15,14 +15,16 @@ interface Props {
 const { node } = Astro.props;
 
 const imageUrl = node?.image?.asset
-  ? urlFor(node.image).auto('format').url()
+  ? urlFor(node.image).auto("format").url()
   : null;
 ---
 
-{imageUrl && (
-  <img
-    src={imageUrl}
-    alt={node.alt || ''}
-    class="inline-block align-middle not-prose"
-  />
-)}
+{
+  imageUrl && (
+    <img
+      src={imageUrl}
+      alt={node.alt || ""}
+      class="inline-block align-middle not-prose"
+    />
+  )
+}

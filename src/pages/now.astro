@@ -1,18 +1,18 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/header.astro';
-import Footer from '../components/footer.astro';
-import PortableTextRenderer from '../components/portable-text-renderer.astro';
-import { sanityClient } from 'sanity:client';
-import { pageBySlugQuery } from '../sanity/queries';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import PortableTextRenderer from "../components/portable-text-renderer.astro";
+import { sanityClient } from "sanity:client";
+import { pageBySlugQuery } from "../sanity/queries";
 
-const nowPage = await sanityClient.fetch(pageBySlugQuery, { slug: 'now' });
+const nowPage = await sanityClient.fetch(pageBySlugQuery, { slug: "now" });
 
 const formattedDate = nowPage?.lastUpdated
-  ? new Date(nowPage.lastUpdated).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+  ? new Date(nowPage.lastUpdated).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     })
   : null;
 ---
@@ -22,11 +22,13 @@ const formattedDate = nowPage?.lastUpdated
 
   <section>
     <h1 class="font-serif text-3xl font-bold mb-2">Now</h1>
-    {formattedDate && (
-      <p class="text-gray-600 dark:text-gray-400 mb-8">
-        Last updated: {formattedDate}
-      </p>
-    )}
+    {
+      formattedDate && (
+        <p class="text-gray-600 dark:text-gray-400 mb-8">
+          Last updated: {formattedDate}
+        </p>
+      )
+    }
 
     <div class="prose prose-gray dark:prose-invert max-w-none">
       {nowPage?.body && <PortableTextRenderer value={nowPage.body} />}

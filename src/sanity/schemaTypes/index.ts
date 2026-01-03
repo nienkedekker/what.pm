@@ -7,4 +7,13 @@ import { guestbookEntry } from "./guestbookEntry";
 import { siteStats } from "./siteStats";
 import { comment } from "./comment";
 
-export const schemaTypes = [note, trip, page, gallery, inlineImage, guestbookEntry, siteStats, comment];
+export const schemaTypes = [
+  note,
+  trip,
+  page,
+  gallery,
+  inlineImage,
+  guestbookEntry,
+  siteStats,
+  comment,
+];

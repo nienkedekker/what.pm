@@ -14,11 +14,11 @@ const reference = value?.reference;
 // Build URL based on document type
 function getUrl(type: string, slug: string): string {
   switch (type) {
-    case 'note':
+    case "note":
       return `/notes/${slug}`;
-    case 'trip':
+    case "trip":
       return `/trips/${slug}`;
-    case 'page':
+    case "page":
       // Pages are at root level (e.g., /colophon, /uses)
       return `/${slug}`;
     default:
@@ -26,12 +26,9 @@ function getUrl(type: string, slug: string): string {
   }
 }
 
-const href = reference ? getUrl(reference._type, reference.slug) : '#';
+const href = reference ? getUrl(reference._type, reference.slug) : "#";
 ---
 
-<a
-  href={href}
-  class="text-accent dark:text-accent-light hover:underline"
->
+<a href={href} class="text-accent dark:text-accent-light hover:underline">
   <slot />
 </a>

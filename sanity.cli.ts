@@ -1,12 +1,12 @@
-import { defineCliConfig } from 'sanity/cli';
+import { defineCliConfig } from "sanity/cli";
 
 export default defineCliConfig({
   api: {
-    projectId: 'vuh5pxn1',
-    dataset: 'production',
+    projectId: "vuh5pxn1",
+    dataset: "production",
   },
-  studioHost: 'nienke-dev',
+  studioHost: "nienke-dev",
   deployment: {
-    appId: 'poavmb9ute6w8a8z0mb319ee',
+    appId: "poavmb9ute6w8a8z0mb319ee",
   },
 });

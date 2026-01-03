@@ -1,29 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
-  darkMode: 'class',
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         accent: {
-          DEFAULT: '#c45d3a',
-          light: '#d4826a',
-          dark: '#a34829',
+          DEFAULT: "#c45d3a",
+          light: "#d4826a",
+          dark: "#a34829",
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['"Goudy Bookletter 1911"', 'Georgia', 'serif'],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ['"Goudy Bookletter 1911"', "Georgia", "serif"],
       },
       typography: {
         DEFAULT: {
           css: {
-            maxWidth: '65ch',
+            maxWidth: "65ch",
             a: {
-              color: '#c45d3a',
-              textDecoration: 'none',
-              '&:hover': {
-                textDecoration: 'underline',
+              color: "#c45d3a",
+              textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline",
               },
             },
             h1: { fontFamily: '"Goudy Bookletter 1911", Georgia, serif' },
@@ -34,14 +34,12 @@ export default {
         invert: {
           css: {
             a: {
-              color: '#d4826a',
+              color: "#d4826a",
             },
           },
         },
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };

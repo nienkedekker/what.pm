@@ -1,10 +1,10 @@
 ---
-import PostLayout from '../../layouts/PostLayout.astro';
-import PortableTextRenderer from '../../components/portable-text-renderer.astro';
-import CommentsSection from '../../components/comments-section';
-import { sanityClient } from 'sanity:client';
-import { tripsQuery, tripBySlugQuery } from '../../sanity/queries';
-import { urlFor } from '../../sanity/image';
+import PostLayout from "../../layouts/PostLayout.astro";
+import PortableTextRenderer from "../../components/portable-text-renderer.astro";
+import CommentsSection from "../../components/comments-section";
+import { sanityClient } from "sanity:client";
+import { tripsQuery, tripBySlugQuery } from "../../sanity/queries";
+import { urlFor } from "../../sanity/image";
 
 export async function getStaticPaths() {
   const trips = await sanityClient.fetch(tripsQuery);
@@ -17,11 +17,11 @@ const { slug } = Astro.params;
 const trip = await sanityClient.fetch(tripBySlugQuery, { slug });
 
 if (!trip) {
-  return Astro.redirect('/404');
+  return Astro.redirect("/404");
 }
 
 const coverImage = trip.cover?.asset
-  ? urlFor(trip.cover).width(1200).height(630).fit('crop').url()
+  ? urlFor(trip.cover).width(1200).height(630).fit("crop").url()
   : undefined;
 ---
 
@@ -34,9 +34,5 @@ const coverImage = trip.cover?.asset
   monthOnly
 >
   <PortableTextRenderer value={trip.body} />
-  <CommentsSection
-    client:load
-    parentType="trip"
-    parentSlug={slug!}
-  />
+  <CommentsSection client:load parentType="trip" parentSlug={slug!} />
 </PostLayout>

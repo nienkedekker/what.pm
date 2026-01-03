@@ -1,11 +1,6 @@
 import { useMemo } from "react";
 import DottedMapModule from "dotted-map";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // @ts-expect-error - CJS/ESM interop
 const DottedMap = DottedMapModule.default || DottedMapModule;
@@ -37,7 +32,7 @@ const previousTrips: string[] = [
   "Dublin, Ireland",
   "Glasgow, Scotland",
   "Palermo, Italy",
-  "Taghazout, Morocco"
+  "Taghazout, Morocco",
 ];
 
 // City coordinates (lat, lng)
@@ -133,7 +128,15 @@ function getCoords(location: string): { lat: number; lng: number } | null {
 export default function TripMap({ trips }: Props) {
   const now = new Date();
 
-  const { svgMap, tripsWithCoords, previousTripsWithCoords, mapDimensions, pastCount, futureCount, previousCount } = useMemo(() => {
+  const {
+    svgMap,
+    tripsWithCoords,
+    previousTripsWithCoords,
+    mapDimensions,
+    pastCount,
+    futureCount,
+    previousCount,
+  } = useMemo(() => {
     const map = new DottedMap({ height: 55, grid: "diagonal" });
 
     const tripsWithCoords = trips
@@ -189,7 +192,7 @@ export default function TripMap({ trips }: Props) {
           lng: trip.coords.lng,
           svgOptions: {
             color: "#71717a",
-            radius: 0.6
+            radius: 0.6,
           },
         });
       }
@@ -203,7 +206,7 @@ export default function TripMap({ trips }: Props) {
           lng: trip.coords.lng,
           svgOptions: {
             color: trip.isFuture ? "#0ea5e9" : "#d97706",
-            radius: 0.6
+            radius: 0.6,
           },
         });
       }
@@ -276,7 +279,10 @@ export default function TripMap({ trips }: Props) {
                 </a>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{trip.title} — {trip.location}{trip.isFuture ? " (upcoming)" : ""}</p>
+                <p>
+                  {trip.title}
+                  {trip.isFuture ? " (upcoming)" : ""}
+                </p>
               </TooltipContent>
             </Tooltip>
           ))}

@@ -1,6 +1,6 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
-import FlyingBirds from '../components/flying-birds.astro';
+import { ClientRouter } from "astro:transitions";
+import FlyingBirds from "../components/flying-birds.astro";
 
 interface Props {
   title?: string;
@@ -9,13 +9,17 @@ interface Props {
 }
 
 const {
-  title = 'Nienke Dekker',
-  description = 'Digital garden of Nienke Dekker - travels and notes',
+  title = "Nienke Dekker",
+  description = "Welcome to my crazy world",
   image,
 } = Astro.props;
 
-const siteTitle = title === 'Nienke Dekker' ? title : `${title} | Nienke Dekker`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.dev');
+const siteTitle =
+  title === "Nienke Dekker" ? title : `${title} | Nienke Dekker`;
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site || "https://nienke.dev"
+);
 ---
 
 <!doctype html>
@@ -28,8 +32,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.d
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed"
+      href="/rss.xml"
+    />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
@@ -40,21 +52,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.d
     {image && <meta property="og:image" content={image} />}
 
     <!-- Twitter -->
-    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta
+      name="twitter:card"
+      content={image ? "summary_large_image" : "summary"}
+    />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
     {image && <meta name="twitter:image" content={image} />}
 
     <title>{siteTitle}</title>
-    <ViewTransitions />
+    <ClientRouter />
     <script is:inline>
       function setTheme() {
-        const theme = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        const theme =
+          localStorage.getItem("theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        document.documentElement.classList.toggle("dark", theme === "dark");
       }
       setTheme();
-      document.addEventListener('astro:after-swap', setTheme);
+      document.addEventListener("astro:after-swap", setTheme);
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
@@ -70,5 +88,5 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nienke.d
 </html>
 
 <style is:global>
-  @import '../styles/global.css';
+  @import "../styles/global.css";
 </style>
