@@ -1,4 +1,14 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Goudy Bookletter 1911", Georgia, serif;
+
+  --color-accent: #c45d3a;
+  --color-accent-light: #d4826a;
+  --color-accent-dark: #a34829;
+}
 
 @layer base {
   html {
@@ -11,6 +21,31 @@
 
   ::selection {
     @apply bg-orange-200/60 dark:bg-orange-900/40;
+  }
+}
+
+@layer base {
+  .prose {
+    max-width: 65ch;
+  }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .prose a:hover {
+    text-decoration: underline;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    font-family: var(--font-serif);
+  }
+
+  .prose-invert a {
+    color: var(--color-accent-light);
   }
 }
 
