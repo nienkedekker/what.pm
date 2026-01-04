@@ -19,7 +19,6 @@
     "@sanity/code-input": "^7.0.3",
     "@sanity/image-url": "^2.0.2",
     "@sanity/vision": "^5.1.0",
-    "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
@@ -40,6 +39,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
     "autoprefixer": "^10.4.23",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
