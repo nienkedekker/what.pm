@@ -27,7 +27,7 @@ const images = (node?.images || [])
 
 {
   images.length > 0 && (
-    <figure class="bleed my-8">
+    <figure class="bleed not-prose my-8">
       <LightboxGallery client:load images={images} caption={node.caption} />
     </figure>
   )
