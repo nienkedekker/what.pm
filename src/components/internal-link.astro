@@ -1,15 +1,17 @@
 ---
-interface Props {
-  value: {
-    reference?: {
-      _type: string;
-      slug: string;
-    };
+import type { MarkProps } from "astro-portabletext/types";
+
+interface InternalLinkMarkDef {
+  reference?: {
+    _type: string;
+    slug: string;
   };
 }
 
-const { value } = Astro.props;
-const reference = value?.reference;
+type Props = MarkProps<InternalLinkMarkDef>;
+
+const { node } = Astro.props;
+const reference = node.markDef?.reference;
 
 // Build URL based on document type
 function getUrl(type: string, slug: string): string {
