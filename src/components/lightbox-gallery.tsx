@@ -15,17 +15,13 @@ interface Props {
 export default function LightboxGallery({ images, caption }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const columns = images.length === 1 ? 1 : images.length === 2 ? 2 : 3;
+  const columns = images.length === 1 ? 1 : 2;
 
   const gridClass =
-    columns === 1
-      ? "grid-cols-1"
-      : columns === 2
-        ? "grid-cols-1 sm:grid-cols-2"
-        : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+    columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2";
 
   return (
-    <>
+    <div className="relative">
       <div className={`grid gap-2 ${gridClass}`}>
         {images.map((image, index) => (
           <button
@@ -45,7 +41,7 @@ export default function LightboxGallery({ images, caption }: Props) {
       </div>
 
       {caption && (
-        <figcaption className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <figcaption className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4 relative">
           {caption}
         </figcaption>
       )}
@@ -57,6 +53,6 @@ export default function LightboxGallery({ images, caption }: Props) {
           onClose={() => setLightboxIndex(null)}
         />
       )}
-    </>
+    </div>
   );
 }
