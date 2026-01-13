@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
-import { DocumentTextIcon, LinkIcon } from "@sanity/icons";
+import { DocumentTextIcon } from "@sanity/icons";
+import { richTextBlock } from "./shared/richText";
 
 export const note = defineType({
   name: "note",
@@ -57,65 +58,10 @@ export const note = defineType({
       title: "Body",
       type: "array",
       of: [
-        {
-          type: "block",
-          styles: [
-            { title: "Normal", value: "normal" },
-            { title: "H2", value: "h2" },
-            { title: "H3", value: "h3" },
-            { title: "H4", value: "h4" },
-            { title: "Quote", value: "blockquote" },
-          ],
-          marks: {
-            decorators: [
-              { title: "Strong", value: "strong" },
-              { title: "Emphasis", value: "em" },
-              { title: "Code", value: "code" },
-            ],
-            annotations: [
-              {
-                name: "link",
-                type: "object",
-                title: "External Link",
-                fields: [
-                  {
-                    name: "href",
-                    type: "url",
-                    title: "URL",
-                    validation: (rule) =>
-                      rule.uri({
-                        scheme: ["http", "https", "mailto"],
-                      }),
-                  },
-                ],
-              },
-              {
-                name: "internalLink",
-                type: "object",
-                title: "Internal Link",
-                icon: LinkIcon,
-                fields: [
-                  {
-                    name: "reference",
-                    type: "reference",
-                    title: "Reference",
-                    to: [{ type: "page" }, { type: "note" }, { type: "trip" }],
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: "image",
-          options: { hotspot: true },
-        },
-        {
-          type: "gallery",
-        },
-        {
-          type: "code",
-        },
+        richTextBlock,
+        { type: "image", options: { hotspot: true } },
+        { type: "gallery" },
+        { type: "code" },
       ],
     }),
     defineField({
