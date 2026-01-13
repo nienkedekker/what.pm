@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { RetroForm, RetroInput, RetroTextarea, RetroButton, RetroLabel, RetroCharCount } from "./ui/retro-form";
+import {
+  RetroForm,
+  RetroInput,
+  RetroTextarea,
+  RetroButton,
+  RetroLabel,
+  RetroCharCount,
+} from "./ui/retro-form";
 
 interface CommentFormProps {
   parentType: "trip" | "note";
@@ -134,7 +141,9 @@ export default function CommentForm({
     <RetroForm onSubmit={handleSubmit} className="mb-24">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <RetroLabel htmlFor="comment-name" required>Name</RetroLabel>
+          <RetroLabel htmlFor="comment-name" required>
+            Name
+          </RetroLabel>
           <RetroInput
             type="text"
             id="comment-name"
@@ -147,7 +156,9 @@ export default function CommentForm({
           />
         </div>
         <div>
-          <RetroLabel htmlFor="comment-email" required hint="(secret!)">Email</RetroLabel>
+          <RetroLabel htmlFor="comment-email" required hint="(secret!)">
+            Email
+          </RetroLabel>
           <RetroInput
             type="email"
             id="comment-email"
@@ -161,7 +172,9 @@ export default function CommentForm({
       </div>
 
       <div>
-        <RetroLabel htmlFor="comment-website" optional>Website</RetroLabel>
+        <RetroLabel htmlFor="comment-website" optional>
+          Website
+        </RetroLabel>
         <RetroInput
           type="url"
           id="comment-website"

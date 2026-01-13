@@ -18,4 +18,6 @@ function getUrl(type: string, slug: string): string {
 const href = reference ? getUrl(reference._type, reference.slug) : "#";
 ---
 
-<a href={href} class="text-accent dark:text-accent-light hover:underline"><slot /></a>
+<a href={href} class="text-accent dark:text-accent-light hover:underline"
+  ><slot /></a
+>

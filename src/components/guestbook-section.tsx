@@ -51,7 +51,9 @@ export default function GuestbookSection() {
 
       <div className="mt-12">
         <h2 className="font-serif text-xl font-semibold mb-6">
-          {loading ? "Loading..." : `${entries.length} ${entries.length === 1 ? "message" : "messages"}`}
+          {loading
+            ? "Loading..."
+            : `${entries.length} ${entries.length === 1 ? "message" : "messages"}`}
         </h2>
 
         {loading ? (
@@ -89,9 +91,7 @@ export default function GuestbookSection() {
             ))}
           </div>
         ) : (
-          <p className="text-gray-600 dark:text-gray-400">
-            No messages yet. Be the first to sign!
-          </p>
+          <p className="text-gray-600 dark:text-gray-400">No messages yet. Be the first to sign!</p>
         )}
       </div>
     </>

@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { RetroForm, RetroInput, RetroTextarea, RetroButton, RetroLabel, RetroCharCount } from "./ui/retro-form";
+import {
+  RetroForm,
+  RetroInput,
+  RetroTextarea,
+  RetroButton,
+  RetroLabel,
+  RetroCharCount,
+} from "./ui/retro-form";
 
 interface GuestbookFormProps {
   onSuccess?: () => void;
@@ -46,7 +53,9 @@ export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
     <RetroForm onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <RetroLabel htmlFor="name" required>Name</RetroLabel>
+          <RetroLabel htmlFor="name" required>
+            Name
+          </RetroLabel>
           <RetroInput
             type="text"
             id="name"
@@ -59,7 +68,9 @@ export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
           />
         </div>
         <div>
-          <RetroLabel htmlFor="website" optional>Website</RetroLabel>
+          <RetroLabel htmlFor="website" optional>
+            Website
+          </RetroLabel>
           <RetroInput
             type="url"
             id="website"
@@ -72,7 +83,9 @@ export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
       </div>
 
       <div>
-        <RetroLabel htmlFor="message" required>Message</RetroLabel>
+        <RetroLabel htmlFor="message" required>
+          Message
+        </RetroLabel>
         <RetroTextarea
           id="message"
           value={message}
@@ -87,7 +100,9 @@ export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
       </div>
 
       {status === "error" && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
-      {status === "success" && <p className="text-green-700 text-sm font-bold">Thanks for signing!</p>}
+      {status === "success" && (
+        <p className="text-green-700 text-sm font-bold">Thanks for signing!</p>
+      )}
 
       {/* Honeypot field - hidden from humans, bots will fill it */}
       <div aria-hidden="true" className="absolute left-[-9999px]">

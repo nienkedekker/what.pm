@@ -1,4 +1,11 @@
-import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes, type ButtonHTMLAttributes, type FormHTMLAttributes, type ReactNode } from "react";
+import {
+  forwardRef,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+  type ButtonHTMLAttributes,
+  type FormHTMLAttributes,
+  type ReactNode,
+} from "react";
 
 // Shared styles
 const inputStyles =
@@ -15,13 +22,7 @@ interface RetroInputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export const RetroInput = forwardRef<HTMLInputElement, RetroInputProps>(
   ({ className = "", ...props }, ref) => {
-    return (
-      <input
-        ref={ref}
-        className={`${inputStyles} ${className}`}
-        {...props}
-      />
-    );
+    return <input ref={ref} className={`${inputStyles} ${className}`} {...props} />;
   }
 );
 RetroInput.displayName = "RetroInput";
@@ -31,13 +32,7 @@ interface RetroTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>
 
 export const RetroTextarea = forwardRef<HTMLTextAreaElement, RetroTextareaProps>(
   ({ className = "", ...props }, ref) => {
-    return (
-      <textarea
-        ref={ref}
-        className={`${inputStyles} resize-none ${className}`}
-        {...props}
-      />
-    );
+    return <textarea ref={ref} className={`${inputStyles} resize-none ${className}`} {...props} />;
   }
 );
 RetroTextarea.displayName = "RetroTextarea";
@@ -47,13 +42,7 @@ interface RetroButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 export const RetroButton = forwardRef<HTMLButtonElement, RetroButtonProps>(
   ({ className = "", ...props }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={`${buttonStyles} ${className}`}
-        {...props}
-      />
-    );
+    return <button ref={ref} className={`${buttonStyles} ${className}`} {...props} />;
   }
 );
 RetroButton.displayName = "RetroButton";
@@ -63,13 +52,7 @@ interface RetroFormProps extends FormHTMLAttributes<HTMLFormElement> {}
 
 export const RetroForm = forwardRef<HTMLFormElement, RetroFormProps>(
   ({ className = "", ...props }, ref) => {
-    return (
-      <form
-        ref={ref}
-        className={`${formStyles} ${className}`}
-        {...props}
-      />
-    );
+    return <form ref={ref} className={`${formStyles} ${className}`} {...props} />;
   }
 );
 RetroForm.displayName = "RetroForm";
@@ -88,7 +71,9 @@ export function RetroLabel({ htmlFor, required, optional, hint, children }: Retr
     <label htmlFor={htmlFor} className="block text-sm font-bold mb-1 text-black dark:text-gray-100">
       {children}
       {required && <span className="text-red-600"> *</span>}
-      {optional && <span className="text-gray-500 dark:text-gray-400 font-normal"> (optional)</span>}
+      {optional && (
+        <span className="text-gray-500 dark:text-gray-400 font-normal"> (optional)</span>
+      )}
       {hint && <span className="text-gray-500 dark:text-gray-400 font-normal"> {hint}</span>}
     </label>
   );
