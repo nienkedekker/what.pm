@@ -34,5 +34,5 @@ const coverImage = trip.cover?.asset
   monthOnly
 >
   <PortableTextRenderer value={trip.body} />
-  <CommentsSection client:load parentType="trip" parentSlug={slug!} />
+  <CommentsSection client:only="react" parentType="trip" parentSlug={slug!} />
 </PostLayout>
