@@ -5,10 +5,11 @@ import CommentsSection from "../../components/comments-section";
 import { sanityClient } from "sanity:client";
 import { tripsQuery, tripBySlugQuery } from "../../sanity/queries";
 import { urlFor } from "../../sanity/image";
+import type { Trip } from "../../types/sanity";
 
 export async function getStaticPaths() {
-  const trips = await sanityClient.fetch(tripsQuery);
-  return trips.map((trip: any) => ({
+  const trips: Trip[] = await sanityClient.fetch(tripsQuery);
+  return trips.map((trip) => ({
     params: { slug: trip.slug.current },
   }));
 }

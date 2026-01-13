@@ -5,10 +5,11 @@ import CommentsSection from "../../components/comments-section";
 import { sanityClient } from "sanity:client";
 import { notesQuery, noteBySlugQuery } from "../../sanity/queries";
 import { urlFor } from "../../sanity/image";
+import type { Note } from "../../types/sanity";
 
 export async function getStaticPaths() {
-  const notes = await sanityClient.fetch(notesQuery);
-  return notes.map((note: any) => ({
+  const notes: Note[] = await sanityClient.fetch(notesQuery);
+  return notes.map((note) => ({
     params: { slug: note.slug.current },
   }));
 }

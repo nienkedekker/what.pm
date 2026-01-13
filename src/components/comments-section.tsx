@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CommentForm from "./comment-form";
 import { getRandomSparkle } from "../utils/sparkles";
 
@@ -33,7 +33,7 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
       ?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/comments?parentType=${encodeURIComponent(parentType)}&parentSlug=${encodeURIComponent(parentSlug)}`
@@ -45,11 +45,11 @@ export default function CommentsSection({ parentType, parentSlug }: CommentsSect
     } finally {
       setLoading(false);
     }
-  };
+  }, [parentType, parentSlug]);
 
   useEffect(() => {
     void fetchComments();
-  }, [parentType, parentSlug]);
+  }, [fetchComments]);
 
   useEffect(() => {
     const owned = new Set<string>();

@@ -6,8 +6,9 @@ import PostCard from "../../components/post-card.astro";
 import { sanityClient } from "sanity:client";
 import { tripsQuery } from "../../sanity/queries";
 import { getSparkle } from "../../utils/sparkles";
+import type { Trip } from "../../types/sanity";
 
-const trips = await sanityClient.fetch(tripsQuery);
+const trips: Trip[] = await sanityClient.fetch(tripsQuery);
 ---
 
 <BaseLayout title="Trips" description="Travel stories and adventures">
@@ -22,7 +23,7 @@ const trips = await sanityClient.fetch(tripsQuery);
     {
       trips.length > 0 ? (
         <ul class="list-none space-y-2">
-          {trips.map((trip: any, index: number) => (
+          {trips.map((trip, index) => (
             <li
               class="trip-item group/trip"
               style={`--sparkle: "${getSparkle(index)}"`}

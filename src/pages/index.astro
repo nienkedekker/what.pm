@@ -8,6 +8,7 @@ import { PortableText } from "astro-portabletext";
 import ArrowRightBold from "phosphor-astro/ArrowRightBold.astro";
 import { sanityClient } from "sanity:client";
 import { tripsQuery, notesQuery, pageBySlugQuery } from "../sanity/queries";
+import type { Trip, Note } from "../types/sanity";
 
 const homePage = await sanityClient.fetch(pageBySlugQuery, { slug: "home" });
 const trips = await sanityClient.fetch(tripsQuery);
@@ -59,7 +60,7 @@ const recentNotes = notes.slice(0, 3);
           </a>
         </div>
         <div>
-          {recentTrips.map((trip: any) => (
+          {recentTrips.map((trip: Trip) => (
             <PostCard
               title={trip.title}
               href={`/trips/${trip.slug.current}`}
@@ -87,7 +88,7 @@ const recentNotes = notes.slice(0, 3);
           </a>
         </div>
         <div>
-          {recentNotes.map((note: any) => (
+          {recentNotes.map((note: Note) => (
             <PostCard
               title={note.title}
               href={`/notes/${note.slug.current}`}

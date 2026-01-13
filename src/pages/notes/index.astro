@@ -6,8 +6,9 @@ import PostCard from "../../components/post-card.astro";
 import { sanityClient } from "sanity:client";
 import { notesQuery } from "../../sanity/queries";
 import { getSparkle } from "../../utils/sparkles";
+import type { Note } from "../../types/sanity";
 
-const notes = await sanityClient.fetch(notesQuery);
+const notes: Note[] = await sanityClient.fetch(notesQuery);
 ---
 
 <BaseLayout title="Notes" description="Thoughts, ideas, and observations">
@@ -23,7 +24,7 @@ const notes = await sanityClient.fetch(notesQuery);
     {
       notes.length > 0 ? (
         <ul class="list-none space-y-2">
-          {notes.map((note: any, index: number) => (
+          {notes.map((note, index) => (
             <li
               class="note-item group/note"
               style={`--sparkle: "${getSparkle(index)}"`}

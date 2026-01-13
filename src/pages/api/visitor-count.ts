@@ -18,9 +18,10 @@ export const POST: APIRoute = async () => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If document doesn't exist, create it
-    if (error.statusCode === 404) {
+    const sanityError = error as { statusCode?: number };
+    if (sanityError.statusCode === 404) {
       const doc = await writeClient.create({
         _id: STATS_ID,
         _type: "siteStats",

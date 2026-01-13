@@ -125,9 +125,23 @@ function getCoords(location: string): { lat: number; lng: number } | null {
   return null;
 }
 
-export default function TripMap({ trips }: Props) {
-  const now = new Date();
+interface TripWithCoords {
+  title: string;
+  slug: { current: string };
+  location: string;
+  date: string;
+  coords: { lat: number; lng: number } | null;
+  isFuture: boolean;
+  point: { x: number; y: number };
+}
 
+interface PreviousTripWithCoords {
+  location: string;
+  coords: { lat: number; lng: number } | null;
+  point: { x: number; y: number };
+}
+
+export default function TripMap({ trips }: Props) {
   const {
     svgMap,
     tripsWithCoords,
@@ -137,6 +151,7 @@ export default function TripMap({ trips }: Props) {
     futureCount,
     previousCount,
   } = useMemo(() => {
+    const now = new Date();
     const map = new DottedMap({ height: 55, grid: "diagonal" });
 
     const tripsWithCoords = trips
@@ -240,7 +255,7 @@ export default function TripMap({ trips }: Props) {
 
         {/* Previous trips tooltip overlay (rendered first so clickable trips are on top) */}
         <div className="absolute inset-0">
-          {previousTripsWithCoords.map((trip: any) => (
+          {previousTripsWithCoords.map((trip: PreviousTripWithCoords) => (
             <Tooltip key={trip.location}>
               <TooltipTrigger asChild>
                 <div
@@ -260,7 +275,7 @@ export default function TripMap({ trips }: Props) {
 
         {/* Clickable overlay markers */}
         <div className="absolute inset-0 pointer-events-none">
-          {tripsWithCoords.map((trip: any) => (
+          {tripsWithCoords.map((trip: TripWithCoords) => (
             <Tooltip key={trip.slug.current}>
               <TooltipTrigger asChild>
                 <a

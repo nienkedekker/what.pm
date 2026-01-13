@@ -2,19 +2,20 @@ import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { sanityClient } from "sanity:client";
 import { tripsQuery, notesQuery } from "../sanity/queries";
+import type { Trip, Note } from "../types/sanity";
 
 export async function GET(context: APIContext) {
-  const trips = await sanityClient.fetch(tripsQuery);
-  const notes = await sanityClient.fetch(notesQuery);
+  const trips: Trip[] = await sanityClient.fetch(tripsQuery);
+  const notes: Note[] = await sanityClient.fetch(notesQuery);
 
   const allPosts = [
-    ...trips.map((trip: any) => ({
+    ...trips.map((trip) => ({
       title: trip.title,
       pubDate: new Date(trip.date),
       description: trip.description || `Trip to ${trip.location}`,
       link: `/trips/${trip.slug.current}`,
     })),
-    ...notes.map((note: any) => ({
+    ...notes.map((note) => ({
       title: note.title,
       pubDate: new Date(note.date),
       description: note.description || "",

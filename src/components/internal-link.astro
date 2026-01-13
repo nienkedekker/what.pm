@@ -1,5 +1,16 @@
 ---
-const props = Astro.props as any;
+interface InternalLinkProps {
+  node?: {
+    markDef?: {
+      reference?: {
+        _type: string;
+        slug: string;
+      };
+    };
+  };
+}
+
+const props = Astro.props as InternalLinkProps;
 const reference = props.node?.markDef?.reference;
 
 function getUrl(type: string, slug: string): string {
