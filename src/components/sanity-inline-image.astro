@@ -1,0 +1,30 @@
+---
+import { urlFor } from "../sanity/image";
+
+interface Props {
+  node: {
+    image?: {
+      asset?: {
+        _ref: string;
+      };
+    };
+    alt?: string;
+  };
+}
+
+const { node } = Astro.props;
+
+const imageUrl = node?.image?.asset
+  ? urlFor(node.image).auto("format").url()
+  : null;
+---
+
+{
+  imageUrl && (
+    <img
+      src={imageUrl}
+      alt={node.alt || ""}
+      class="inline-block align-middle not-prose"
+    />
+  )
+}

@@ -1,0 +1,34 @@
+---
+interface Props {
+  value: {
+    reference?: {
+      _type: string;
+      slug: string;
+    };
+  };
+}
+
+const { value } = Astro.props;
+const reference = value?.reference;
+
+// Build URL based on document type
+function getUrl(type: string, slug: string): string {
+  switch (type) {
+    case "note":
+      return `/notes/${slug}`;
+    case "trip":
+      return `/trips/${slug}`;
+    case "page":
+      // Pages are at root level (e.g., /colophon, /uses)
+      return `/${slug}`;
+    default:
+      return `/${slug}`;
+  }
+}
+
+const href = reference ? getUrl(reference._type, reference.slug) : "#";
+---
+
+<a href={href} class="text-accent dark:text-accent-light hover:underline">
+  <slot />
+</a>

@@ -1,0 +1,33 @@
+---
+import { urlFor } from "../sanity/image";
+import LightboxImage from "./lightbox-image";
+
+interface Props {
+  node: {
+    asset?: {
+      _ref: string;
+    };
+    alt?: string;
+  };
+}
+
+const { node } = Astro.props;
+
+const imageUrl = node?.asset
+  ? urlFor(node).width(1400).quality(90).auto("format").url()
+  : null;
+const fullSizeUrl = node?.asset ? urlFor(node).quality(100).url() : null;
+---
+
+{
+  imageUrl && fullSizeUrl && (
+    <figure class="bleed my-8">
+      <LightboxImage
+        client:load
+        thumbnailUrl={imageUrl}
+        fullUrl={fullSizeUrl}
+        alt={node.alt || ""}
+      />
+    </figure>
+  )
+}

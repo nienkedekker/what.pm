@@ -1,0 +1,36 @@
+---
+import PostLayout from "../../layouts/PostLayout.astro";
+import PortableTextRenderer from "../../components/portable-text-renderer.astro";
+import CommentsSection from "../../components/comments-section";
+import { sanityClient } from "sanity:client";
+import { notesQuery, noteBySlugQuery } from "../../sanity/queries";
+import { urlFor } from "../../sanity/image";
+
+export async function getStaticPaths() {
+  const notes = await sanityClient.fetch(notesQuery);
+  return notes.map((note: any) => ({
+    params: { slug: note.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+const note = await sanityClient.fetch(noteBySlugQuery, { slug });
+
+if (!note) {
+  return Astro.redirect("/404");
+}
+
+const coverImage = note.cover?.asset
+  ? urlFor(note.cover).width(1200).height(630).fit("crop").url()
+  : undefined;
+---
+
+<PostLayout
+  title={note.title}
+  description={note.description}
+  date={new Date(note.date)}
+  image={coverImage}
+>
+  <PortableTextRenderer value={note.body} />
+  <CommentsSection client:load parentType="note" parentSlug={slug!} />
+</PostLayout>

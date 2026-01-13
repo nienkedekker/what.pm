@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import GuestbookForm from "../components/guestbook-form";
+import { sanityClient } from "sanity:client";
+import { guestbookEntriesQuery } from "../sanity/queries";
+
+const entries = await sanityClient.fetch(guestbookEntriesQuery);
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return (
+    date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }) +
+    " at " +
+    date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    })
+  );
+}
+---
+
+<BaseLayout title="Guestbook" description="Sign my guestbook!">
+  <Header slot="header" />
+
+  <section>
+    <h1 class="font-serif text-3xl font-bold mb-2">Guestbook</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      Leave a message! Don't be weird please.
+    </p>
+
+    <GuestbookForm client:load />
+
+    <div class="mt-12">
+      <h2 class="font-serif text-xl font-semibold mb-6">
+        {entries.length}
+        {entries.length === 1 ? "message" : "messages"}
+      </h2>
+
+      {
+        entries.length > 0 ? (
+          <div class="space-y-6">
+            {entries.map((entry: any) => (
+              <article class="border-b border-gray-100 dark:border-neutral-800 pb-6 last:border-0">
+                <div class="flex items-baseline gap-2 mb-2">
+                  <span class="font-medium">
+                    {entry.website ? (
+                      <a
+                        href={entry.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-accent dark:hover:text-accent-light transition-colors"
+                      >
+                        {entry.name}
+                      </a>
+                    ) : (
+                      entry.name
+                    )}
+                  </span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">
+                    {formatDate(entry.createdAt)}
+                  </span>
+                </div>
+                <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                  {entry.message}
+                </p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="text-gray-600 dark:text-gray-400">
+            No messages yet. Be the first to sign!
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>

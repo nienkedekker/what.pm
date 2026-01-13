@@ -1,0 +1,82 @@
+---
+import EnvelopeDuotone from "phosphor-astro/EnvelopeDuotone.astro";
+import GithubLogoDuotone from "phosphor-astro/GithubLogoDuotone.astro";
+import LinkedinLogoDuotone from "phosphor-astro/LinkedinLogoDuotone.astro";
+import RssDuotone from "phosphor-astro/RssDuotone.astro";
+import NowPlaying from "./now-playing";
+import HitCounter from "./hit-counter";
+
+const links = [
+  {
+    href: "mailto:nienkedekker@gmail.com",
+    label: "Email",
+    Icon: EnvelopeDuotone,
+  },
+  {
+    href: "https://github.com/nienkedekker",
+    label: "GitHub",
+    Icon: GithubLogoDuotone,
+  },
+  {
+    href: "https://www.linkedin.com/in/nienke-dekker-15348ab1/",
+    label: "LinkedIn",
+    Icon: LinkedinLogoDuotone,
+  },
+  { href: "/rss.xml", label: "RSS", Icon: RssDuotone },
+];
+---
+
+<footer
+  class="mt-16 pt-8 border-t border-dashed border-gray-200 dark:border-neutral-700"
+>
+  <div class="flex flex-col gap-4">
+    <NowPlaying client:only="react" />
+    <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+      {
+        links.map(({ href, label, Icon }) => (
+          <a
+            href={href}
+            class="flex items-center gap-1.5 hover:text-accent dark:hover:text-accent-light transition-colors"
+            target={
+              href.startsWith("http") || href.startsWith("mailto")
+                ? "_blank"
+                : undefined
+            }
+            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+          >
+            <Icon class="size-4" />
+            {label}
+          </a>
+        ))
+      }
+    </div>
+    <div class="flex flex-wrap items-center gap-2 pt-2">
+      <img src="/buttons/poweredbymac.gif" alt="Powered by Mac" />
+      <img src="/buttons/cookiefree.gif" alt="Cookie free" />
+      <button
+        id="bookmark-btn"
+        class="cursor-pointer"
+        title="Bookmark this page"
+      >
+        <img src="/buttons/bookmark.gif" alt="Bookmark this page" />
+      </button>
+      <img src="/buttons/3computer.jpg" alt="Computer" />
+    </div>
+    <HitCounter client:load />
+  </div>
+</footer>
+
+<script>
+  function setupBookmarkButton() {
+    document.getElementById("bookmark-btn")?.addEventListener("click", () => {
+      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+      const shortcut = isMac ? "⌘+D" : "Ctrl+D";
+      alert(
+        `RIP window.external.AddFavorite :( Press ${shortcut} to bookmark this page!`
+      );
+    });
+  }
+
+  setupBookmarkButton();
+  document.addEventListener("astro:after-swap", setupBookmarkButton);
+</script>
