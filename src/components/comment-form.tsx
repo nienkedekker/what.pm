@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { RetroForm, RetroInput, RetroTextarea, RetroButton, RetroLabel, RetroCharCount } from "./ui/retro-form";
 
 interface CommentFormProps {
   parentType: "trip" | "note";
@@ -41,7 +42,6 @@ export default function CommentForm({
       setWebsite(editingComment.website || "");
       setMessage(editingComment.message);
     } else {
-      // Load from localStorage for new comments
       const savedName = localStorage.getItem("comment_name");
       const savedEmail = localStorage.getItem("comment_email");
       const savedWebsite = localStorage.getItem("comment_website");
@@ -130,20 +130,12 @@ export default function CommentForm({
     }
   };
 
-  const inputClass =
-    "w-full px-2 py-1 font-mono text-sm bg-white dark:bg-neutral-800 text-black dark:text-gray-100 border-2 border-t-gray-600 border-l-gray-600 border-b-white border-r-white dark:border-t-neutral-950 dark:border-l-neutral-950 dark:border-b-neutral-600 dark:border-r-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-400";
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 p-4 bg-[#c0c0c0] dark:bg-neutral-700 border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 dark:border-t-neutral-600 dark:border-l-neutral-600 dark:border-b-neutral-900 dark:border-r-neutral-900 mb-24"
-    >
+    <RetroForm onSubmit={handleSubmit} className="mb-24">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="comment-name" className="block text-sm font-bold mb-1 text-black dark:text-gray-100">
-            Name <span className="text-red-600">*</span>
-          </label>
-          <input
+          <RetroLabel htmlFor="comment-name" required>Name</RetroLabel>
+          <RetroInput
             type="text"
             id="comment-name"
             value={name}
@@ -151,47 +143,40 @@ export default function CommentForm({
             required
             maxLength={100}
             placeholder="Your name"
-            className={inputClass}
             disabled={status === "submitting"}
           />
         </div>
         <div>
-          <label htmlFor="comment-email" className="block text-sm font-bold mb-1 text-black dark:text-gray-100">
-            Email <span className="text-red-600">*</span>
-            <span className="text-gray-500 dark:text-gray-400 font-normal"> (secret!)</span>
-          </label>
-          <input
+          <RetroLabel htmlFor="comment-email" required hint="(secret!)">Email</RetroLabel>
+          <RetroInput
             type="email"
             id="comment-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="you@example.com"
-            className={inputClass}
             disabled={status === "submitting"}
           />
         </div>
       </div>
+
       <div>
-        <label htmlFor="comment-website" className="block text-sm font-bold mb-1 text-black dark:text-gray-100">
-          Website <span className="text-gray-500 dark:text-gray-400 font-normal">(optional)</span>
-        </label>
-        <input
+        <RetroLabel htmlFor="comment-website" optional>Website</RetroLabel>
+        <RetroInput
           type="url"
           id="comment-website"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
           placeholder="https://yoursite.com"
-          className={inputClass}
           disabled={status === "submitting"}
         />
       </div>
 
       <div>
-        <label htmlFor="comment-message" className="block text-sm font-bold mb-1 text-black dark:text-gray-100">
-          {isEditing ? "Edit your comment" : "Comment"} <span className="text-red-600">*</span>
-        </label>
-        <textarea
+        <RetroLabel htmlFor="comment-message" required>
+          {isEditing ? "Edit your comment" : "Comment"}
+        </RetroLabel>
+        <RetroTextarea
           id="comment-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -199,14 +184,12 @@ export default function CommentForm({
           maxLength={1000}
           rows={4}
           placeholder="Leave a comment..."
-          className={inputClass + " resize-none"}
           disabled={status === "submitting"}
         />
-        <p className="text-xs text-gray-700 dark:text-gray-300 mt-1 font-mono">{message.length}/1000</p>
+        <RetroCharCount current={message.length} max={1000} />
       </div>
 
       {status === "error" && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
-
       {status === "success" && (
         <p className="text-green-700 text-sm font-bold">
           {isEditing ? "Updated!" : "Posted!"} ✓{" "}
@@ -231,11 +214,7 @@ export default function CommentForm({
       )}
 
       <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={status === "submitting"}
-          className="px-4 py-1.5 bg-[#c0c0c0] dark:bg-neutral-600 text-black dark:text-gray-100 font-bold border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 dark:border-t-neutral-500 dark:border-l-neutral-500 dark:border-b-neutral-800 dark:border-r-neutral-800 hover:bg-[#d0d0d0] dark:hover:bg-neutral-500 active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white dark:active:border-t-neutral-800 dark:active:border-l-neutral-800 dark:active:border-b-neutral-500 dark:active:border-r-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <RetroButton type="submit" disabled={status === "submitting"}>
           {status === "submitting"
             ? isEditing
               ? "Saving..."
@@ -243,19 +222,14 @@ export default function CommentForm({
             : isEditing
               ? "Save"
               : "Post Comment"}
-        </button>
+        </RetroButton>
 
         {isEditing && onCancelEdit && (
-          <button
-            type="button"
-            onClick={onCancelEdit}
-            disabled={status === "submitting"}
-            className="px-4 py-1.5 bg-[#c0c0c0] dark:bg-neutral-600 text-black dark:text-gray-100 font-bold border-2 border-t-white border-l-white border-b-gray-600 border-r-gray-600 dark:border-t-neutral-500 dark:border-l-neutral-500 dark:border-b-neutral-800 dark:border-r-neutral-800 hover:bg-[#d0d0d0] dark:hover:bg-neutral-500 active:border-t-gray-600 active:border-l-gray-600 active:border-b-white active:border-r-white dark:active:border-t-neutral-800 dark:active:border-l-neutral-800 dark:active:border-b-neutral-500 dark:active:border-r-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <RetroButton type="button" onClick={onCancelEdit} disabled={status === "submitting"}>
             Cancel
-          </button>
+          </RetroButton>
         )}
       </div>
-    </form>
+    </RetroForm>
   );
 }
