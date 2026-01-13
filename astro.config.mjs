@@ -17,6 +17,7 @@ export default defineConfig({
       projectId: "vuh5pxn1",
       dataset: "production",
       useCdn: false,
+      studioBasePath: "/studio",
     }),
     react(),
   ],
