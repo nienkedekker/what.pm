@@ -13,7 +13,7 @@ export default function LightboxImage({ thumbnailUrl, fullUrl, alt }: Props) {
   return (
     <>
       <button type="button" onClick={() => setIsOpen(true)} className="block w-full cursor-zoom-in">
-        <img src={thumbnailUrl} alt={alt} className="rounded-lg w-full" loading="lazy" />
+        <img src={thumbnailUrl} alt={alt} className="sm:rounded-lg w-full" loading="lazy" />
       </button>
 
       {isOpen && <Lightbox images={[{ src: fullUrl, alt }]} onClose={() => setIsOpen(false)} />}

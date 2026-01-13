@@ -204,9 +204,8 @@ export default function CommentForm({
 
       {status === "error" && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
       {status === "success" && (
-        <p className="text-green-700 text-sm font-bold">
-          {isEditing ? "Updated!" : "Posted!"} ✓{" "}
-          <span className="font-normal text-gray-600">showing in a sec...</span>
+        <p className="text-sm text-stone-700 dark:text-stone-300">
+          Done! Showing in a sec...
         </p>
       )}
 

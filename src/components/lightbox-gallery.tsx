@@ -37,7 +37,7 @@ export default function LightboxGallery({ images, caption }: Props) {
             <img
               src={image.thumbnailUrl}
               alt={image.alt}
-              className="rounded-lg w-full h-full object-cover"
+              className="sm:rounded-lg w-full h-full object-cover"
               loading="lazy"
             />
           </button>

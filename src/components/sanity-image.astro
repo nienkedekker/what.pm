@@ -21,7 +21,7 @@ const fullSizeUrl = node?.asset ? urlFor(node).quality(100).url() : null;
 
 {
   imageUrl && fullSizeUrl && (
-    <figure class="bleed my-8">
+    <figure class="bleed not-prose my-4">
       <LightboxImage
         client:load
         thumbnailUrl={imageUrl}
