@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-export default function GuestbookForm() {
+interface GuestbookFormProps {
+  onSuccess?: () => void;
+}
+
+export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
   const [name, setName] = useState("");
   const [website, setWebsite] = useState("");
   const [message, setMessage] = useState("");
@@ -30,10 +34,8 @@ export default function GuestbookForm() {
       setWebsite("");
       setMessage("");
 
-      // Reload page after short delay to show new entry
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      // Notify parent to refresh entries
+      onSuccess?.();
     } catch (err) {
       setStatus("error");
       setErrorMessage(err instanceof Error ? err.message : "Something went wrong");
@@ -101,7 +103,7 @@ export default function GuestbookForm() {
       {status === "error" && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
 
       {status === "success" && (
-        <p className="text-green-700 text-sm font-bold">Thanks for signing! Reloading...</p>
+        <p className="text-green-700 text-sm font-bold">Thanks for signing!</p>
       )}
 
       {/* Honeypot field - hidden from humans, bots will fill it */}

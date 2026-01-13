@@ -1,5 +1,5 @@
 import { defineType, defineField } from "sanity";
-import { DocumentTextIcon } from "@sanity/icons";
+import { DocumentTextIcon, LinkIcon } from "@sanity/icons";
 
 export const note = defineType({
   name: "note",
@@ -93,6 +93,7 @@ export const note = defineType({
                 name: "internalLink",
                 type: "object",
                 title: "Internal Link",
+                icon: LinkIcon,
                 fields: [
                   {
                     name: "reference",

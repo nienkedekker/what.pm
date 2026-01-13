@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { writeClient } from "../../sanity/writeClient";
+import { writeClient } from "@/sanity/writeClient.ts";
 import { nanoid } from "nanoid";
 
 export const prerender = false;
@@ -155,7 +155,6 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
-// UPDATE comment
 export const PUT: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
@@ -234,7 +233,6 @@ export const PUT: APIRoute = async ({ request }) => {
       });
     }
 
-    // Update the comment
     await writeClient
       .patch(id)
       .set({
@@ -259,7 +257,6 @@ export const PUT: APIRoute = async ({ request }) => {
   }
 };
 
-// DELETE comment
 export const DELETE: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
@@ -292,7 +289,6 @@ export const DELETE: APIRoute = async ({ request }) => {
       });
     }
 
-    // Delete the comment
     await writeClient.delete(id);
 
     return new Response(JSON.stringify({ success: true }), {

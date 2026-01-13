@@ -1,5 +1,5 @@
 import { defineType, defineField } from "sanity";
-import { DocumentIcon } from "@sanity/icons";
+import { DocumentIcon, LinkIcon } from "@sanity/icons";
 
 export const page = defineType({
   name: "page",
@@ -75,6 +75,7 @@ export const page = defineType({
                 name: "internalLink",
                 type: "object",
                 title: "Internal Link",
+                icon: LinkIcon,
                 fields: [
                   {
                     name: "reference",

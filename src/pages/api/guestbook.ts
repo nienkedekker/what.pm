@@ -1,7 +1,32 @@
 import type { APIRoute } from "astro";
-import { writeClient } from "../../sanity/writeClient";
+import { writeClient } from "@/sanity/writeClient.ts";
 
 export const prerender = false;
+
+export const GET: APIRoute = async () => {
+  try {
+    const entries = await writeClient.fetch(
+      `*[_type == "guestbookEntry"] | order(createdAt desc) {
+        _id,
+        name,
+        website,
+        message,
+        createdAt
+      }`
+    );
+
+    return new Response(JSON.stringify({ entries }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Failed to fetch guestbook entries:", error);
+    return new Response(JSON.stringify({ entries: [] }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+};
 
 export const POST: APIRoute = async ({ request }) => {
   try {

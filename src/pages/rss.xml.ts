@@ -24,7 +24,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: "Nienke Dekker",
-    description: "Digital garden of Nienke Dekker - travels and notes",
+    description: "Nienke.dev RSS feed",
     site: context.site || "https://nienke.dev",
     items: allPosts,
     customData: "<language>en-us</language>",

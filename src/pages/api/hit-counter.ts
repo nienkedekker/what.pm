@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { writeClient } from "../../sanity/writeClient";
+import { writeClient } from "@/sanity/writeClient.ts";
 
 export const prerender = false;
 

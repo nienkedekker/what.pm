@@ -50,21 +50,6 @@
 }
 
 @layer components {
-  /* Retro marquee animation */
-  @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
-  }
-
-  /* Bleed effect - images break out of the text container */
   .bleed {
     --bleed: 4rem;
     margin-left: calc(var(--bleed) * -1);

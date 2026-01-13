@@ -1,6 +1,5 @@
 import groq from "groq";
 
-// Expands internal links in Portable Text body
 const bodyWithInternalLinks = `
   body[] {
     ...,
@@ -79,23 +78,3 @@ export const tripBySlugQuery = groq`
   }
 `;
 
-export const guestbookEntriesQuery = groq`
-  *[_type == "guestbookEntry"] | order(createdAt desc) {
-    _id,
-    name,
-    website,
-    message,
-    createdAt
-  }
-`;
-
-export const commentsByParentQuery = groq`
-  *[_type == "comment" && parentType == $parentType && parentSlug == $parentSlug] | order(createdAt asc) {
-    _id,
-    name,
-    website,
-    message,
-    createdAt,
-    updatedAt
-  }
-`;

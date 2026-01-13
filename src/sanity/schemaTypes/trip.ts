@@ -1,5 +1,5 @@
 import { defineType, defineField } from "sanity";
-import { EarthGlobeIcon } from "@sanity/icons";
+import { EarthGlobeIcon, LinkIcon } from "@sanity/icons";
 
 export const trip = defineType({
   name: "trip",
@@ -99,6 +99,7 @@ export const trip = defineType({
                 name: "internalLink",
                 type: "object",
                 title: "Internal Link",
+                icon: LinkIcon,
                 fields: [
                   {
                     name: "reference",
