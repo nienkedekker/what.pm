@@ -101,9 +101,7 @@ export default function GuestbookForm({ onSuccess }: GuestbookFormProps) {
 
       {status === "error" && <p className="text-red-600 text-sm font-bold">{errorMessage}</p>}
       {status === "success" && (
-        <p className="text-sm text-stone-700 dark:text-stone-300">
-          Done! Showing in a sec...
-        </p>
+        <p className="text-sm text-stone-700 dark:text-stone-300">Done! Showing in a sec...</p>
       )}
 
       {/* Honeypot field - hidden from humans, bots will fill it */}
