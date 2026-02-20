@@ -1,7 +1,7 @@
 ---
 import PostLayout from "../../layouts/PostLayout.astro";
 import PortableTextRenderer from "../../components/portable-text-renderer.astro";
-import CommentsSection from "../../components/comments-section";
+// import CommentsSection from "../../components/comments-section";
 import { sanityClient } from "sanity:client";
 import { notesQuery, noteBySlugQuery } from "../../sanity/queries";
 import { urlFor } from "../../sanity/image";
@@ -33,5 +33,5 @@ const coverImage = note.cover?.asset
   image={coverImage}
 >
   <PortableTextRenderer value={note.body} />
-  <CommentsSection client:only="react" parentType="note" parentSlug={slug!} />
+  <!-- <CommentsSection client:only="react" parentType="note" parentSlug={slug!} /> -->
 </PostLayout>

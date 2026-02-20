@@ -1,7 +1,7 @@
 ---
 import PostLayout from "../../layouts/PostLayout.astro";
 import PortableTextRenderer from "../../components/portable-text-renderer.astro";
-import CommentsSection from "../../components/comments-section";
+// import CommentsSection from "../../components/comments-section";
 import { sanityClient } from "sanity:client";
 import { tripsQuery, tripBySlugQuery } from "../../sanity/queries";
 import { urlFor } from "../../sanity/image";
@@ -35,5 +35,5 @@ const coverImage = trip.cover?.asset
   monthOnly
 >
   <PortableTextRenderer value={trip.body} />
-  <CommentsSection client:only="react" parentType="trip" parentSlug={slug!} />
+  <!-- <CommentsSection client:only="react" parentType="trip" parentSlug={slug!} /> -->
 </PostLayout>
