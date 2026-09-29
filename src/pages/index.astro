@@ -12,7 +12,7 @@ import MapPinFill from "phosphor-astro/MapPinFill.astro";
 import { sanityClient } from "sanity:client";
 import { tripLocationsQuery, pageBySlugQuery } from "../sanity/queries";
 import { extractLinks } from "../sanity/links";
-import { kanji, kanjiLearned, joyoKanji, routine } from "../data/home";
+import { kanji, kanjiLearned, joyoKanji } from "../data/home";
 
 const [homePage, nowPage, linksPage, trips] = await Promise.all([
   sanityClient.fetch(pageBySlugQuery, { slug: "home" }),
@@ -59,12 +59,10 @@ const sectionHeading =
       </p>
 
       <h1
-        class="rise mt-6 font-display text-[clamp(3rem,7.2vw,5.75rem)] leading-[0.95] font-bold tracking-[-0.04em]"
+        class="rise mt-6 font-display text-[clamp(3.25rem,8vw,6.5rem)] leading-[0.95] font-bold tracking-[-0.04em]"
         style="--delay: 100ms"
       >
-        Hoi, I'm Nienke.<br />
-        I build websites &amp;
-        <span class="text-accent">data&nbsp;viz.</span>
+        Hoi, I'm Nienke.
       </h1>
 
       <div
@@ -179,7 +177,7 @@ const sectionHeading =
       <article
         data-reveal
         style="--delay: 160ms"
-        class="card on-lime bg-lime p-6 sm:p-8"
+        class="card on-lime bg-lime p-6 sm:p-8 lg:row-span-2"
       >
         <NowPlaying client:load />
       </article>
@@ -187,43 +185,6 @@ const sectionHeading =
       <!-- Reading, live from what.pm -->
       <article data-reveal class="card p-6 sm:col-span-2 sm:p-8">
         <ReadingCard client:visible />
-      </article>
-
-      <!-- Moving -->
-      <article
-        data-reveal
-        style="--delay: 80ms"
-        class="card flex flex-col justify-between gap-6 p-6 sm:p-8"
-      >
-        <div>
-          <p
-            class="font-display text-3xl leading-tight font-bold tracking-[-0.03em]"
-          >
-            4× a week, mostly
-          </p>
-        </div>
-        <ul class="space-y-4">
-          {
-            routine.map(({ label, perWeek }) => (
-              <li>
-                <p class="mb-2 text-sm text-ink-soft">{label}</p>
-                <div
-                  class="flex gap-1.5"
-                  aria-label={`${perWeek} times a week`}
-                >
-                  {Array.from({ length: 7 }, (_, day) => (
-                    <span
-                      class:list={[
-                        "h-2 flex-1 rounded-full",
-                        day < perWeek ? "bg-accent" : "bg-line",
-                      ]}
-                    />
-                  ))}
-                </div>
-              </li>
-            ))
-          }
-        </ul>
       </article>
 
       <!-- Places -->

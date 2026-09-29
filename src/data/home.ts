@@ -15,9 +15,3 @@ export const kanji = [
 
 export const kanjiLearned = 450;
 export const joyoKanji = 2136;
-
-// Per week, from /now
-export const routine = [
-  { label: "Ashtanga yoga", perWeek: 2 },
-  { label: "Strength training", perWeek: 2 },
-];

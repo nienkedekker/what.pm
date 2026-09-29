@@ -48,7 +48,7 @@ export default function NowPlaying() {
   return (
     <div className="flex h-full flex-col">
       {/* Record sleeve with the vinyl peeking out */}
-      <div className="relative mb-6 aspect-square w-[70%] max-w-40">
+      <div className="relative my-auto aspect-square w-[70%] max-w-40">
         <div
           className={`absolute inset-y-[4%] left-[38%] aspect-square rounded-full bg-[repeating-radial-gradient(circle,#111_0_2px,#222_2px_4px)] shadow-lg ${
             isNowPlaying ? "animate-spin-slow" : ""
@@ -69,7 +69,7 @@ export default function NowPlaying() {
         </div>
       </div>
 
-      <div className="mt-auto min-w-0">
+      <div className="mt-6 min-w-0">
         {loading ? (
           <p className="text-sm text-ink-faint">Tuning in…</p>
         ) : track ? (
