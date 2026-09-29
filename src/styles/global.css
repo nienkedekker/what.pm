@@ -103,7 +103,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Prose — Sanity-driven pages. Unlayered so it beats the typography plugin.
+   Prose — the Markdown pages. Unlayered so it beats the typography plugin.
    --------------------------------------------------------------------------- */
 .prose {
   --tw-prose-body: var(--ink-soft);
@@ -157,8 +157,21 @@
   font-style: normal;
 }
 
+.prose blockquote p::before,
+.prose blockquote p::after {
+  content: none;
+}
+
 .prose img {
   border-radius: 0.75rem;
+}
+
+/* The little GIFs next to headings on /now */
+.prose img.kaomoji {
+  display: inline-block;
+  margin: 0 0 0 0.25em;
+  vertical-align: middle;
+  border-radius: 0;
 }
 
 /* Bleed effect - images break out of the text to the edges of the card.

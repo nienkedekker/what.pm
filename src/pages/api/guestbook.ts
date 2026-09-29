@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { writeClient } from "../../sanity/writeClient";
+import { addGuestbookEntry } from "../../lib/redis";
 
 export const prerender = false;
 
@@ -58,16 +58,13 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // Create the guestbook entry
-    const entry = await writeClient.create({
-      _type: "guestbookEntry",
+    const entry = await addGuestbookEntry({
       name: name.trim(),
       website: website || undefined,
       message: message.trim(),
-      createdAt: new Date().toISOString(),
     });
 
-    return new Response(JSON.stringify({ success: true, id: entry._id }), {
+    return new Response(JSON.stringify({ success: true, id: entry.id }), {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });

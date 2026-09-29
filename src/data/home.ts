@@ -1,4 +1,4 @@
-// Little facts for the home page bento. Longer-form updates live on /now (Sanity).
+// Little facts for the home page bento. Longer-form updates live on /now (src/content/pages/now.md).
 
 export const kanji = [
   { char: "旅", reading: "たび", meaning: "journey" },

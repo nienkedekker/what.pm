@@ -5,32 +5,25 @@ import NowPlaying from "../components/now-playing";
 import ReadingCard from "../components/reading-card";
 import MediaChart from "../components/media-chart";
 import LocalClock from "../components/local-clock.astro";
-import { PortableText } from "astro-portabletext";
+import { getEntry, render } from "astro:content";
 import ArrowRightBold from "phosphor-astro/ArrowRightBold.astro";
 import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
 import MapPinFill from "phosphor-astro/MapPinFill.astro";
-import { sanityClient } from "sanity:client";
-import { tripLocationsQuery, pageBySlugQuery } from "../sanity/queries";
-import { extractLinks } from "../sanity/links";
+import { links } from "../data/links";
 import { kanji, kanjiLearned, joyoKanji } from "../data/home";
 
-const [homePage, nowPage, linksPage, trips] = await Promise.all([
-  sanityClient.fetch(pageBySlugQuery, { slug: "home" }),
-  sanityClient.fetch(pageBySlugQuery, { slug: "now" }),
-  sanityClient.fetch(pageBySlugQuery, { slug: "links" }),
-  sanityClient.fetch(tripLocationsQuery),
-]);
+const home = await getEntry("pages", "home");
+const now = await getEntry("pages", "now");
+const { Content: HomeIntro } = await render(home!);
 
-const friends = extractLinks(linksPage?.body).filter(
-  ({ href }) => !/neocities|nownownow/.test(href)
-);
+// Directories like Neocities and nownownow are on /links but not the home page
+const friends = links.filter(({ href }) => !/neocities|nownownow/.test(href));
 
-const nowUpdated = nowPage?.lastUpdated
-  ? new Date(nowPage.lastUpdated).toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    })
-  : null;
+const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
 
 const kanjiProgress = Math.round((kanjiLearned / joyoKanji) * 100);
 
@@ -69,7 +62,7 @@ const sectionHeading =
         class="rise mt-8 max-w-xl text-lg leading-relaxed text-ink-soft [&_a]:text-ink [&_a]:underline [&_a]:decoration-accent [&_a]:decoration-[1.5px] [&_a]:underline-offset-4 [&_a:hover]:text-accent [&_p+p]:mt-4"
         style="--delay: 200ms"
       >
-        {homePage?.body && <PortableText value={homePage.body} />}
+        <HomeIntro />
       </div>
 
       <div class="rise mt-9 flex flex-wrap gap-3" style="--delay: 300ms">
@@ -211,7 +204,7 @@ const sectionHeading =
           </div>
         </div>
         <div class="mt-6 sm:-mx-4">
-          <TripMap trips={trips} client:visible />
+          <TripMap client:visible />
         </div>
       </article>
     </div>
@@ -240,7 +233,7 @@ const sectionHeading =
         </div>
 
         <ul data-reveal class="flex flex-wrap gap-2.5">
-          {friends.map(({ text, href }) => (
+          {friends.map(({ name, href }) => (
             <li>
               <a
                 href={href}
@@ -248,7 +241,7 @@ const sectionHeading =
                 rel="noopener noreferrer"
                 class="group flex items-center gap-2 rounded-full border border-line bg-card px-5 py-2.5 font-display text-lg font-semibold tracking-tight transition-colors hover:border-cobalt hover:bg-cobalt hover:text-white sm:text-xl"
               >
-                {text}
+                {name}
                 <ArrowUpRightBold class="size-4 text-ink-faint transition-colors group-hover:text-white" />
               </a>
             </li>

@@ -1,10 +1,17 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import GuestbookForm from "../components/guestbook-form";
-import { sanityClient } from "sanity:client";
-import { guestbookEntriesQuery } from "../sanity/queries";
+import { getGuestbookEntries, type GuestbookEntry } from "../lib/redis";
 
-const entries = await sanityClient.fetch(guestbookEntriesQuery);
+// Rendered on each request so new messages show up straight away
+export const prerender = false;
+
+let entries: GuestbookEntry[] = [];
+try {
+  entries = await getGuestbookEntries();
+} catch (error) {
+  console.error("Couldn't load guestbook entries:", error);
+}
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -48,7 +55,7 @@ function formatDate(dateString: string) {
       {
         entries.length > 0 ? (
           <ul class="columns-1 gap-4 sm:columns-2">
-            {entries.map((entry: any) => (
+            {entries.map((entry) => (
               <li data-reveal class="card mb-4 break-inside-avoid p-5">
                 <p class="leading-relaxed whitespace-pre-wrap">
                   {entry.message}

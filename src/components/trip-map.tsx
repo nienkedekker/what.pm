@@ -1,38 +1,10 @@
 import { useMemo } from "react";
 import DottedMapModule from "dotted-map";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { recentPlaces, earlierPlaces } from "@/data/places";
 
 // @ts-expect-error - CJS/ESM interop
 const DottedMap = DottedMapModule.default || DottedMapModule;
-
-interface Trip {
-  title: string;
-  location: string;
-  date: string;
-}
-
-interface Props {
-  trips: Trip[];
-}
-
-const previousTrips: string[] = [
-  "Bali, Indonesia",
-  "Bangkok, Thailand",
-  "Chiang Mai, Thailand",
-  "Copenhagen, Denmark",
-  "Lisbon, Portugal",
-  "Oslo, Norway",
-  "Paris, France",
-  "Stockholm, Sweden",
-  "Willemstad, Curaçao",
-  "Berlin, Germany",
-  "London, Uk",
-  "Vienna, Austria",
-  "Dublin, Ireland",
-  "Glasgow, Scotland",
-  "Palermo, Italy",
-  "Taghazout, Morocco",
-];
 
 // City coordinates (lat, lng)
 const locationCoords: Record<string, { lat: number; lng: number }> = {
@@ -124,7 +96,7 @@ function getCoords(location: string): { lat: number; lng: number } | null {
   return null;
 }
 
-export default function TripMap({ trips }: Props) {
+export default function TripMap() {
   const { svgMap, pins, mapDimensions } = useMemo(() => {
     const map = new DottedMap({ height: 55, grid: "diagonal" });
 
@@ -132,8 +104,8 @@ export default function TripMap({ trips }: Props) {
     // Deduplicate by location so each city gets a single pin.
     const seen = new Set<string>();
     const places = [
-      ...trips.map((trip) => ({ label: trip.location, highlight: true })),
-      ...previousTrips.map((location) => ({ label: location, highlight: false })),
+      ...recentPlaces.map((label) => ({ label, highlight: true })),
+      ...earlierPlaces.map((label) => ({ label, highlight: false })),
     ].filter(({ label }) => {
       const key = label.toLowerCase();
       if (seen.has(key)) return false;
@@ -158,7 +130,7 @@ export default function TripMap({ trips }: Props) {
       pins,
       mapDimensions: { width: map.image.width, height: map.image.height },
     };
-  }, [trips]);
+  }, []);
 
   return (
     <TooltipProvider delayDuration={80}>
