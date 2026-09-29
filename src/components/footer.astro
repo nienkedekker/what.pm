@@ -1,17 +1,12 @@
 ---
-import EnvelopeDuotone from "phosphor-astro/EnvelopeDuotone.astro";
 import GithubLogoDuotone from "phosphor-astro/GithubLogoDuotone.astro";
 import LinkedinLogoDuotone from "phosphor-astro/LinkedinLogoDuotone.astro";
-import RssDuotone from "phosphor-astro/RssDuotone.astro";
-import NowPlaying from "./now-playing";
+import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
 import HitCounter from "./hit-counter";
 
-const links = [
-  {
-    href: "mailto:nienkedekker@gmail.com",
-    label: "Email",
-    Icon: EnvelopeDuotone,
-  },
+const email = "nienkedekker@gmail.com";
+
+const socials = [
   {
     href: "https://github.com/nienkedekker",
     label: "GitHub",
@@ -22,47 +17,100 @@ const links = [
     label: "LinkedIn",
     Icon: LinkedinLogoDuotone,
   },
-  { href: "/rss.xml", label: "RSS", Icon: RssDuotone },
+];
+
+const smallLinks = [
+  { href: "/colophon", label: "Colophon" },
+  { href: "/guestbook", label: "Guestbook" },
+  { href: "/links", label: "Links" },
 ];
 ---
 
-<footer
-  class="mt-16 pt-8 border-t border-dashed border-gray-200 dark:border-neutral-700"
->
-  <div class="flex flex-col gap-4">
-    <NowPlaying client:only="react" />
-    <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-      {
-        links.map(({ href, label, Icon }) => (
-          <a
-            href={href}
-            class="flex items-center gap-1.5 hover:text-accent dark:hover:text-accent-light transition-colors"
-            target={
-              href.startsWith("http") || href.startsWith("mailto")
-                ? "_blank"
-                : undefined
-            }
-            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-          >
-            <Icon class="size-4" />
-            {label}
-          </a>
-        ))
-      }
+<footer class="mx-auto mt-32 max-w-6xl px-4 pb-10">
+  <div
+    class="on-accent relative overflow-hidden rounded-[1.75rem] bg-cobalt px-6 pt-12 pb-8 sm:px-12 sm:pt-16"
+  >
+    <p class="relative text-lg text-ink-soft">
+      Got a question, a project, or a good book recommendation?
+    </p>
+    <a
+      href={`mailto:${email}`}
+      class="group relative mt-4 block font-display text-[clamp(4rem,15vw,11rem)] leading-[0.9] font-bold tracking-[-0.04em]"
+    >
+      Say <em class="text-lime">hoi</em><ArrowUpRightBold
+        class="ml-2 inline-block size-[0.5em] align-baseline transition-transform duration-300 group-hover:translate-x-2 group-hover:-translate-y-2"
+      />
+    </a>
+    <p class="relative mt-5 font-mono text-sm text-ink-soft">{email}</p>
+
+    <div
+      class="relative mt-12 flex flex-col gap-6 border-t border-white/20 pt-6 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div
+        class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium"
+      >
+        {
+          socials.map(({ href, label, Icon }) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-1.5 transition-colors hover:text-lime"
+            >
+              <Icon class="size-4" />
+              {label}
+            </a>
+          ))
+        }
+        <span class="hidden text-white/40 sm:inline" aria-hidden="true">/</span>
+        {
+          smallLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class="text-ink-soft transition-colors hover:text-lime"
+            >
+              {label}
+            </a>
+          ))
+        }
+      </div>
+      <HitCounter client:load />
     </div>
-    <div class="flex flex-wrap items-center gap-2 pt-2">
-      <img src="/buttons/poweredbymac.gif" alt="Powered by Mac" />
-      <img src="/buttons/cookiefree.gif" alt="Cookie free" />
+  </div>
+
+  <div
+    class="mt-6 flex flex-col-reverse items-center justify-between gap-4 text-xs text-ink-faint sm:flex-row"
+  >
+    <p>© {new Date().getFullYear()} Nienke Dekker · Made in Amsterdam</p>
+    <div
+      class="flex flex-wrap items-center justify-center gap-2 [image-rendering:pixelated]"
+    >
+      <img
+        src="/buttons/poweredbymac.gif"
+        alt="Powered by Mac"
+        width="88"
+        height="31"
+      />
+      <img
+        src="/buttons/cookiefree.gif"
+        alt="Cookie free"
+        width="88"
+        height="31"
+      />
       <button
         id="bookmark-btn"
         class="cursor-pointer"
         title="Bookmark this page"
       >
-        <img src="/buttons/bookmark.gif" alt="Bookmark this page" />
+        <img
+          src="/buttons/bookmark.gif"
+          alt="Bookmark this page"
+          width="88"
+          height="31"
+        />
       </button>
-      <img src="/buttons/3computer.jpg" alt="Computer" />
+      <img src="/buttons/3computer.jpg" alt="Computer" width="88" height="31" />
     </div>
-    <HitCounter client:load />
   </div>
 </footer>
 
@@ -77,6 +125,5 @@ const links = [
     });
   }
 
-  setupBookmarkButton();
-  document.addEventListener("astro:after-swap", setupBookmarkButton);
+  document.addEventListener("astro:page-load", setupBookmarkButton);
 </script>

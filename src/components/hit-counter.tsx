@@ -26,13 +26,13 @@ export default function HitCounter() {
   }, []);
 
   if (count === null) {
-    return <div className="font-mono text-xs text-gray-500 dark:text-gray-400">Loading...</div>;
+    return <div className="font-mono text-xs text-ink-soft">Loading...</div>;
   }
 
   const formattedCount = count.toString().padStart(6, "0");
 
   return (
-    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+    <div className="flex items-center gap-2 text-xs text-ink-soft">
       <span>You are visitor</span>
       <span className="font-mono bg-black text-green-400 px-2 py-0.5 tracking-widest">
         #{formattedCount}

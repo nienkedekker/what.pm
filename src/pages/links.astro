@@ -1,39 +1,75 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/header.astro";
-import Footer from "../components/footer.astro";
-import PortableTextRenderer from "../components/portable-text-renderer.astro";
+import PageLayout from "../layouts/PageLayout.astro";
+import { PortableText } from "astro-portabletext";
+import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
 import { sanityClient } from "sanity:client";
 import { pageBySlugQuery } from "../sanity/queries";
+import { extractLinks } from "../sanity/links";
 
-const linksPage = await sanityClient.fetch(pageBySlugQuery, { slug: "links" });
+const page = await sanityClient.fetch(pageBySlugQuery, { slug: "links" });
 
-const formattedDate = linksPage?.lastUpdated
-  ? new Date(linksPage.lastUpdated).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  : null;
+const links = extractLinks(page?.body);
+// Paragraphs before the list, e.g. "These are websites made by my friends…"
+const introBlocks = (page?.body ?? []).filter(
+  (block: any) => block._type === "block" && !block.listItem
+);
+
+const hostname = (href: string) => new URL(href).hostname.replace(/^www\./, "");
 ---
 
-<BaseLayout title="Links" description={linksPage?.description}>
-  <Header slot="header" />
+<PageLayout title="Links" lastUpdated={page?.lastUpdated}>
+  {
+    introBlocks.length > 0 && (
+      <div class="mb-10 max-w-2xl text-xl text-ink-soft">
+        <PortableText value={introBlocks} />
+      </div>
+    )
+  }
 
-  <section>
-    <h1 class="font-serif text-3xl font-bold mb-2">Links</h1>
+  <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
     {
-      formattedDate && (
-        <p class="text-gray-600 dark:text-gray-400 mb-8">
-          Last updated: {formattedDate}
-        </p>
-      )
+      links.map(({ text, href }, i) => (
+        <li data-reveal style={`--delay: ${(i % 3) * 60}ms`}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-card card group flex h-full items-end justify-between gap-4 p-6"
+          >
+            <span class="min-w-0">
+              <span class="block font-display text-2xl leading-tight font-bold tracking-[-0.03em] [overflow-wrap:anywhere]">
+                {text}
+              </span>
+              <span class="mt-2 block truncate font-mono text-xs text-ink-faint">
+                {hostname(href)}
+              </span>
+            </span>
+            <span class="grid size-10 shrink-0 place-items-center rounded-full border border-line text-ink transition-transform duration-300 group-hover:rotate-45">
+              <ArrowUpRightBold class="size-4" />
+            </span>
+          </a>
+        </li>
+      ))
     }
+  </ul>
+</PageLayout>
 
-    <div class="prose prose-gray dark:prose-invert max-w-none">
-      {linksPage?.body && <PortableTextRenderer value={linksPage.body} />}
-    </div>
-  </section>
+<style>
+  /* On hover a card turns cobalt */
+  .link-card {
+    transition:
+      background-color 150ms,
+      border-color 150ms,
+      color 150ms;
+  }
 
-  <Footer slot="footer" />
-</BaseLayout>
+  .link-card:hover {
+    --ink: #ffffff;
+    --ink-faint: #c3c7ff;
+    --line: rgb(255 255 255 / 0.35);
+    --card: transparent;
+    background: #2b35ff;
+    border-color: #2b35ff;
+    color: #fff;
+  }
+</style>

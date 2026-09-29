@@ -1,104 +1,330 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/header.astro";
-import Footer from "../components/footer.astro";
-import PostCard from "../components/post-card.astro";
 import TripMap from "../components/trip-map";
+import NowPlaying from "../components/now-playing";
+import ReadingCard from "../components/reading-card";
+import MediaChart from "../components/media-chart";
+import LocalClock from "../components/local-clock.astro";
 import { PortableText } from "astro-portabletext";
 import ArrowRightBold from "phosphor-astro/ArrowRightBold.astro";
+import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
+import MapPinFill from "phosphor-astro/MapPinFill.astro";
 import { sanityClient } from "sanity:client";
-import { tripsQuery, notesQuery, pageBySlugQuery } from "../sanity/queries";
+import { tripLocationsQuery, pageBySlugQuery } from "../sanity/queries";
+import { extractLinks } from "../sanity/links";
+import { kanji, kanjiLearned, joyoKanji, routine } from "../data/home";
 
-const homePage = await sanityClient.fetch(pageBySlugQuery, { slug: "home" });
-const trips = await sanityClient.fetch(tripsQuery);
-const notes = await sanityClient.fetch(notesQuery);
+const [homePage, nowPage, linksPage, trips] = await Promise.all([
+  sanityClient.fetch(pageBySlugQuery, { slug: "home" }),
+  sanityClient.fetch(pageBySlugQuery, { slug: "now" }),
+  sanityClient.fetch(pageBySlugQuery, { slug: "links" }),
+  sanityClient.fetch(tripLocationsQuery),
+]);
 
-const recentTrips = trips.slice(0, 3);
-const recentNotes = notes.slice(0, 3);
+const friends = extractLinks(linksPage?.body).filter(
+  ({ href }) => !/neocities|nownownow/.test(href)
+);
+
+const nowUpdated = nowPage?.lastUpdated
+  ? new Date(nowPage.lastUpdated).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    })
+  : null;
+
+const kanjiProgress = Math.round((kanjiLearned / joyoKanji) * 100);
+
+const sectionHeading =
+  "font-display text-4xl font-bold tracking-[-0.035em] sm:text-6xl";
 ---
 
 <BaseLayout>
-  <Header slot="header" />
+  <!-- ─────────────── Hero ─────────────── -->
+  <section
+    class="mx-auto grid max-w-6xl items-center gap-y-14 px-4 pt-12 sm:pt-20 lg:grid-cols-12 lg:gap-x-12"
+  >
+    <div class="lg:col-span-7">
+      <p
+        class="rise flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-soft"
+      >
+        <span class="relative flex size-2" aria-hidden="true">
+          <span
+            class="absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full bg-accent"
+          ></span>
+          <span class="relative size-2 rounded-full bg-accent"></span>
+        </span>
+        Amsterdam, NL
+        <span class="hidden sm:inline" aria-hidden="true">·</span>
+        <LocalClock />
+      </p>
 
-  <section class="mb-12">
-    <h1 class="font-serif text-3xl font-bold mb-4">Hi, I'm Nienke!</h1>
+      <h1
+        class="rise mt-6 font-display text-[clamp(3rem,7.2vw,5.75rem)] leading-[0.95] font-bold tracking-[-0.04em]"
+        style="--delay: 100ms"
+      >
+        Hoi, I'm Nienke.<br />
+        I build websites &amp;
+        <span class="text-accent">data&nbsp;viz.</span>
+      </h1>
 
-    <div class="flex flex-col sm:flex-row gap-8 items-center">
+      <div
+        class="rise mt-8 max-w-xl text-lg leading-relaxed text-ink-soft [&_a]:text-ink [&_a]:underline [&_a]:decoration-accent [&_a]:decoration-[1.5px] [&_a]:underline-offset-4 [&_a:hover]:text-accent [&_p+p]:mt-4"
+        style="--delay: 200ms"
+      >
+        {homePage?.body && <PortableText value={homePage.body} />}
+      </div>
+
+      <div class="rise mt-9 flex flex-wrap gap-3" style="--delay: 300ms">
+        <a href="mailto:nienkedekker@gmail.com" class="btn btn-accent">
+          Get in touch <ArrowRightBold class="size-4" />
+        </a>
+        <a href="/now" class="btn btn-ghost">
+          What I'm up to <ArrowRightBold class="size-4" />
+        </a>
+      </div>
+    </div>
+
+    <figure
+      class="rise group relative mx-auto w-full max-w-sm overflow-hidden rounded-[1.75rem] sm:max-w-md lg:col-span-5 lg:max-w-none"
+      style="--delay: 150ms"
+    >
       <img
         src="/nienke.jpg"
-        alt="Nienke gazing wistfully over the port of Hydra"
-        class="size-48 sm:size-64 object-cover shrink-0 rounded-lg"
+        alt="Nienke gazing out over the port of Hydra"
+        class="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        width="934"
+        height="1168"
       />
+      <figcaption
+        class="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-white/85 px-3 py-1.5 font-mono text-xs font-medium text-carbon backdrop-blur-md"
+      >
+        <MapPinFill class="size-3.5 text-cobalt" /> Hydra, Greece
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ─────────────── Right now (bento) ─────────────── -->
+  <section
+    class="mx-auto mt-28 max-w-6xl px-4 sm:mt-36"
+    aria-labelledby="now-heading"
+  >
+    <div
+      data-reveal
+      class="mb-10 flex flex-wrap items-end justify-between gap-4"
+    >
       <div>
-        <div class="prose prose-gray dark:prose-invert max-w-none">
-          {homePage?.body && <PortableText value={homePage.body} />}
-        </div>
+        <h2 id="now-heading" class={sectionHeading}>
+          Right <span class="text-accent">now</span>
+        </h2>
       </div>
+      <a href="/now" class="btn btn-ghost !py-2 !text-sm">
+        The full /now page{nowUpdated && ` · ${nowUpdated}`}
+        <ArrowRightBold class="size-3.5" />
+      </a>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- This year in media, live from what.pm -->
+      <article data-reveal class="card p-6 sm:col-span-2 sm:p-8">
+        <MediaChart client:visible />
+      </article>
+
+      <!-- Japanese -->
+      <article
+        data-reveal
+        style="--delay: 80ms"
+        class="card on-accent relative flex flex-col overflow-hidden bg-cobalt p-6 sm:p-8 lg:row-span-2"
+      >
+        <button
+          type="button"
+          id="kanji-card"
+          class="group mb-6 flex flex-1 flex-col items-center justify-center text-center"
+          aria-label="Show another kanji"
+          data-kanji={JSON.stringify(kanji)}
+        >
+          <span
+            id="kanji-char"
+            class="font-jp text-[8.5rem] leading-none font-black transition-colors group-hover:text-lime"
+            >{kanji[0].char}</span
+          >
+          <span
+            id="kanji-reading"
+            class="mt-6 font-jp text-lg font-black text-lime"
+            >{kanji[0].reading}</span
+          >
+          <span id="kanji-meaning" class="mt-1 text-ink-soft" aria-live="polite"
+            >{kanji[0].meaning}</span
+          >
+          <span
+            class="mt-4 font-mono text-[0.7rem] text-ink-faint opacity-0 transition-opacity group-hover:opacity-100"
+            >Click for another</span
+          >
+        </button>
+        <div>
+          <p class="text-sm font-medium">Learning Japanese</p>
+          <p class="text-sm text-ink-soft">
+            {kanjiLearned}+ of {joyoKanji.toLocaleString("en-US")} jōyō kanji
+          </p>
+          <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-line">
+            <div
+              class="h-full rounded-full bg-lime"
+              style={`width: ${kanjiProgress}%`}
+            >
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Now playing -->
+      <article
+        data-reveal
+        style="--delay: 160ms"
+        class="card on-lime bg-lime p-6 sm:p-8"
+      >
+        <NowPlaying client:load />
+      </article>
+
+      <!-- Reading, live from what.pm -->
+      <article data-reveal class="card p-6 sm:col-span-2 sm:p-8">
+        <ReadingCard client:visible />
+      </article>
+
+      <!-- Moving -->
+      <article
+        data-reveal
+        style="--delay: 80ms"
+        class="card flex flex-col justify-between gap-6 p-6 sm:p-8"
+      >
+        <div>
+          <p
+            class="font-display text-3xl leading-tight font-bold tracking-[-0.03em]"
+          >
+            4× a week, mostly
+          </p>
+        </div>
+        <ul class="space-y-4">
+          {
+            routine.map(({ label, perWeek }) => (
+              <li>
+                <p class="mb-2 text-sm text-ink-soft">{label}</p>
+                <div
+                  class="flex gap-1.5"
+                  aria-label={`${perWeek} times a week`}
+                >
+                  {Array.from({ length: 7 }, (_, day) => (
+                    <span
+                      class:list={[
+                        "h-2 flex-1 rounded-full",
+                        day < perWeek ? "bg-accent" : "bg-line",
+                      ]}
+                    />
+                  ))}
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <!-- Places -->
+      <article
+        data-reveal
+        class="card overflow-hidden p-6 sm:col-span-2 sm:p-8 lg:col-span-4"
+      >
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h3
+              class="font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl"
+            >
+              Where I've been lately
+            </h3>
+          </div>
+          <div class="flex items-center gap-4 font-mono text-xs text-ink-soft">
+            <span class="flex items-center gap-1.5"
+              ><span class="size-2 rounded-full bg-accent"></span> most recent</span
+            >
+            <span class="flex items-center gap-1.5"
+              ><span class="size-2 rounded-full bg-ink-faint"></span> the last five
+              years</span
+            >
+          </div>
+        </div>
+        <div class="mt-6 sm:-mx-4">
+          <TripMap trips={trips} client:visible />
+        </div>
+      </article>
     </div>
   </section>
 
+  <!-- ─────────────── Friends ─────────────── -->
   {
-    trips.length > 0 && (
-      <section class="mb-12">
-        <h2 class="font-serif text-xl font-semibold mb-4">Where I've Been</h2>
-        <TripMap trips={trips} client:only="react" />
-      </section>
-    )
-  }
-
-  {
-    recentTrips.length > 0 && (
-      <section class="mb-12">
-        <div class="flex items-baseline justify-between mb-4">
-          <h2 class="font-serif text-xl font-semibold">Recent Trips</h2>
-          <a
-            href="/trips"
-            class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors"
-          >
-            View all <ArrowRightBold class="size-3.5" />
+    friends.length > 0 && (
+      <section
+        class="mx-auto mt-28 max-w-6xl px-4 sm:mt-36"
+        aria-labelledby="friends-heading"
+      >
+        <div
+          data-reveal
+          class="mb-10 flex flex-wrap items-end justify-between gap-4"
+        >
+          <div>
+            <h2 id="friends-heading" class={sectionHeading}>
+              Friends &amp; <span class="text-accent">inspiration</span>
+            </h2>
+          </div>
+          <a href="/links" class="btn btn-ghost !py-2 !text-sm">
+            All links
+            <ArrowRightBold class="size-3.5" />
           </a>
         </div>
-        <div>
-          {recentTrips.map((trip: any) => (
-            <PostCard
-              title={trip.title}
-              href={`/trips/${trip.slug.current}`}
-              date={new Date(trip.date)}
-              description={trip.description}
-              location={trip.location}
-              monthOnly
-            />
+
+        <ul data-reveal class="flex flex-wrap gap-2.5">
+          {friends.map(({ text, href }) => (
+            <li>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-2 rounded-full border border-line bg-card px-5 py-2.5 font-display text-lg font-semibold tracking-tight transition-colors hover:border-cobalt hover:bg-cobalt hover:text-white sm:text-xl"
+              >
+                {text}
+                <ArrowUpRightBold class="size-4 text-ink-faint transition-colors group-hover:text-white" />
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     )
   }
-
-  {
-    recentNotes.length > 0 && (
-      <section class="mb-12">
-        <div class="flex items-baseline justify-between mb-4">
-          <h2 class="font-serif text-xl font-semibold">Recent Notes</h2>
-          <a
-            href="/notes"
-            class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent-light transition-colors"
-          >
-            View all <ArrowRightBold class="size-3.5" />
-          </a>
-        </div>
-        <div>
-          {recentNotes.map((note: any) => (
-            <PostCard
-              title={note.title}
-              href={`/notes/${note.slug.current}`}
-              date={new Date(note.date)}
-              description={note.description}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
-  <Footer slot="footer" />
 </BaseLayout>
+
+<script>
+  function setupKanji() {
+    const card = document.getElementById("kanji-card");
+    if (!card) return;
+    const kanji: { char: string; reading: string; meaning: string }[] =
+      JSON.parse(card.dataset.kanji ?? "[]");
+    const char = document.getElementById("kanji-char")!;
+    const reading = document.getElementById("kanji-reading")!;
+    const meaning = document.getElementById("kanji-meaning")!;
+    let index = 0;
+
+    card.addEventListener("click", () => {
+      index = (index + 1) % kanji.length;
+      char.animate(
+        [
+          { opacity: 0, transform: "translateY(8px)" },
+          { opacity: 1, transform: "none" },
+        ],
+        { duration: 300, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" }
+      );
+      char.textContent = kanji[index].char;
+      reading.textContent = kanji[index].reading;
+      meaning.textContent = kanji[index].meaning;
+    });
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    setupKanji();
+  });
+</script>

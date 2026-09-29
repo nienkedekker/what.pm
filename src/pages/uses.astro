@@ -1,39 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/header.astro";
-import Footer from "../components/footer.astro";
+import PageLayout from "../layouts/PageLayout.astro";
 import PortableTextRenderer from "../components/portable-text-renderer.astro";
 import { sanityClient } from "sanity:client";
 import { pageBySlugQuery } from "../sanity/queries";
 
-const usesPage = await sanityClient.fetch(pageBySlugQuery, { slug: "uses" });
-
-const formattedDate = usesPage?.lastUpdated
-  ? new Date(usesPage.lastUpdated).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  : null;
+const page = await sanityClient.fetch(pageBySlugQuery, { slug: "uses" });
 ---
 
-<BaseLayout title="Uses" description={usesPage?.description}>
-  <Header slot="header" />
-
-  <section>
-    <h1 class="font-serif text-3xl font-bold mb-2">Uses</h1>
-    {
-      formattedDate && (
-        <p class="text-gray-600 dark:text-gray-400 mb-8">
-          Last updated: {formattedDate}
-        </p>
-      )
-    }
-
-    <div class="prose prose-gray dark:prose-invert max-w-none">
-      {usesPage?.body && <PortableTextRenderer value={usesPage.body} />}
-    </div>
-  </section>
-
-  <Footer slot="footer" />
-</BaseLayout>
+<PageLayout
+  title="Uses"
+  intro={page?.description}
+  lastUpdated={page?.lastUpdated}
+>
+  <article
+    class="card prose mx-auto max-w-3xl px-6 py-10 sm:px-12 sm:py-14 lg:mx-0"
+  >
+    {page?.body && <PortableTextRenderer value={page.body} />}
+  </article>
+</PageLayout>

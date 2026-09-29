@@ -13,24 +13,17 @@ type Props = MarkProps<InternalLinkMarkDef>;
 const { node } = Astro.props;
 const reference = node.markDef?.reference;
 
-// Build URL based on document type
-function getUrl(type: string, slug: string): string {
-  switch (type) {
-    case "note":
-      return `/notes/${slug}`;
-    case "trip":
-      return `/trips/${slug}`;
-    case "page":
-      // Pages are at root level (e.g., /colophon, /uses)
-      return `/${slug}`;
-    default:
-      return `/${slug}`;
-  }
-}
-
-const href = reference ? getUrl(reference._type, reference.slug) : "#";
+// Only pages have their own URL now (e.g. /colophon, /uses). Notes and trips
+// were retired, so links to them render as plain text.
+const href = reference?._type === "page" ? `/${reference.slug}` : undefined;
 ---
 
-<a href={href} class="text-accent dark:text-accent-light hover:underline">
-  <slot />
-</a>
+{
+  href ? (
+    <a href={href}>
+      <slot />
+    </a>
+  ) : (
+    <slot />
+  )
+}

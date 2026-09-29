@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import FlyingBirds from "../components/flying-birds.astro";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import { kanji } from "../data/home";
 import "../styles/global.css";
 
 interface Props {
@@ -11,7 +13,7 @@ interface Props {
 
 const {
   title = "Nienke Dekker",
-  description = "Welcome to my crazy world",
+  description = "Nienke Dekker is a software developer in Amsterdam who builds websites, dashboards and data visualizations.",
   image,
 } = Astro.props;
 
@@ -21,6 +23,11 @@ const canonicalURL = new URL(
   Astro.url.pathname,
   Astro.site || "https://nienke.dev"
 );
+
+// Only the glyphs the Japanese card uses, so the JP font stays tiny
+const kanjiGlyphs = encodeURIComponent(
+  kanji.map((k) => k.char + k.reading).join("") + "日本語"
+);
 ---
 
 <!doctype html>
@@ -29,19 +36,17 @@ const canonicalURL = new URL(
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f6f3" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap"
       rel="stylesheet"
     />
     <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="RSS Feed"
-      href="/rss.xml"
+      href={`https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&display=swap&text=${kanjiGlyphs}`}
+      rel="stylesheet"
     />
     <link rel="canonical" href={canonicalURL} />
 
@@ -65,29 +70,54 @@ const canonicalURL = new URL(
     <ClientRouter />
     <script is:inline>
       function setTheme() {
+        const root = document.documentElement;
         const theme =
           localStorage.getItem("theme") ||
           (window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light");
-        document.documentElement.classList.toggle("dark", theme === "dark");
+        root.classList.toggle("dark", theme === "dark");
+        root.classList.add("js");
       }
       setTheme();
       document.addEventListener("astro:after-swap", setTheme);
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
-    <FlyingBirds />
-    <div class="max-w-2xl mx-auto px-4 py-8 sm:py-16">
-      <slot name="header" />
-      <main>
-        <slot />
-      </main>
-      <slot name="footer" />
-    </div>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn btn-accent"
+      >Skip to content</a
+    >
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
 
-<style is:global>
-  @import "../styles/global.css";
-</style>
+<script>
+  // Fade sections in as they scroll into view
+  function setupReveal() {
+    const items = document.querySelectorAll<HTMLElement>(
+      "[data-reveal]:not(.is-visible)"
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" }
+    );
+    items.forEach((item) => observer.observe(item));
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    setupReveal();
+  });
+</script>

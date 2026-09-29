@@ -27,55 +27,12 @@ export const pageBySlugQuery = groq`
   }
 `;
 
-export const notesQuery = groq`
-  *[_type == "note" && draft != true] | order(date desc) {
-    _id,
-    title,
-    slug,
-    description,
-    date,
-    cover,
-    tags
-  }
-`;
-
-export const noteBySlugQuery = groq`
-  *[_type == "note" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    description,
-    date,
-    cover,
-    tags,
-    ${bodyWithInternalLinks}
-  }
-`;
-
-export const tripsQuery = groq`
+// Trips no longer have their own pages, but their locations still feed the map
+export const tripLocationsQuery = groq`
   *[_type == "trip" && draft != true] | order(date desc) {
-    _id,
     title,
-    slug,
-    description,
     date,
-    location,
-    cover,
-    tags
-  }
-`;
-
-export const tripBySlugQuery = groq`
-  *[_type == "trip" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    description,
-    date,
-    location,
-    cover,
-    tags,
-    ${bodyWithInternalLinks}
+    location
   }
 `;
 
@@ -86,16 +43,5 @@ export const guestbookEntriesQuery = groq`
     website,
     message,
     createdAt
-  }
-`;
-
-export const commentsByParentQuery = groq`
-  *[_type == "comment" && parentType == $parentType && parentSlug == $parentSlug] | order(createdAt asc) {
-    _id,
-    name,
-    website,
-    message,
-    createdAt,
-    updatedAt
   }
 `;

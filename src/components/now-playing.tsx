@@ -1,23 +1,10 @@
 import { useState, useEffect } from "react";
 
-function MusicNoteIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 256 256"
-      fill="currentColor"
-      className="size-4"
-    >
-      <path d="M128,184a40,40,0,1,1-40-40A40,40,0,0,1,128,184Z" opacity="0.2" />
-      <path d="M210.3,56.34l-80-24A8,8,0,0,0,120,40V148.26A48,48,0,1,0,136,184V98.75l69.7,20.91A8,8,0,0,0,216,112V64A8,8,0,0,0,210.3,56.34ZM88,216a32,32,0,1,1,32-32A32,32,0,0,1,88,216ZM200,101.25l-64-19.2V50.75L200,70Z" />
-    </svg>
-  );
-}
-
 interface Track {
   name: string;
   url: string;
   artist: { name?: string; "#text"?: string };
+  image?: { size: string; "#text": string }[];
   date?: { uts: string };
   "@attr"?: { nowplaying: string };
 }
@@ -54,23 +41,62 @@ export default function NowPlaying() {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading || !track) return null;
-
-  const isNowPlaying = track["@attr"]?.nowplaying === "true";
-  const label = isNowPlaying ? "Now playing" : "Last played";
+  const isNowPlaying = track?.["@attr"]?.nowplaying === "true";
+  const artist = track?.artist.name || track?.artist["#text"];
+  const cover = track?.image?.find((i) => i.size === "extralarge")?.["#text"];
 
   return (
-    <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-      <MusicNoteIcon />
-      <span className="font-medium text-gray-700 dark:text-gray-300">{label}:</span>
-      <a
-        href={track.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-accent dark:hover:text-accent-light transition-colors"
-      >
-        {track.artist.name || track.artist["#text"]} – {track.name}
-      </a>
+    <div className="flex h-full flex-col">
+      {/* Record sleeve with the vinyl peeking out */}
+      <div className="relative mb-6 aspect-square w-[70%] max-w-40">
+        <div
+          className={`absolute inset-y-[4%] left-[38%] aspect-square rounded-full bg-[repeating-radial-gradient(circle,#111_0_2px,#222_2px_4px)] shadow-lg ${
+            isNowPlaying ? "animate-spin-slow" : ""
+          }`}
+          aria-hidden="true"
+        >
+          <span className="absolute inset-[34%] rounded-full bg-cobalt" />
+          <span className="absolute inset-[47%] rounded-full bg-lime" />
+        </div>
+        <div className="relative size-full overflow-hidden rounded-md bg-white shadow-lg">
+          {cover ? (
+            <img src={cover} alt="" className="size-full object-cover" loading="lazy" />
+          ) : (
+            <span className="grid size-full place-items-center font-display text-5xl text-cobalt">
+              ♪
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-auto min-w-0">
+        {loading ? (
+          <p className="text-sm text-ink-faint">Tuning in…</p>
+        ) : track ? (
+          <a href={track.url} target="_blank" rel="noopener noreferrer" className="group block">
+            <span className="block truncate font-display text-lg font-bold tracking-tight group-hover:underline">
+              {track.name}
+            </span>
+            <span className="block truncate text-sm text-ink-soft">{artist}</span>
+            <span className="mt-3 flex items-center gap-2 text-xs text-ink-soft">
+              {isNowPlaying && (
+                <span className="flex h-3 items-end gap-[2px]" aria-hidden="true">
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      className="w-[3px] animate-[eq_900ms_ease-in-out_infinite_alternate] rounded-full bg-ink"
+                      style={{ animationDelay: `${i * 180}ms`, height: "100%" }}
+                    />
+                  ))}
+                </span>
+              )}
+              {isNowPlaying ? "Playing right now on Last.fm" : "Last played on Last.fm"}
+            </span>
+          </a>
+        ) : (
+          <p className="text-sm text-ink-faint">Silence, for now.</p>
+        )}
+      </div>
     </div>
   );
 }

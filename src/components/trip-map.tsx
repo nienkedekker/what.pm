@@ -7,7 +7,6 @@ const DottedMap = DottedMapModule.default || DottedMapModule;
 
 interface Trip {
   title: string;
-  slug: { current: string };
   location: string;
   date: string;
 }
@@ -126,188 +125,79 @@ function getCoords(location: string): { lat: number; lng: number } | null {
 }
 
 export default function TripMap({ trips }: Props) {
-  const now = new Date();
-
-  const {
-    svgMap,
-    tripsWithCoords,
-    previousTripsWithCoords,
-    mapDimensions,
-    pastCount,
-    futureCount,
-    previousCount,
-  } = useMemo(() => {
+  const { svgMap, pins, mapDimensions } = useMemo(() => {
     const map = new DottedMap({ height: 55, grid: "diagonal" });
 
-    const tripsWithCoords = trips
-      .map((trip) => ({
-        ...trip,
-        coords: getCoords(trip.location),
-        isFuture: new Date(trip.date) > now,
-      }))
-      .filter((trip) => trip.coords !== null);
-
-    const pastCount = tripsWithCoords.filter((t) => !t.isFuture).length;
-    const futureCount = tripsWithCoords.filter((t) => t.isFuture).length;
-
-    // Get coordinates for previous trips (no blog posts)
-    const previousTripsWithCoords = previousTrips
-      .map((location) => ({ location, coords: getCoords(location) }))
-      .filter((t) => t.coords !== null);
-    const previousCount = previousTripsWithCoords.length;
-
-    // Get pin positions for overlay (only trips with blog posts are clickable)
-    const pinPositions = tripsWithCoords
-      .map((trip) => {
-        if (trip.coords) {
-          const point = map.getPin({
-            lat: trip.coords.lat,
-            lng: trip.coords.lng,
-          });
-          return { ...trip, point };
-        }
-        return null;
-      })
-      .filter(Boolean);
-
-    // Get pin positions for previous trips (for tooltip overlay)
-    const previousPinPositions = previousTripsWithCoords
-      .map((trip) => {
-        if (trip.coords) {
-          const point = map.getPin({
-            lat: trip.coords.lat,
-            lng: trip.coords.lng,
-          });
-          return { ...trip, point };
-        }
-        return null;
-      })
-      .filter(Boolean);
-
-    // Add pins for previous trips (dark grey, no links)
-    previousTripsWithCoords.forEach((trip) => {
-      if (trip.coords) {
-        map.addPin({
-          lat: trip.coords.lat,
-          lng: trip.coords.lng,
-          svgOptions: {
-            color: "#71717a",
-            radius: 0.6,
-          },
-        });
-      }
+    // Trips I wrote about get the accent colour; the older ones stay quiet.
+    // Deduplicate by location so each city gets a single pin.
+    const seen = new Set<string>();
+    const places = [
+      ...trips.map((trip) => ({ label: trip.location, highlight: true })),
+      ...previousTrips.map((location) => ({ label: location, highlight: false })),
+    ].filter(({ label }) => {
+      const key = label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
 
-    // Add pins for each trip with blog post
-    tripsWithCoords.forEach((trip) => {
-      if (trip.coords) {
-        map.addPin({
-          lat: trip.coords.lat,
-          lng: trip.coords.lng,
-          svgOptions: {
-            color: trip.isFuture ? "#0ea5e9" : "#d97706",
-            radius: 0.6,
-          },
-        });
-      }
+    const pins = places.flatMap((place) => {
+      const coords = getCoords(place.label);
+      return coords ? [{ ...place, point: map.getPin(coords) }] : [];
     });
 
     const svg = map.getSVG({
-      radius: 0.35,
-      color: "#d4d4d8",
+      radius: 0.3,
+      color: "currentColor",
       shape: "circle",
       backgroundColor: "transparent",
     });
 
     return {
       svgMap: svg,
-      tripsWithCoords: pinPositions,
-      previousTripsWithCoords: previousPinPositions,
+      pins,
       mapDimensions: { width: map.image.width, height: map.image.height },
-      pastCount,
-      futureCount,
-      previousCount,
     };
   }, [trips]);
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={80}>
       <div className="relative w-full">
         <div
-          className="w-full [&_svg]:w-full [&_svg]:h-auto dark:invert dark:hue-rotate-180"
+          className="w-full text-ink-faint/40 [&_svg]:h-auto [&_svg]:w-full"
           dangerouslySetInnerHTML={{ __html: svgMap }}
         />
 
-        {/* Previous trips tooltip overlay (rendered first so clickable trips are on top) */}
         <div className="absolute inset-0">
-          {previousTripsWithCoords.map((trip: any) => (
-            <Tooltip key={trip.location}>
+          {pins.map((pin) => (
+            <Tooltip key={pin.label}>
               <TooltipTrigger asChild>
-                <div
-                  className="absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
+                <button
+                  type="button"
+                  aria-label={pin.label}
+                  className="group absolute grid size-5 -translate-x-1/2 -translate-y-1/2 place-items-center"
                   style={{
-                    left: `${(trip.point.x / mapDimensions.width) * 100}%`,
-                    top: `${(trip.point.y / mapDimensions.height) * 100}%`,
-                  }}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{trip.location}</p>
-              </TooltipContent>
-            </Tooltip>
-          ))}
-        </div>
-
-        {/* Clickable overlay markers */}
-        <div className="absolute inset-0 pointer-events-none">
-          {tripsWithCoords.map((trip: any) => (
-            <Tooltip key={trip.slug.current}>
-              <TooltipTrigger asChild>
-                <a
-                  href={`/trips/${trip.slug.current}`}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full hover:scale-125 transition-transform cursor-pointer pointer-events-auto group ${
-                    trip.isFuture
-                      ? "[&>span]:bg-sky-500/20 [&>span]:group-hover:bg-sky-500/40 dark:[&>span]:bg-sky-400/20 dark:[&>span]:group-hover:bg-sky-400/40"
-                      : "[&>span]:bg-amber-500/20 [&>span]:group-hover:bg-amber-500/40 dark:[&>span]:bg-amber-400/20 dark:[&>span]:group-hover:bg-amber-400/40"
-                  }`}
-                  style={{
-                    left: `${(trip.point.x / mapDimensions.width) * 100}%`,
-                    top: `${(trip.point.y / mapDimensions.height) * 100}%`,
+                    left: `${(pin.point.x / mapDimensions.width) * 100}%`,
+                    top: `${(pin.point.y / mapDimensions.height) * 100}%`,
                   }}
                 >
-                  <span className="absolute inset-0 rounded-full transition-colors" />
-                </a>
+                  {pin.highlight && (
+                    <span className="absolute size-2.5 animate-[pulse-ring_2.4s_ease-out_infinite] rounded-full bg-accent" />
+                  )}
+                  <span
+                    className={`relative rounded-full ring-2 transition-transform group-hover:scale-150 ${
+                      pin.highlight
+                        ? "size-2.5 bg-accent ring-card sm:size-3"
+                        : "size-2 bg-ink-faint ring-card sm:size-2.5"
+                    }`}
+                  />
+                </button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  {trip.title}
-                  {trip.isFuture ? " (upcoming)" : ""}
-                </p>
+                <p>{pin.label}</p>
               </TooltipContent>
             </Tooltip>
           ))}
-        </div>
-
-        {/* Legend */}
-        <div className="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-3 bg-white/80 dark:bg-neutral-900/80 px-2 py-1 rounded">
-          {pastCount > 0 && (
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-600"></span>
-              {pastCount} recents
-            </span>
-          )}
-          {futureCount > 0 && (
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-sky-500"></span>
-              {futureCount} planned
-            </span>
-          )}
-          {previousCount > 0 && (
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-zinc-500"></span>
-              previous 5 years
-            </span>
-          )}
         </div>
       </div>
     </TooltipProvider>
