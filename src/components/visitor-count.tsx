@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function HitCounter() {
+export default function VisitorCount() {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -9,13 +9,13 @@ export default function HitCounter() {
 
     if (hasVisited) {
       // Just fetch the count without incrementing
-      fetch("/api/hit-counter")
+      fetch("/api/visitor-count")
         .then((res) => res.json())
         .then((data) => setCount(data.count))
         .catch(() => setCount(0));
     } else {
       // Increment and fetch
-      fetch("/api/hit-counter", { method: "POST" })
+      fetch("/api/visitor-count", { method: "POST" })
         .then((res) => res.json())
         .then((data) => {
           setCount(data.count);

@@ -1,5 +1,5 @@
 ---
-import HitCounter from "./hit-counter";
+import VisitorCount from "./visitor-count";
 
 const email = "nienkedekker@gmail.com";
 
@@ -44,7 +44,7 @@ const isExternal = (href: string) => /^(https?:|mailto:)/.test(href);
       <p class="text-sm text-ink-faint">
         © {new Date().getFullYear()} · Made in Amsterdam
       </p>
-      <HitCounter client:load />
+      <VisitorCount client:load />
     </div>
 
     <div class="grid grid-cols-2 gap-x-16 gap-y-8 text-sm">
