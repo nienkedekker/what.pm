@@ -2,7 +2,6 @@
 import { ClientRouter } from "astro:transitions";
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
-import { kanji } from "../data/home";
 import "../styles/global.css";
 
 interface Props {
@@ -22,11 +21,6 @@ const siteTitle =
 const canonicalURL = new URL(
   Astro.url.pathname,
   Astro.site || "https://nienke.dev"
-);
-
-// Only the glyphs the Japanese card uses, so the JP font stays tiny
-const kanjiGlyphs = encodeURIComponent(
-  kanji.map((k) => k.char + k.reading).join("") + "日本語"
 );
 ---
 
@@ -56,7 +50,7 @@ const kanjiGlyphs = encodeURIComponent(
       rel="stylesheet"
     />
     <link
-      href={`https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap&text=${kanjiGlyphs}`}
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="canonical" href={canonicalURL} />
