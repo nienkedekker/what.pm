@@ -50,7 +50,7 @@ export default function KanjiCard() {
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-3">
         <h3 className="font-medium tracking-[-0.01em]">Learning Japanese</h3>
-        {progress && <span className="text-xs text-ink-soft">Level {progress.level}</span>}
+        {progress && <span className="text-xs text-ink-soft">WaniKani level {progress.level}</span>}
       </div>
 
       <button
@@ -82,9 +82,9 @@ export default function KanjiCard() {
 
       <div>
         <div className="flex items-baseline justify-between gap-3 text-sm">
-          <span className="text-ink-soft">Kanji learned on WaniKani</span>
+          <span className="text-ink-soft">Kanji learned</span>
           {progress && (
-            <span className="tabular-nums">
+            <span className="whitespace-nowrap tabular-nums">
               {progress.kanji.learned.toLocaleString("en-US")}{" "}
               <span className="text-ink-faint">
                 / {progress.kanji.total.toLocaleString("en-US")}
