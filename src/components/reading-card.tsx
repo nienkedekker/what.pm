@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 
+// Spine styles follow the theme: mostly greys, one in the accent
 const SPINES = [
-  { background: "#2b35ff", color: "#fff" },
-  { background: "#111114", color: "#fff" },
-  { background: "#c6f432", color: "#111114" },
-  { background: "#d9d9df", color: "#111114" },
-  { background: "#9aa0ff", color: "#111114" },
+  "bg-accent text-white",
+  "bg-ink text-paper",
+  "bg-panel-2 text-ink ring-1 ring-inset ring-line-strong",
+  "bg-ink-faint text-paper",
+  "bg-panel-2 text-ink ring-1 ring-inset ring-line-strong",
 ];
 
 // Stable spine height per title, so the shelf doesn't jump between renders
@@ -31,7 +32,7 @@ export default function ReadingCard() {
       href={summary?.url ?? whatpmUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-ink underline decoration-accent decoration-[1.5px] underline-offset-4 hover:text-accent"
+      className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
     >
       what.pm
     </a>
@@ -40,15 +41,16 @@ export default function ReadingCard() {
   return (
     <div className="flex h-full flex-col gap-6 sm:flex-row sm:items-end">
       <div className="sm:w-2/5">
+        <h3 className="mb-6 font-medium tracking-[-0.01em]">Reading</h3>
         {summary || failed ? (
-          <p className="font-display text-8xl leading-none font-bold tracking-[-0.05em] text-accent">
+          <p className="text-gradient text-7xl leading-none font-semibold tracking-[-0.05em] tabular-nums">
             {summary ? summary.counts.books : "–"}
           </p>
         ) : (
-          <div className="h-24 w-32 animate-pulse rounded-2xl bg-line" />
+          <div className="h-[4.5rem] w-28 animate-pulse rounded-xl bg-line" />
         )}
         {summary ? (
-          <p className="mt-3 text-ink-soft">
+          <p className="mt-3 text-sm text-ink-soft">
             books read in {summary.year} so far. These are the latest few, straight from {logLink}.
           </p>
         ) : failed ? (
@@ -62,23 +64,22 @@ export default function ReadingCard() {
 
       <div className="flex-1">
         <ul
-          className="flex h-44 items-end gap-1.5 border-b-2 border-ink px-2"
+          className="flex h-44 items-end gap-1.5 border-b border-line-strong px-2"
           aria-label={books.length ? "Most recently finished books" : undefined}
         >
           {books.map((book, i) => {
-            const spine = SPINES[i % SPINES.length];
             return (
               <li
                 key={`${book.title}-${book.author}`}
-                className="group relative flex flex-1 cursor-default justify-center rounded-t-[3px] pt-3 transition-transform duration-300 hover:-translate-y-2"
-                style={{ height: `${spineHeight(book.title)}%`, ...spine }}
+                className={`group relative flex flex-1 cursor-default justify-center rounded-t-[4px] pt-3 transition-transform duration-300 hover:-translate-y-2 ${SPINES[i % SPINES.length]}`}
+                style={{ height: `${spineHeight(book.title)}%` }}
                 tabIndex={0}
                 aria-label={`${book.title} by ${book.author}`}
               >
-                <span className="truncate font-display text-sm font-semibold [writing-mode:vertical-rl]">
+                <span className="truncate text-xs font-medium [writing-mode:vertical-rl]">
                   {book.title}
                 </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-44 -translate-x-1/2 rounded-full bg-ink px-3 py-1 font-mono text-[0.7rem] text-paper opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100">
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-44 -translate-x-1/2 rounded-md border border-line bg-panel px-2.5 py-1 text-xs text-ink opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus:opacity-100">
                   {book.author}
                 </span>
               </li>

@@ -1,58 +1,40 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
+import ArrowUpRight from "phosphor-astro/ArrowUpRight.astro";
 import { links, linksIntro } from "../data/links";
 
 const hostname = (href: string) => new URL(href).hostname.replace(/^www\./, "");
 ---
 
-<PageLayout title="Links">
-  <p class="mb-10 max-w-2xl text-xl text-ink-soft">{linksIntro}</p>
-
-  <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+<PageLayout title="Links" intro={linksIntro}>
+  <ul
+    class="grid grid-cols-1 overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-3"
+  >
     {
       links.map(({ name, href }, i) => (
-        <li data-reveal style={`--delay: ${(i % 3) * 60}ms`}>
+        <li
+          data-reveal
+          style={`--delay: ${(i % 3) * 50}ms`}
+          class="-mr-px -mb-px border-r border-b border-line"
+        >
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            class="link-card card group flex h-full items-end justify-between gap-4 p-6"
+            class="group flex h-full items-center justify-between gap-4 bg-panel px-5 py-5 transition-colors hover:bg-panel-2"
           >
             <span class="min-w-0">
-              <span class="block font-display text-2xl leading-tight font-bold tracking-[-0.03em] [overflow-wrap:anywhere]">
+              <span class="block font-medium [overflow-wrap:anywhere]">
                 {name}
               </span>
-              <span class="mt-2 block truncate font-mono text-xs text-ink-faint">
+              <span class="mt-1 block truncate font-mono text-xs text-ink-faint">
                 {hostname(href)}
               </span>
             </span>
-            <span class="grid size-10 shrink-0 place-items-center rounded-full border border-line text-ink transition-transform duration-300 group-hover:rotate-45">
-              <ArrowUpRightBold class="size-4" />
-            </span>
+            <ArrowUpRight class="size-4 shrink-0 text-ink-faint transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" />
           </a>
         </li>
       ))
     }
   </ul>
 </PageLayout>
-
-<style>
-  /* On hover a card turns cobalt */
-  .link-card {
-    transition:
-      background-color 150ms,
-      border-color 150ms,
-      color 150ms;
-  }
-
-  .link-card:hover {
-    --ink: #ffffff;
-    --ink-faint: #c3c7ff;
-    --line: rgb(255 255 255 / 0.35);
-    --card: transparent;
-    background: #2b35ff;
-    border-color: #2b35ff;
-    color: #fff;
-  }
-</style>

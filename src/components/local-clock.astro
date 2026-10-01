@@ -2,10 +2,13 @@
 // Live Amsterdam time, plus a guess at what I'm doing right now
 ---
 
-<span class="inline-flex flex-wrap items-center gap-x-2">
+<span class="inline-flex items-center gap-x-2">
   <time data-clock class="tabular-nums">--:--</time>
-  <span aria-hidden="true">·</span>
-  <span data-clock-status>probably online</span>
+  <!-- The status guess only fits on wider screens -->
+  <span class="hidden items-center gap-x-2 sm:inline-flex">
+    <span aria-hidden="true" class="text-ink-faint">·</span>
+    <span data-clock-status>probably online</span>
+  </span>
 </span>
 
 <script>

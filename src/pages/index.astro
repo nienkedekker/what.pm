@@ -6,9 +6,9 @@ import ReadingCard from "../components/reading-card";
 import MediaChart from "../components/media-chart";
 import LocalClock from "../components/local-clock.astro";
 import { getEntry, render } from "astro:content";
-import ArrowRightBold from "phosphor-astro/ArrowRightBold.astro";
-import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
-import MapPinFill from "phosphor-astro/MapPinFill.astro";
+import ArrowRight from "phosphor-astro/ArrowRight.astro";
+import ArrowUpRight from "phosphor-astro/ArrowUpRight.astro";
+import MapPin from "phosphor-astro/MapPin.astro";
 import { links } from "../data/links";
 import { kanji, kanjiLearned, joyoKanji } from "../data/home";
 
@@ -28,137 +28,145 @@ const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
 const kanjiProgress = Math.round((kanjiLearned / joyoKanji) * 100);
 
 const sectionHeading =
-  "font-display text-4xl font-bold tracking-[-0.035em] sm:text-6xl";
+  "text-gradient text-3xl font-semibold tracking-[-0.035em] sm:text-5xl";
+const cardTitle = "font-medium tracking-[-0.01em]";
 ---
 
 <BaseLayout>
   <!-- ─────────────── Hero ─────────────── -->
   <section
-    class="mx-auto grid max-w-6xl items-center gap-y-14 px-4 pt-12 sm:pt-20 lg:grid-cols-12 lg:gap-x-12"
+    class="mx-auto grid max-w-6xl items-center gap-y-16 px-4 pt-16 sm:pt-28 lg:grid-cols-12 lg:gap-x-16"
   >
     <div class="lg:col-span-7">
-      <p
-        class="rise flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-soft"
-      >
-        <span class="relative flex size-2" aria-hidden="true">
+      <p class="rise chip">
+        <span class="relative flex size-1.5" aria-hidden="true">
           <span
             class="absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full bg-accent"
           ></span>
-          <span class="relative size-2 rounded-full bg-accent"></span>
+          <span class="relative size-1.5 rounded-full bg-accent"></span>
         </span>
-        Amsterdam, NL
-        <span class="hidden sm:inline" aria-hidden="true">·</span>
+        Amsterdam
+        <span aria-hidden="true" class="text-ink-faint">·</span>
         <LocalClock />
       </p>
 
       <h1
-        class="rise mt-6 font-display text-[clamp(3.25rem,8vw,6.5rem)] leading-[0.95] font-bold tracking-[-0.04em]"
+        class="rise text-gradient mt-7 text-[clamp(3rem,7.5vw,5.5rem)] leading-[1.02] font-semibold tracking-[-0.045em]"
         style="--delay: 100ms"
       >
         Hoi, I'm Nienke.
       </h1>
 
       <div
-        class="rise mt-8 max-w-xl text-lg leading-relaxed text-ink-soft [&_a]:text-ink [&_a]:underline [&_a]:decoration-accent [&_a]:decoration-[1.5px] [&_a]:underline-offset-4 [&_a:hover]:text-accent [&_p+p]:mt-4"
+        class="rise mt-6 max-w-lg text-lg leading-relaxed text-ink-soft [&_a]:text-ink [&_a]:underline [&_a]:decoration-line-strong [&_a]:underline-offset-4 [&_a:hover]:decoration-ink [&_p+p]:mt-4"
         style="--delay: 200ms"
       >
         <HomeIntro />
       </div>
 
       <div class="rise mt-9 flex flex-wrap gap-3" style="--delay: 300ms">
-        <a href="mailto:nienkedekker@gmail.com" class="btn btn-accent">
-          Get in touch <ArrowRightBold class="size-4" />
+        <a href="mailto:nienkedekker@gmail.com" class="btn btn-primary">
+          Get in touch <ArrowRight class="size-4" />
         </a>
-        <a href="/now" class="btn btn-ghost">
-          What I'm up to <ArrowRightBold class="size-4" />
-        </a>
+        <a href="/now" class="btn btn-secondary">What I'm up to</a>
       </div>
     </div>
 
     <figure
-      class="rise group relative mx-auto w-full max-w-sm overflow-hidden rounded-[1.75rem] sm:max-w-md lg:col-span-5 lg:max-w-none"
-      style="--delay: 150ms"
+      class="rise relative mx-auto w-full max-w-sm rounded-[1.25rem] border border-line bg-panel p-1.5 shadow-[0_30px_120px_-40px_var(--glow)] sm:max-w-md lg:col-span-5 lg:max-w-none"
+      style="--delay: 200ms"
     >
       <img
         src="/nienke.jpg"
         alt="Nienke gazing out over the port of Hydra"
-        class="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        class="aspect-[4/5] w-full rounded-[0.9rem] object-cover"
         width="934"
         height="1168"
       />
       <figcaption
-        class="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-white/85 px-3 py-1.5 font-mono text-xs font-medium text-carbon backdrop-blur-md"
+        class="absolute bottom-5 left-5 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-xs text-white backdrop-blur-md"
       >
-        <MapPinFill class="size-3.5 text-cobalt" /> Hydra, Greece
+        <MapPin class="size-3.5" /> Hydra, Greece
       </figcaption>
     </figure>
   </section>
 
-  <!-- ─────────────── Right now (bento) ─────────────── -->
+  <!-- ─────────────── Right now ─────────────── -->
   <section
-    class="mx-auto mt-28 max-w-6xl px-4 sm:mt-36"
+    class="mx-auto mt-32 max-w-6xl px-4 sm:mt-44"
     aria-labelledby="now-heading"
   >
     <div
       data-reveal
-      class="mb-10 flex flex-wrap items-end justify-between gap-4"
+      class="mb-10 flex flex-wrap items-end justify-between gap-6"
     >
       <div>
-        <h2 id="now-heading" class={sectionHeading}>
-          Right <span class="text-accent">now</span>
-        </h2>
+        <h2 id="now-heading" class={sectionHeading}>Right now</h2>
+        <p class="mt-3 max-w-md text-ink-soft">
+          Live from the things I log, read, study and listen to.
+        </p>
       </div>
-      <a href="/now" class="btn btn-ghost !py-2 !text-sm">
+      <a
+        href="/now"
+        class="group flex items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+      >
         The full /now page{nowUpdated && ` · ${nowUpdated}`}
-        <ArrowRightBold class="size-3.5" />
+        <ArrowRight
+          class="size-3.5 transition-transform group-hover:translate-x-0.5"
+        />
       </a>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <!-- This year in media, live from what.pm -->
-      <article data-reveal class="card p-6 sm:col-span-2 sm:p-8">
+      <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
         <MediaChart client:visible />
       </article>
 
       <!-- Japanese -->
       <article
         data-reveal
-        style="--delay: 80ms"
-        class="card on-accent relative flex flex-col overflow-hidden bg-cobalt p-6 sm:p-8 lg:row-span-2"
+        style="--delay: 60ms"
+        class="card flex flex-col p-6 sm:p-7 lg:row-span-2"
       >
+        <h3 class={cardTitle}>Learning Japanese</h3>
         <button
           type="button"
           id="kanji-card"
-          class="group mb-6 flex flex-1 flex-col items-center justify-center text-center"
+          class="group my-8 flex flex-1 flex-col items-center justify-center text-center"
           aria-label="Show another kanji"
           data-kanji={JSON.stringify(kanji)}
         >
           <span
             id="kanji-char"
-            class="font-jp text-[8.5rem] leading-none font-black transition-colors group-hover:text-lime"
+            class="text-gradient font-jp text-[7.5rem] leading-none font-medium"
             >{kanji[0].char}</span
           >
-          <span
-            id="kanji-reading"
-            class="mt-6 font-jp text-lg font-black text-lime"
+          <span id="kanji-reading" class="mt-6 font-jp text-accent"
             >{kanji[0].reading}</span
           >
-          <span id="kanji-meaning" class="mt-1 text-ink-soft" aria-live="polite"
-            >{kanji[0].meaning}</span
+          <span
+            id="kanji-meaning"
+            class="mt-1 text-sm text-ink-soft"
+            aria-live="polite">{kanji[0].meaning}</span
           >
           <span
-            class="mt-4 font-mono text-[0.7rem] text-ink-faint opacity-0 transition-opacity group-hover:opacity-100"
+            class="mt-4 text-xs text-ink-faint opacity-0 transition-opacity group-hover:opacity-100"
             >Click for another</span
           >
         </button>
         <div>
-          <p class="text-sm font-medium">Learning Japanese</p>
-          <p class="text-sm text-ink-soft">
-            {kanjiLearned}+ of {joyoKanji.toLocaleString("en-US")} jōyō kanji
-          </p>
-          <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-line">
+          <div class="flex items-baseline justify-between text-sm">
+            <span class="text-ink-soft">Jōyō kanji learned</span>
+            <span class="tabular-nums"
+              >{kanjiLearned}+ <span class="text-ink-faint"
+                >/ {joyoKanji.toLocaleString("en-US")}</span
+              ></span
+            >
+          </div>
+          <div class="mt-3 h-1 overflow-hidden rounded-full bg-line">
             <div
-              class="h-full rounded-full bg-lime"
+              class="h-full rounded-full bg-accent"
               style={`width: ${kanjiProgress}%`}
             >
             </div>
@@ -169,36 +177,30 @@ const sectionHeading =
       <!-- Now playing -->
       <article
         data-reveal
-        style="--delay: 160ms"
-        class="card on-lime bg-lime p-6 sm:p-8 lg:row-span-2"
+        style="--delay: 120ms"
+        class="card p-6 sm:p-7 lg:row-span-2"
       >
         <NowPlaying client:load />
       </article>
 
       <!-- Reading, live from what.pm -->
-      <article data-reveal class="card p-6 sm:col-span-2 sm:p-8">
+      <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
         <ReadingCard client:visible />
       </article>
 
       <!-- Places -->
       <article
         data-reveal
-        class="card overflow-hidden p-6 sm:col-span-2 sm:p-8 lg:col-span-4"
+        class="card overflow-hidden p-6 sm:col-span-2 sm:p-7 lg:col-span-4"
       >
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h3
-              class="font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl"
-            >
-              Where I've been lately
-            </h3>
-          </div>
-          <div class="flex items-center gap-4 font-mono text-xs text-ink-soft">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h3 class={cardTitle}>Where I've been lately</h3>
+          <div class="flex items-center gap-4 text-xs text-ink-soft">
             <span class="flex items-center gap-1.5"
-              ><span class="size-2 rounded-full bg-accent"></span> most recent</span
+              ><span class="size-1.5 rounded-full bg-accent"></span> Most recent</span
             >
             <span class="flex items-center gap-1.5"
-              ><span class="size-2 rounded-full bg-ink-faint"></span> the last five
+              ><span class="size-1.5 rounded-full bg-ink-faint"></span> Last five
               years</span
             >
           </div>
@@ -214,35 +216,44 @@ const sectionHeading =
   {
     friends.length > 0 && (
       <section
-        class="mx-auto mt-28 max-w-6xl px-4 sm:mt-36"
+        class="mx-auto mt-32 max-w-6xl px-4 sm:mt-44"
         aria-labelledby="friends-heading"
       >
         <div
           data-reveal
-          class="mb-10 flex flex-wrap items-end justify-between gap-4"
+          class="mb-10 flex flex-wrap items-end justify-between gap-6"
         >
           <div>
             <h2 id="friends-heading" class={sectionHeading}>
-              Friends &amp; <span class="text-accent">inspiration</span>
+              Friends &amp; inspiration
             </h2>
+            <p class="mt-3 max-w-md text-ink-soft">
+              People who make the web a better place.
+            </p>
           </div>
-          <a href="/links" class="btn btn-ghost !py-2 !text-sm">
+          <a
+            href="/links"
+            class="group flex items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
+          >
             All links
-            <ArrowRightBold class="size-3.5" />
+            <ArrowRight class="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
 
-        <ul data-reveal class="flex flex-wrap gap-2.5">
+        <ul
+          data-reveal
+          class="grid grid-cols-2 overflow-hidden rounded-2xl border border-line sm:grid-cols-3 lg:grid-cols-4"
+        >
           {friends.map(({ name, href }) => (
-            <li>
+            <li class="-mr-px -mb-px border-r border-b border-line">
               <a
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center gap-2 rounded-full border border-line bg-card px-5 py-2.5 font-display text-lg font-semibold tracking-tight transition-colors hover:border-cobalt hover:bg-cobalt hover:text-white sm:text-xl"
+                class="group flex h-full items-center justify-between gap-3 bg-panel px-4 py-4 text-sm text-ink-soft transition-colors hover:bg-panel-2 hover:text-ink sm:px-5"
               >
-                {name}
-                <ArrowUpRightBold class="size-4 text-ink-faint transition-colors group-hover:text-white" />
+                <span class="[overflow-wrap:anywhere]">{name}</span>
+                <ArrowUpRight class="size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
               </a>
             </li>
           ))}
@@ -267,10 +278,10 @@ const sectionHeading =
       index = (index + 1) % kanji.length;
       char.animate(
         [
-          { opacity: 0, transform: "translateY(8px)" },
-          { opacity: 1, transform: "none" },
+          { opacity: 0, filter: "blur(6px)" },
+          { opacity: 1, filter: "blur(0)" },
         ],
-        { duration: 300, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" }
+        { duration: 350, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" }
       );
       char.textContent = kanji[index].char;
       reading.textContent = kanji[index].reading;

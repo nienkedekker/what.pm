@@ -136,7 +136,7 @@ export default function TripMap() {
     <TooltipProvider delayDuration={80}>
       <div className="relative w-full">
         <div
-          className="w-full text-ink-faint/40 [&_svg]:h-auto [&_svg]:w-full"
+          className="w-full text-ink-faint/35 [&_svg]:h-auto [&_svg]:w-full"
           dangerouslySetInnerHTML={{ __html: svgMap }}
         />
 
@@ -159,8 +159,8 @@ export default function TripMap() {
                   <span
                     className={`relative rounded-full ring-2 transition-transform group-hover:scale-150 ${
                       pin.highlight
-                        ? "size-2.5 bg-accent ring-card sm:size-3"
-                        : "size-2 bg-ink-faint ring-card sm:size-2.5"
+                        ? "size-2.5 bg-accent ring-panel sm:size-3"
+                        : "size-1.5 bg-ink-faint ring-panel sm:size-2"
                     }`}
                   />
                 </button>

@@ -4,7 +4,7 @@ import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 // Categorical order is fixed: books, movies, TV. Validated for CVD separation
 // and contrast against the light and dark card surfaces.
 const SERIES = [
-  { key: "books", label: "Books", noun: "books", swatch: "bg-[#2b35ff] dark:bg-[#6b73ff]" },
+  { key: "books", label: "Books", noun: "books", swatch: "bg-[#5e6ad2] dark:bg-[#7c85f5]" },
   { key: "movies", label: "Movies", noun: "movies", swatch: "bg-[#eb6834] dark:bg-[#d95926]" },
   {
     key: "shows",
@@ -60,16 +60,16 @@ export default function MediaChart() {
 
   return (
     <div className="flex h-full flex-col">
-      <h3 className="font-display text-3xl leading-[1.05] font-bold tracking-[-0.03em] sm:text-4xl">
+      <h3 className="font-medium tracking-[-0.01em]">
         {summary ? `${summary.year}, month by month` : "This year, month by month"}
       </h3>
-      <p className="mt-2 max-w-md text-ink-soft">
+      <p className="mt-1 max-w-md text-sm text-ink-soft">
         Everything I've read and watched, as logged on{" "}
         <a
           href={summary?.url ?? whatpmUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ink underline decoration-accent decoration-[1.5px] underline-offset-4 hover:text-accent"
+          className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
         >
           what.pm
         </a>
@@ -168,7 +168,7 @@ export default function MediaChart() {
 
                       {/* Hover / focus tooltip */}
                       {!upcoming && (
-                        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 rounded-xl bg-ink px-3 py-2 text-xs text-paper opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 rounded-lg border border-line bg-panel px-3 py-2 text-xs text-ink opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                           <p className="mb-1 font-medium">{name}</p>
                           {SERIES.map(({ key, label, swatch }) => (
                             <p key={key} className="flex items-center gap-2">

@@ -17,9 +17,7 @@ const { Content } = await render(page);
   intro={page.data.description}
   lastUpdated={page.data.lastUpdated}
 >
-  <article
-    class="card prose mx-auto max-w-3xl px-6 py-10 sm:px-12 sm:py-14 lg:mx-0"
-  >
+  <article class="prose max-w-2xl border-t border-line pt-10">
     <Content />
   </article>
 </PageLayout>

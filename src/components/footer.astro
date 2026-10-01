@@ -1,89 +1,110 @@
 ---
-import GithubLogoDuotone from "phosphor-astro/GithubLogoDuotone.astro";
-import LinkedinLogoDuotone from "phosphor-astro/LinkedinLogoDuotone.astro";
-import ArrowUpRightBold from "phosphor-astro/ArrowUpRightBold.astro";
+import ArrowRight from "phosphor-astro/ArrowRight.astro";
 import HitCounter from "./hit-counter";
 
 const email = "nienkedekker@gmail.com";
 
-const socials = [
+const columns = [
   {
-    href: "https://github.com/nienkedekker",
-    label: "GitHub",
-    Icon: GithubLogoDuotone,
+    title: "Site",
+    links: [
+      { href: "/now", label: "Now" },
+      { href: "/uses", label: "Uses" },
+      { href: "/links", label: "Links" },
+      { href: "/guestbook", label: "Guestbook" },
+      { href: "/colophon", label: "Colophon" },
+    ],
   },
   {
-    href: "https://www.linkedin.com/in/nienke-dekker-15348ab1/",
-    label: "LinkedIn",
-    Icon: LinkedinLogoDuotone,
+    title: "Elsewhere",
+    links: [
+      { href: "https://github.com/nienkedekker", label: "GitHub" },
+      {
+        href: "https://www.linkedin.com/in/nienke-dekker-15348ab1/",
+        label: "LinkedIn",
+      },
+      { href: "https://www.what.pm/", label: "what.pm" },
+      { href: `mailto:${email}`, label: "Email" },
+    ],
   },
 ];
 
-const smallLinks = [
-  { href: "/colophon", label: "Colophon" },
-  { href: "/guestbook", label: "Guestbook" },
-  { href: "/links", label: "Links" },
-];
+const isExternal = (href: string) => /^(https?:|mailto:)/.test(href);
 ---
 
-<footer class="mx-auto mt-32 max-w-6xl px-4 pb-10">
+<section
+  class="relative mx-auto mt-40 max-w-6xl px-4 text-center"
+  aria-labelledby="say-hoi"
+>
   <div
-    class="on-accent relative overflow-hidden rounded-[1.75rem] bg-cobalt px-6 pt-12 pb-8 sm:px-12 sm:pt-16"
+    class="pointer-events-none absolute inset-x-0 -top-24 -z-10 mx-auto h-72 max-w-3xl bg-[radial-gradient(ellipse_50%_60%_at_50%_50%,var(--glow),transparent)]"
+    aria-hidden="true"
   >
-    <p class="relative text-lg text-ink-soft">
-      Got a question, a project, or a good book recommendation?
-    </p>
-    <a
-      href={`mailto:${email}`}
-      class="group relative mt-4 block font-display text-[clamp(4rem,15vw,11rem)] leading-[0.9] font-bold tracking-[-0.04em]"
-    >
-      Say <em class="text-lime">hoi</em><ArrowUpRightBold
-        class="ml-2 inline-block size-[0.5em] align-baseline transition-transform duration-300 group-hover:translate-x-2 group-hover:-translate-y-2"
-      />
+  </div>
+  <h2
+    id="say-hoi"
+    data-reveal
+    class="text-gradient text-5xl font-semibold tracking-[-0.04em] sm:text-7xl"
+  >
+    Say hoi.
+  </h2>
+  <p data-reveal class="mx-auto mt-5 max-w-md text-lg text-ink-soft">
+    Got a question, a project, or a good book recommendation?
+  </p>
+  <div data-reveal class="mt-8 flex flex-wrap justify-center gap-3">
+    <a href={`mailto:${email}`} class="btn btn-primary">
+      {email}
+      <ArrowRight class="size-4" />
     </a>
-    <p class="relative mt-5 font-mono text-sm text-ink-soft">{email}</p>
+    <a href="/guestbook" class="btn btn-secondary">Sign the guestbook</a>
+  </div>
+</section>
 
-    <div
-      class="relative mt-12 flex flex-col gap-6 border-t border-white/20 pt-6 sm:flex-row sm:items-center sm:justify-between"
-    >
-      <div
-        class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium"
-      >
-        {
-          socials.map(({ href, label, Icon }) => (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-1.5 transition-colors hover:text-lime"
-            >
-              <Icon class="size-4" />
-              {label}
-            </a>
-          ))
-        }
-        <span class="hidden text-white/40 sm:inline" aria-hidden="true">/</span>
-        {
-          smallLinks.map(({ href, label }) => (
-            <a
-              href={href}
-              class="text-ink-soft transition-colors hover:text-lime"
-            >
-              {label}
-            </a>
-          ))
-        }
-      </div>
+<footer class="mt-32 border-t border-line">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-[1fr_auto]">
+    <div class="flex flex-col gap-4">
+      <a href="/" class="flex items-center gap-2.5 text-sm font-semibold">
+        <span
+          class="grid size-6 place-items-center rounded-md bg-ink text-[0.65rem] font-bold text-paper"
+          aria-hidden="true">nd</span
+        >
+        Nienke Dekker
+      </a>
+      <p class="text-sm text-ink-faint">
+        © {new Date().getFullYear()} · Made in Amsterdam
+      </p>
       <HitCounter client:load />
+    </div>
+
+    <div class="grid grid-cols-2 gap-x-16 gap-y-8 text-sm">
+      {
+        columns.map(({ title, links }) => (
+          <div>
+            <p class="font-medium">{title}</p>
+            <ul class="mt-3 space-y-2">
+              {links.map(({ href, label }) => (
+                <li>
+                  <a
+                    href={href}
+                    class="text-ink-soft transition-colors hover:text-ink"
+                    {...(isExternal(href) && !href.startsWith("mailto:")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
   </div>
 
-  <div
-    class="mt-6 flex flex-col-reverse items-center justify-between gap-4 text-xs text-ink-faint sm:flex-row"
-  >
-    <p>© {new Date().getFullYear()} Nienke Dekker · Made in Amsterdam</p>
+  <div class="border-t border-line">
     <div
-      class="flex flex-wrap items-center justify-center gap-2 [image-rendering:pixelated]"
+      class="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-5 opacity-60 transition-opacity [image-rendering:pixelated] hover:opacity-100"
     >
       <img
         src="/buttons/poweredbymac.gif"
