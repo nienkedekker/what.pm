@@ -4,7 +4,6 @@ import TripMap from "../components/trip-map";
 import NowPlaying from "../components/now-playing";
 import ReadingCard from "../components/reading-card";
 import MediaChart from "../components/media-chart";
-import LocalClock from "../components/local-clock.astro";
 import { getEntry, render } from "astro:content";
 import ArrowRight from "phosphor-astro/ArrowRight.astro";
 import ArrowUpRight from "phosphor-astro/ArrowUpRight.astro";
@@ -38,20 +37,8 @@ const cardTitle = "font-medium tracking-[-0.01em]";
     class="mx-auto grid max-w-6xl items-center gap-y-16 px-4 pt-16 sm:pt-28 lg:grid-cols-12 lg:gap-x-16"
   >
     <div class="lg:col-span-7">
-      <p class="rise chip">
-        <span class="relative flex size-1.5" aria-hidden="true">
-          <span
-            class="absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full bg-accent"
-          ></span>
-          <span class="relative size-1.5 rounded-full bg-accent"></span>
-        </span>
-        Amsterdam
-        <span aria-hidden="true" class="text-ink-faint">·</span>
-        <LocalClock />
-      </p>
-
       <h1
-        class="rise text-ink mt-7 text-[clamp(3rem,7.5vw,5.5rem)] leading-[1.02] font-semibold tracking-[-0.045em]"
+        class="rise text-ink text-[clamp(3rem,7.5vw,5.5rem)] leading-[1.02] font-semibold tracking-[-0.045em]"
         style="--delay: 100ms"
       >
         Hoi, I'm Nienke.
