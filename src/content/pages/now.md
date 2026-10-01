@@ -22,9 +22,9 @@ I’ve gotten into journaling this year. I have a traveler’s notebook and a Ho
 
 ## Trips <img src="/images/now/cb353018.gif" alt="" width="20" height="20" class="kaomoji" />
 
-I’m planning a big trip to Japan next year. I’ll be hiking the [Kumano Kodo!](https://www.tb-kumano.jp/en/kumano-kodo/) I’m also hoping to go to Madeira, Taiwan and Thailand. I’m planning* a few short city breaks as well - London, Paris, and maybe Belgrade.
+I’m planning a big trip to Japan next year. I’ll be hiking the [Kumano Kodo!](https://www.tb-kumano.jp/en/kumano-kodo/) I’m also hoping to go to Madeira, Taiwan and Thailand. I’m planning\* a few short city breaks as well - London, Paris, and maybe Belgrade.
 
-_*I set up Google Flights alert and watched a bunch of TikToks_
+_\*I set up Google Flights alert and watched a bunch of TikToks_
 
 ## Logging <img src="/images/now/1c458f86.gif" alt="" width="20" height="20" class="kaomoji" />
 
@@ -36,7 +36,7 @@ I’m still logging everything I read and watch at [what.pm](https://www.what.pm
 - [Hunchback by Saou Ichikawa](https://www.goodreads.com/book/show/214986269-hunchback)
 - [Flashlight by Susan Choi](https://www.goodreads.com/book/show/219743621-flashlight)
 
-TV show wise, I rewatched all of [Legion](https://en.wikipedia.org/wiki/Legion_(TV_series)) this year. I forgot how good it was.
+TV show wise, I rewatched all of [Legion](<https://en.wikipedia.org/wiki/Legion_(TV_series)>) this year. I forgot how good it was.
 
 ## This website <img src="/images/now/6fe55c9d.gif" alt="" width="20" height="20" class="kaomoji" />
 

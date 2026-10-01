@@ -31,9 +31,7 @@ export function getGuestbookEntries() {
   return redis.lrange<GuestbookEntry>(GUESTBOOK_KEY, 0, GUESTBOOK_MAX - 1);
 }
 
-export async function addGuestbookEntry(
-  entry: Omit<GuestbookEntry, "id" | "createdAt">
-) {
+export async function addGuestbookEntry(entry: Omit<GuestbookEntry, "id" | "createdAt">) {
   const saved: GuestbookEntry = {
     ...entry,
     id: crypto.randomUUID(),
