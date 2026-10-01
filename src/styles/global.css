@@ -158,18 +158,6 @@
    Pieces
    --------------------------------------------------------------------------- */
 @layer components {
-  /* Soft white-to-grey fade on big headings */
-  .text-gradient {
-    background: linear-gradient(
-      180deg,
-      var(--ink) 30%,
-      color-mix(in oklab, var(--ink) 62%, transparent)
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
   .card {
     background: linear-gradient(180deg, var(--panel-2), var(--panel) 60%);
     border: 1px solid var(--line);

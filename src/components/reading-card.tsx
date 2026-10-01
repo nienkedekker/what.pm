@@ -43,7 +43,7 @@ export default function ReadingCard() {
       <div className="sm:w-2/5">
         <h3 className="mb-6 font-medium tracking-[-0.01em]">Reading</h3>
         {summary || failed ? (
-          <p className="text-gradient text-7xl leading-none font-semibold tracking-[-0.05em] tabular-nums">
+          <p className="text-ink text-7xl leading-none font-semibold tracking-[-0.05em] tabular-nums">
             {summary ? summary.counts.books : "–"}
           </p>
         ) : (
