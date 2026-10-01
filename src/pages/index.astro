@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import TripMap from "../components/trip-map";
 import NowPlaying from "../components/now-playing";
 import ReadingCard from "../components/reading-card";
 import MediaChart from "../components/media-chart";
@@ -173,28 +172,6 @@ const cardTitle = "font-medium tracking-[-0.01em]";
       <!-- Reading, live from what.pm -->
       <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
         <ReadingCard client:visible />
-      </article>
-
-      <!-- Places -->
-      <article
-        data-reveal
-        class="card overflow-hidden p-6 sm:col-span-2 sm:p-7 lg:col-span-4"
-      >
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <h3 class={cardTitle}>Where I've been lately</h3>
-          <div class="flex items-center gap-4 text-xs text-ink-soft">
-            <span class="flex items-center gap-1.5"
-              ><span class="size-1.5 rounded-full bg-accent"></span> Most recent</span
-            >
-            <span class="flex items-center gap-1.5"
-              ><span class="size-1.5 rounded-full bg-ink-faint"></span> Last five
-              years</span
-            >
-          </div>
-        </div>
-        <div class="mt-6 sm:-mx-4">
-          <TripMap client:visible />
-        </div>
       </article>
     </div>
   </section>
