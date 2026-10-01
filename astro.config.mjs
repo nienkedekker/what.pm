@@ -1,14 +1,17 @@
 import { defineConfig, envField } from "astro/config";
-import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   site: "https://nienke.dev",
   adapter: vercel(),
+  // The guestbook was retired; send old links home
+  redirects: {
+    "/guestbook": "/",
+  },
   env: {
     schema: {
-      // Upstash Redis (guestbook + hit counter), provisioned via Vercel
+      // Upstash Redis (visitor counter), provisioned via Vercel
       KV_REST_API_URL: envField.string({ context: "server", access: "secret" }),
       KV_REST_API_TOKEN: envField.string({
         context: "server",
@@ -26,5 +29,5 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: "viewport",
   },
-  integrations: [mdx(), react()],
+  integrations: [react()],
 });

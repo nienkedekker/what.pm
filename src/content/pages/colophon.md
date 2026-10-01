@@ -1,7 +1,7 @@
 ---
 title: "Colophon"
 description: "How this site was built"
-lastUpdated: 2026-09-29
+lastUpdated: 2026-10-01
 ---
 
 → See [/uses](/uses) for what I use to write code!
@@ -10,7 +10,7 @@ lastUpdated: 2026-09-29
 
 This site is built with [Astro](https://astro.build/). It’s styled with [Tailwind CSS](https://tailwindcss.com/). All the content lives right in the codebase as Markdown. I used to run it on [Sanity](https://sanity.io), but once I retired the blog, a whole CMS felt like overkill.
 
-The reading and watching stats come straight from my media log, [what.pm](https://www.what.pm/), and the music from [Last.fm](https://www.last.fm/). The guestbook and hit counter live in [Upstash Redis](https://upstash.com/).
+The reading and watching stats come straight from my media log, [what.pm](https://www.what.pm/), and the music from [Last.fm](https://www.last.fm/). The visitor counter lives in [Upstash Redis](https://upstash.com/).
 
 ## Typography
 
