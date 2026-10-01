@@ -131,7 +131,7 @@ export default function MediaChart() {
                     return (
                       <div key={name} className="flex flex-1 items-end justify-center">
                         <span
-                          className="w-full max-w-6 animate-pulse rounded-t-[4px] bg-line"
+                          className="w-3/4 max-w-6 animate-pulse rounded-t-[4px] bg-line"
                           style={{ height: `${25 + ((i * 37) % 50)}%` }}
                         />
                       </div>
@@ -154,7 +154,7 @@ export default function MediaChart() {
                         </span>
                       )}
                       <div
-                        className="flex w-full max-w-6 flex-col gap-[2px] transition-opacity group-hover:opacity-85"
+                        className="flex w-3/4 max-w-6 flex-col gap-[2px] transition-opacity group-hover:opacity-85"
                         style={{ height: `${(total / top) * 100}%` }}
                       >
                         {segments.map(({ key, swatch }, s) => (
