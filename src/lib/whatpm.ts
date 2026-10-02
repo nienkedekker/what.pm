@@ -6,6 +6,8 @@ const WHATPM_URL = import.meta.env.PUBLIC_WHATPM_URL || "https://www.what.pm";
 export interface Book {
   title: string;
   author: string;
+  // Missing from what.pm responses before rereads were added to the API
+  reread?: boolean;
 }
 
 export interface MonthCounts {
