@@ -41,8 +41,9 @@ function describe(month: Summary["months"][number]) {
   return SERIES.map(({ key, noun }) => `${month[key]} ${noun}`).join(", ");
 }
 
-export default function MediaChart() {
-  const [summary, setSummary] = useState<Summary | null>(null);
+// `initial` is fetched while the page is built; the chart refreshes it on load
+export default function MediaChart({ initial }: { initial?: Summary }) {
+  const [summary, setSummary] = useState<Summary | null>(initial ?? null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ export default function MediaChart() {
         ))}
       </ul>
 
-      {failed ? (
+      {failed && !summary ? (
         <p className="mt-auto pt-8 text-ink-soft">Couldn't reach what.pm right now.</p>
       ) : (
         <div className="mt-auto flex gap-3 pt-8">

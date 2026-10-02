@@ -1,23 +1,21 @@
 import { useEffect, useRef, useState } from "react";
+import { keepShown, type Kanji, type Progress } from "../lib/wanikani";
 
-interface Kanji {
-  char: string;
-  meaning: string;
-  reading: string;
-}
-
-interface Progress {
-  level: number;
-  kanji: { learned: number; burned: number; total: number };
-  sample: Kanji[];
-}
-
-// Live from /api/wanikani: kanji I've actually learned on WaniKani
-export default function KanjiCard() {
-  const [progress, setProgress] = useState<Progress | null>(null);
+// Live from /api/wanikani: kanji I've actually learned on WaniKani. `initial`
+// is fetched while the page is built; the card refreshes it on load.
+export default function KanjiCard({ initial }: { initial?: Progress }) {
+  const [progress, setProgress] = useState<Progress | null>(initial ?? null);
   const [failed, setFailed] = useState(false);
   const [index, setIndex] = useState(0);
   const charRef = useRef<HTMLSpanElement>(null);
+  const shownRef = useRef<Kanji | undefined>(undefined);
+
+  const sample = progress?.sample ?? [];
+  const current = sample[index];
+
+  useEffect(() => {
+    shownRef.current = current;
+  });
 
   useEffect(() => {
     fetch("/api/wanikani")
@@ -25,12 +23,12 @@ export default function KanjiCard() {
         if (!res.ok) throw new Error(`WaniKani route responded ${res.status}`);
         return res.json();
       })
-      .then(setProgress)
+      .then((fresh: Progress) => {
+        setProgress(keepShown(fresh, shownRef.current));
+        setIndex(0);
+      })
       .catch(() => setFailed(true));
   }, []);
-
-  const sample = progress?.sample ?? [];
-  const current = sample[index];
 
   const next = () => {
     if (sample.length < 2) return;

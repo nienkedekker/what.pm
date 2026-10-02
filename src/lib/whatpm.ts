@@ -25,18 +25,19 @@ export interface Summary {
 
 export const whatpmUrl = WHATPM_URL;
 
+export async function fetchSummary(signal?: AbortSignal) {
+  const res = await fetch(`${WHATPM_URL}/api/v1/summary?limit=5`, { signal });
+  if (!res.ok) throw new Error(`what.pm responded ${res.status}`);
+  return res.json() as Promise<Summary>;
+}
+
 let request: Promise<Summary> | undefined;
 
 export function getSummary() {
-  request ??= fetch(`${WHATPM_URL}/api/v1/summary?limit=5`)
-    .then((res) => {
-      if (!res.ok) throw new Error(`what.pm responded ${res.status}`);
-      return res.json() as Promise<Summary>;
-    })
-    .catch((error) => {
-      // Let the next caller try again instead of reusing the failure
-      request = undefined;
-      throw error;
-    });
+  request ??= fetchSummary().catch((error) => {
+    // Let the next caller try again instead of reusing the failure
+    request = undefined;
+    throw error;
+  });
   return request;
 }

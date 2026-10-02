@@ -8,10 +8,14 @@ import { getEntry, render } from "astro:content";
 import ArrowRight from "phosphor-astro/ArrowRight.astro";
 import MapPin from "phosphor-astro/MapPin.astro";
 import { profile, site } from "../data/profile";
+import { getHomeSnapshot } from "../lib/home-snapshot";
 
 const home = await getEntry("pages", "home");
 const now = await getEntry("pages", "now");
 const { Content: HomeIntro } = await render(home!);
+// The cards' live data as of this build, so the page has real content
+// without JavaScript. The cards refresh it in the browser.
+const { summary, progress, track } = await getHomeSnapshot();
 
 const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
   month: "short",
@@ -127,7 +131,7 @@ const sectionHeading =
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <!-- This year in media, live from what.pm -->
       <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
-        <MediaChart client:visible />
+        <MediaChart client:visible initial={summary} />
       </article>
 
       <!-- Japanese, live from WaniKani -->
@@ -136,7 +140,7 @@ const sectionHeading =
         style="--delay: 60ms"
         class="card p-6 sm:p-7 lg:row-span-2"
       >
-        <KanjiCard client:visible />
+        <KanjiCard client:visible initial={progress} />
       </article>
 
       <!-- Now playing -->
@@ -145,12 +149,12 @@ const sectionHeading =
         style="--delay: 120ms"
         class="card p-6 sm:p-7 lg:row-span-2"
       >
-        <NowPlaying client:load />
+        <NowPlaying client:load initial={track} />
       </article>
 
       <!-- Reading, live from what.pm -->
       <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
-        <ReadingCard client:visible />
+        <ReadingCard client:visible initial={summary} />
       </article>
     </div>
   </section>

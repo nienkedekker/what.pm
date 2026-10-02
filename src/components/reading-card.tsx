@@ -16,8 +16,9 @@ function spineHeight(title: string) {
   return 76 + (hash % 25);
 }
 
-export default function ReadingCard() {
-  const [summary, setSummary] = useState<Summary | null>(null);
+// `initial` is fetched while the page is built; the card refreshes it on load
+export default function ReadingCard({ initial }: { initial?: Summary }) {
+  const [summary, setSummary] = useState<Summary | null>(initial ?? null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {

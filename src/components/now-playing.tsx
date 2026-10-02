@@ -1,34 +1,16 @@
 import { useState, useEffect } from "react";
+import { getLatestTrack, type Track } from "../lib/lastfm";
 
-interface Track {
-  name: string;
-  url: string;
-  artist: { name?: string; "#text"?: string };
-  image?: { size: string; "#text": string }[];
-  date?: { uts: string };
-  "@attr"?: { nowplaying: string };
-}
-
-export default function NowPlaying() {
-  const [track, setTrack] = useState<Track | null>(null);
-  const [loading, setLoading] = useState(true);
+// `initial` is fetched while the page is built (undefined if that failed);
+// the card refreshes it on load and every 30 seconds
+export default function NowPlaying({ initial }: { initial?: Track | null }) {
+  const [track, setTrack] = useState<Track | null>(initial ?? null);
+  const [loading, setLoading] = useState(initial === undefined);
 
   useEffect(() => {
     const fetchTrack = async () => {
       try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-
-        const res = await fetch(
-          "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=shinyhats&api_key=54f8f15133336606e882fdf20148d123&limit=1&format=json",
-          { signal: controller.signal }
-        );
-        clearTimeout(timeout);
-
-        if (!res.ok) return;
-
-        const data = await res.json();
-        setTrack(data?.recenttracks?.track?.[0] || null);
+        setTrack(await getLatestTrack(AbortSignal.timeout(5000)));
       } catch {
         // Silently fail - site works fine without Last.fm
       } finally {
