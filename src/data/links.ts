@@ -1,4 +1,4 @@
-// Friends and people whose websites inspire me. Shown on /links and the home page.
+// Friends and people whose websites inspire me. Shown on /links (and /links.md).
 
 export const linksIntro =
   "These are websites made by my friends, or people who I find inspiring! Go check them out!";

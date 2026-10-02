@@ -6,7 +6,7 @@ import { links, linksIntro } from "../data/links";
 const hostname = (href: string) => new URL(href).hostname.replace(/^www\./, "");
 ---
 
-<PageLayout title="Links" intro={linksIntro}>
+<PageLayout title="Links" intro={linksIntro} markdown="/links.md">
   <ul
     class="grid grid-cols-1 overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-3"
   >

@@ -9,7 +9,8 @@
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "astro build && node --test \"test/**/*.test.ts\""
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

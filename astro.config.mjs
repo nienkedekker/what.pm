@@ -1,6 +1,7 @@
 import { defineConfig, envField } from "astro/config";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
+import markdownNegotiation from "./src/integrations/markdown-negotiation.ts";
 
 export default defineConfig({
   site: "https://nienke.dev",
@@ -29,5 +30,5 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: "viewport",
   },
-  integrations: [react()],
+  integrations: [react(), markdownNegotiation()],
 });

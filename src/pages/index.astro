@@ -7,6 +7,7 @@ import MediaChart from "../components/media-chart";
 import { getEntry, render } from "astro:content";
 import ArrowRight from "phosphor-astro/ArrowRight.astro";
 import MapPin from "phosphor-astro/MapPin.astro";
+import { profile, site } from "../data/profile";
 
 const home = await getEntry("pages", "home");
 const now = await getEntry("pages", "now");
@@ -18,11 +19,39 @@ const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
   timeZone: "UTC",
 });
 
+// Who this site is about, for search engines and agents (schema.org Person)
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${site}/#person`,
+  name: profile.name,
+  url: `${site}/`,
+  description: profile.description,
+  image: profile.image,
+  jobTitle: profile.jobTitle,
+  email: `mailto:${profile.email}`,
+  worksFor: { "@type": "Organization", ...profile.employer },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: profile.locality,
+    addressCountry: profile.country,
+  },
+  knowsAbout: profile.skills,
+  sameAs: profile.profiles.map(({ href }) => href),
+};
+
 const sectionHeading =
   "text-ink text-3xl font-semibold tracking-[-0.035em] sm:text-5xl";
 ---
 
-<BaseLayout>
+<BaseLayout markdown="/index.md">
+  <script
+    slot="head"
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(personSchema).replace(/</g, "\\u003c")}
+  />
+
   <!-- ─────────────── Hero ─────────────── -->
   <section
     class="mx-auto grid max-w-6xl items-center gap-y-16 px-4 pt-16 sm:pt-28 lg:grid-cols-12 lg:gap-x-16"

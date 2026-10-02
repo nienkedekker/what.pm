@@ -1,7 +1,8 @@
 ---
 import VisitorCount from "./visitor-count";
+import { profile } from "../data/profile";
 
-const email = "nienkedekker@gmail.com";
+const { email } = profile;
 
 const columns = [
   {
@@ -16,11 +17,7 @@ const columns = [
   {
     title: "Elsewhere",
     links: [
-      { href: "https://github.com/nienkedekker", label: "GitHub" },
-      {
-        href: "https://www.linkedin.com/in/nienke-dekker-15348ab1/",
-        label: "LinkedIn",
-      },
+      ...profile.profiles,
       { href: "https://www.what.pm/", label: "what.pm" },
       { href: `mailto:${email}`, label: "Email" },
     ],

@@ -16,6 +16,7 @@ const { Content } = await render(page);
   title={page.data.title}
   intro={page.data.description}
   lastUpdated={page.data.lastUpdated}
+  markdown={`/${page.id}.md`}
 >
   <article class="prose max-w-2xl border-t border-line pt-10">
     <Content />
