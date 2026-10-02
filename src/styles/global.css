@@ -54,6 +54,8 @@
 
 @layer base {
   html {
+    /* 15px by default; a percentage keeps the visitor's own text size setting */
+    font-size: 93.75%;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
