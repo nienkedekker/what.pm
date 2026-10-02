@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 
-// Spine styles follow the theme: mostly greys, one in the accent
+// Spine styles follow the theme: mostly greys, one in the accent. Light spines
+// get an outline on three sides; the shelf line is their bottom edge.
 const SPINES = [
   "bg-accent text-white",
   "bg-ink text-paper",
-  "bg-panel-2 text-ink ring-1 ring-inset ring-line-strong",
+  "bg-panel-2 text-ink border border-b-0 border-line-strong",
   "bg-ink-faint text-paper",
-  "bg-panel-2 text-ink ring-1 ring-inset ring-line-strong",
+  "bg-panel-2 text-ink border border-b-0 border-line-strong",
 ];
 
 // Stable spine height per title, so the shelf doesn't jump between renders
@@ -72,12 +73,13 @@ export default function ReadingCard({ initial }: { initial?: Summary }) {
             return (
               <li
                 key={`${book.title}-${book.author}`}
-                className={`group relative flex flex-1 cursor-default justify-center rounded-t-[4px] pt-3 transition-transform duration-300 hover:-translate-y-2 ${SPINES[i % SPINES.length]}`}
+                className={`group relative flex flex-1 cursor-default justify-center rounded-t-[4px] py-3 transition-transform duration-300 hover:-translate-y-2 ${SPINES[i % SPINES.length]}`}
                 style={{ height: `${spineHeight(book.title)}%` }}
                 tabIndex={0}
                 aria-label={`${book.title} by ${book.author}`}
               >
-                <span className="truncate text-xs font-medium [writing-mode:vertical-rl]">
+                {/* Long titles wrap onto a second line down the spine */}
+                <span className="max-w-full overflow-hidden text-xs font-medium [writing-mode:vertical-rl]">
                   {book.title}
                 </span>
                 <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-44 -translate-x-1/2 rounded-md border border-line bg-panel px-2.5 py-1 text-xs text-ink opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus:opacity-100">
