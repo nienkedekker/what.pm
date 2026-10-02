@@ -1,6 +1,7 @@
 // Turns the home page photo into 1-bit Atkinson-dithered dots (the classic Mac
-// look). Dark dots are opaque, everything else is transparent, so CSS can
-// recolour it per theme. Run with: node scripts/dither-photo.mjs
+// look). Dots are in the site's highlight blue, everything else is
+// transparent; the page puts it on a light background. Run with:
+// node scripts/dither-photo.mjs
 import { Buffer } from "node:buffer";
 import process from "node:process";
 import sharp from "sharp";
@@ -9,6 +10,8 @@ const SOURCE = "public/nienke.jpg";
 const OUTPUT = "public/nienke-dither.png";
 // Pixels across; the page shows it larger, so each dot stays visible
 const WIDTH = 320;
+// The highlight blue (--movies in global.css)
+const INK = [0x32, 0x42, 0xa8];
 
 const { data, info } = await sharp(SOURCE)
   .resize({ width: WIDTH })
@@ -42,7 +45,7 @@ for (let y = 0; y < height; y++) {
       if (nx >= 0 && nx < width && ny < height)
         pixels[ny * width + nx] += error;
     }
-    out[i * 4 + 3] = ink ? 255 : 0;
+    if (ink) out.set([...INK, 255], i * 4);
   }
 }
 

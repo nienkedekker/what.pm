@@ -42,30 +42,47 @@ export default function ReadingCard({ initial }: { initial?: Summary }) {
   );
 
   return (
-    <div className="flex h-full flex-col gap-6 sm:flex-row sm:items-end">
-      <div className="sm:w-2/5">
-        <h3 className="mb-6 font-medium tracking-[-0.01em]">Reading</h3>
-        {summary || failed ? (
-          <p className="text-ink text-7xl leading-none font-semibold tracking-[-0.05em] tabular-nums">
-            {summary ? summary.counts.books : "–"}
-          </p>
-        ) : (
-          <div className="h-[4.5rem] w-28 animate-pulse bg-line" />
-        )}
-        {summary ? (
-          <p className="mt-3 text-sm text-ink-soft">books read in {summary.year} so far.</p>
-        ) : failed ? (
-          <p className="mt-3 text-ink-soft">
-            Couldn't reach my reading log right now. It lives on {logLink}.
-          </p>
-        ) : (
-          <p className="mt-3 text-ink-faint">Checking my reading log…</p>
-        )}
+    <div className="flex h-full flex-col gap-6 sm:flex-row">
+      {/* Title and tag at the top, like the other cards; the count at the bottom */}
+      <div className="flex flex-col sm:w-2/5">
+        <div className="flex flex-col items-start gap-2">
+          <h3 className="font-medium tracking-[-0.01em]">Reading</h3>
+          {summary && (
+            <a
+              href={summary.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tag whitespace-nowrap"
+            >
+              {summary.year} <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
+
+        <div className="mt-auto pt-6">
+          {summary || failed ? (
+            <p className="text-ink text-7xl leading-none font-semibold tracking-[-0.05em] tabular-nums">
+              {summary ? summary.counts.books : "–"}
+            </p>
+          ) : (
+            <div className="h-[4.5rem] w-28 animate-pulse bg-line" />
+          )}
+          {summary ? (
+            <p className="mt-3 text-sm text-ink-soft">books read so far.</p>
+          ) : failed ? (
+            <p className="mt-3 text-ink-soft">
+              Couldn't reach my reading log right now. It lives on {logLink}.
+            </p>
+          ) : (
+            <p className="mt-3 text-ink-faint">Checking my reading log…</p>
+          )}
+        </div>
       </div>
 
-      <div className="flex-1">
+      {/* The shelf stands on the bottom edge of the card */}
+      <div className="flex flex-1 items-end">
         <ul
-          className="flex h-44 items-end gap-1.5 border-b border-line-strong px-2"
+          className="flex h-44 w-full items-end gap-1.5 border-b border-line-strong px-2"
           aria-label={books.length ? "Most recently finished books" : undefined}
         >
           {books.map((book, i) => {

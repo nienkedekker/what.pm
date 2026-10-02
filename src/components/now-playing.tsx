@@ -51,8 +51,8 @@ export default function NowPlaying({ initial }: { initial?: Track | null }) {
       </div>
 
       {/* Record sleeve with the vinyl peeking out */}
-      <div className="my-auto py-8">
-        <div className="relative aspect-square w-[70%] max-w-40">
+      <div className="py-5">
+        <div className="relative aspect-square w-[45%] max-w-28">
           <div
             className={`absolute inset-y-[4%] left-[38%] aspect-square rounded-full bg-[repeating-radial-gradient(circle,#0d0d0f_0_2px,#1c1d21_2px_4px)] ring-1 ring-white/5 ${
               isNowPlaying ? "animate-spin-slow" : ""

@@ -233,6 +233,18 @@
     line-height: 1.4;
     color: var(--ink);
   }
+
+  /* A tag that links somewhere fills in on hover */
+  a.tag {
+    transition:
+      background-color 150ms,
+      color 150ms;
+  }
+
+  a.tag:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
 }
 
 /* ---------------------------------------------------------------------------

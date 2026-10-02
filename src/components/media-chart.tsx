@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
+import { getSummary, type Summary } from "../lib/whatpm";
 
 // Categorical order is fixed: books, movies, TV. The colours are theme tokens
 // in global.css, validated for colour-blind separation and contrast there.
@@ -56,21 +56,20 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
 
   return (
     <div className="flex h-full flex-col">
-      <h3 className="font-medium tracking-[-0.01em]">
-        {summary ? `${summary.year}, month by month` : "This year, month by month"}
-      </h3>
-      <p className="mt-1 max-w-md text-sm text-ink-soft">
-        Everything I've read and watched, as logged on{" "}
-        <a
-          href={summary?.url ?? whatpmUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
-        >
-          what.pm
-        </a>
-        .
-      </p>
+      {/* Tag under the title, like the other cards. It links to the source. */}
+      <div className="flex flex-col items-start gap-2">
+        <h3 className="font-medium tracking-[-0.01em]">Month by month</h3>
+        {summary && (
+          <a
+            href={summary.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tag whitespace-nowrap"
+          >
+            {summary.year} <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
 
       {/* Legend: always present, with this year's totals */}
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm">

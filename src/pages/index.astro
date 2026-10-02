@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NowPlaying from "../components/now-playing";
+import ScrobblesCard from "../components/scrobbles-card";
 import ReadingCard from "../components/reading-card";
 import KanjiCard from "../components/kanji-card";
 import MediaChart from "../components/media-chart";
@@ -15,7 +16,7 @@ const now = await getEntry("pages", "now");
 const { Content: HomeIntro } = await render(home!);
 // The cards' live data as of this build, so the page has real content
 // without JavaScript. The cards refresh it in the browser.
-const { summary, progress, track } = await getHomeSnapshot();
+const { summary, progress, track, stats } = await getHomeSnapshot();
 
 const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
   month: "short",
@@ -79,7 +80,7 @@ const sectionHeading = "display text-ink text-[1.875rem] sm:text-[3rem]";
       class="group rise relative w-full max-w-sm border border-rule shadow-[6px_6px_0_var(--ink)] sm:max-w-md lg:col-span-5 lg:max-w-none"
       style="--delay: 200ms"
     >
-      <!-- Dithered by scripts/dither-photo.mjs: dark dots on transparent,
+      <!-- Dithered by scripts/dither-photo.mjs: blue dots on transparent,
            over a fixed light background so it looks the same in both themes -->
       <img
         src="/nienke-dither.png"
@@ -125,33 +126,47 @@ const sectionHeading = "display text-ink text-[1.875rem] sm:text-[3rem]";
       </a>
     </div>
 
+    <!--
+      Bento: on desktop each column stacks its cards at their own height, so
+      the splits don't line up across columns. Below that the column wrappers
+      are display: contents and the cards flow in the grid as usual.
+    -->
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <!-- This year in media, live from what.pm -->
-      <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
-        <MediaChart client:visible initial={summary} />
-      </article>
+      <div class="contents lg:col-span-2 lg:flex lg:flex-col lg:gap-3">
+        <!-- This year in media, live from what.pm -->
+        <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
+          <MediaChart client:visible initial={summary} />
+        </article>
+
+        <!-- Reading, live from what.pm -->
+        <article data-reveal class="card p-6 sm:col-span-2 sm:p-7 lg:flex-1">
+          <ReadingCard client:visible initial={summary} />
+        </article>
+      </div>
+
+      <div class="contents lg:flex lg:flex-col lg:gap-3">
+        <!-- Now playing, live from Last.fm -->
+        <article data-reveal style="--delay: 60ms" class="card p-6 sm:p-7">
+          <NowPlaying client:load initial={track} />
+        </article>
+
+        <!-- Scrobbles over time, live from Last.fm -->
+        <article
+          data-reveal
+          style="--delay: 60ms"
+          class="card p-6 sm:p-7 lg:flex-1"
+        >
+          <ScrobblesCard client:visible initial={stats} />
+        </article>
+      </div>
 
       <!-- Japanese, live from WaniKani -->
       <article
         data-reveal
-        style="--delay: 60ms"
-        class="card p-6 sm:p-7 lg:row-span-2"
+        style="--delay: 120ms"
+        class="card p-6 sm:col-span-2 sm:p-7 lg:col-span-1"
       >
         <KanjiCard client:visible initial={progress} />
-      </article>
-
-      <!-- Now playing -->
-      <article
-        data-reveal
-        style="--delay: 120ms"
-        class="card p-6 sm:p-7 lg:row-span-2"
-      >
-        <NowPlaying client:load initial={track} />
-      </article>
-
-      <!-- Reading, live from what.pm -->
-      <article data-reveal class="card p-6 sm:col-span-2 sm:p-7">
-        <ReadingCard client:visible initial={summary} />
       </article>
     </div>
   </section>
