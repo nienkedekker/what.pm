@@ -12,7 +12,7 @@
   --panel-2: #f6f6f8;
   --ink: #0b0c0e;
   --ink-soft: #5d626c;
-  --ink-faint: #8b909a;
+  --ink-faint: #6c7078; /* 4.6:1 or more on every surface (WCAG AA) */
   --line: #e8e8ec;
   --line-strong: #d5d6dc;
   --accent: #5e6ad2;
@@ -27,7 +27,7 @@
   --panel-2: #151619;
   --ink: #f7f8f8;
   --ink-soft: #8a8f98;
-  --ink-faint: #62666d;
+  --ink-faint: #7d8086; /* 4.6:1 or more on every surface (WCAG AA) */
   --line: rgb(255 255 255 / 0.08);
   --line-strong: rgb(255 255 255 / 0.15);
   --accent: #7c85f5;

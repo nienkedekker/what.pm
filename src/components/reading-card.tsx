@@ -4,7 +4,7 @@ import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 // Spine styles follow the theme: mostly greys, one in the accent. Light spines
 // get an outline, pulled down 1px so at rest its bottom edge is the shelf line.
 const SPINES = [
-  "bg-accent text-white",
+  "bg-accent text-white dark:text-paper",
   "bg-ink text-paper",
   "bg-panel-2 text-ink border border-line-strong -mb-px",
   "bg-ink-faint text-paper",

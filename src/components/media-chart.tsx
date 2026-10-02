@@ -143,6 +143,7 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
                     <div
                       key={name}
                       className="group relative flex flex-1 items-end justify-center outline-none"
+                      role={upcoming ? undefined : "img"}
                       tabIndex={upcoming ? undefined : 0}
                       aria-label={upcoming ? undefined : `${name}: ${describe(month)}`}
                     >

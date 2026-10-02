@@ -60,10 +60,16 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
       >
         {current ? (
           <>
-            <span ref={charRef} className="font-jp text-[7.5rem] leading-none font-medium text-ink">
+            <span
+              ref={charRef}
+              lang="ja"
+              className="font-jp text-[7.5rem] leading-none font-medium text-ink"
+            >
               {current.char}
             </span>
-            <span className="mt-6 font-jp text-accent">{current.reading}</span>
+            <span lang="ja" className="mt-6 font-jp text-accent">
+              {current.reading}
+            </span>
             <span className="mt-1 text-sm text-ink-soft" aria-live="polite">
               {current.meaning}
             </span>
