@@ -6,16 +6,11 @@ import KanjiCard from "../components/kanji-card";
 import MediaChart from "../components/media-chart";
 import { getEntry, render } from "astro:content";
 import ArrowRight from "phosphor-astro/ArrowRight.astro";
-import ArrowUpRight from "phosphor-astro/ArrowUpRight.astro";
 import MapPin from "phosphor-astro/MapPin.astro";
-import { links } from "../data/links";
 
 const home = await getEntry("pages", "home");
 const now = await getEntry("pages", "now");
 const { Content: HomeIntro } = await render(home!);
-
-// Directories like Neocities and nownownow are on /links but not the home page
-const friends = links.filter(({ href }) => !/neocities|nownownow/.test(href));
 
 const nowUpdated = now?.data.lastUpdated?.toLocaleDateString("en-US", {
   month: "short",
@@ -130,54 +125,4 @@ const sectionHeading =
       </article>
     </div>
   </section>
-
-  <!-- ─────────────── Friends ─────────────── -->
-  {
-    friends.length > 0 && (
-      <section
-        class="mx-auto mt-32 max-w-6xl px-4 sm:mt-44"
-        aria-labelledby="friends-heading"
-      >
-        <div
-          data-reveal
-          class="mb-10 flex flex-wrap items-end justify-between gap-6"
-        >
-          <div>
-            <h2 id="friends-heading" class={sectionHeading}>
-              Friends &amp; inspiration
-            </h2>
-            <p class="mt-3 max-w-md text-ink-soft">
-              People who make the web a better place.
-            </p>
-          </div>
-          <a
-            href="/links"
-            class="group flex items-center gap-1.5 text-sm text-ink-soft transition-colors hover:text-ink"
-          >
-            All links
-            <ArrowRight class="size-3.5 transition-transform group-hover:translate-x-0.5" />
-          </a>
-        </div>
-
-        <ul
-          data-reveal
-          class="grid grid-cols-2 overflow-hidden rounded-2xl border border-line sm:grid-cols-3 lg:grid-cols-4"
-        >
-          {friends.map(({ name, href }) => (
-            <li class="-mr-px -mb-px border-r border-b border-line">
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group flex h-full items-center justify-between gap-3 bg-panel px-4 py-4 text-sm text-ink-soft transition-colors hover:bg-panel-2 hover:text-ink sm:px-5"
-              >
-                <span class="[overflow-wrap:anywhere]">{name}</span>
-                <ArrowUpRight class="size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
 </BaseLayout>
