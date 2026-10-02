@@ -92,6 +92,10 @@ const canonicalURL = new URL(
       }
       setTheme();
       document.addEventListener("astro:after-swap", setTheme);
+      // Follow system theme changes live, unless the toggle saved a choice
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", setTheme);
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
