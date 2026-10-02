@@ -22,5 +22,6 @@ export const profile = {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/nienke-dekker-15348ab1/",
     },
+    { label: "X", href: "https://x.com/thanergic" },
   ],
 };
