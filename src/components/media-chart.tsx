@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 
-// Categorical order is fixed: books, movies, TV. Validated for CVD separation
-// and contrast against the light and dark card surfaces.
+// Categorical order is fixed: books, movies, TV. The colours are theme tokens
+// in global.css, validated for colour-blind separation and contrast there.
 const SERIES = [
-  { key: "books", label: "Books", noun: "books", swatch: "bg-[#5e6ad2] dark:bg-[#7c85f5]" },
-  { key: "movies", label: "Movies", noun: "movies", swatch: "bg-[#eb6834] dark:bg-[#d95926]" },
-  {
-    key: "shows",
-    label: "TV seasons",
-    noun: "TV seasons",
-    swatch: "bg-[#1baf7a] dark:bg-[#199e70]",
-  },
+  { key: "books", label: "Books", noun: "books", swatch: "bg-books" },
+  { key: "movies", label: "Movies", noun: "movies", swatch: "bg-movies" },
+  { key: "shows", label: "TV seasons", noun: "TV seasons", swatch: "bg-shows" },
 ] as const;
 
 const MONTHS = [
@@ -81,7 +76,7 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm">
         {SERIES.map(({ key, label, swatch }) => (
           <li key={key} className="flex items-center gap-2">
-            <span className={`size-2.5 rounded-[3px] ${swatch}`} aria-hidden="true" />
+            <span className={`size-2.5 ${swatch}`} aria-hidden="true" />
             <span className="text-ink-soft">{label}</span>
             {summary && <span className="font-medium tabular-nums">{summary.counts[key]}</span>}
           </li>
@@ -132,7 +127,7 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
                     return (
                       <div key={name} className="flex flex-1 items-end justify-center">
                         <span
-                          className="w-3/4 max-w-6 animate-pulse rounded-t-[4px] bg-line"
+                          className="w-3/4 max-w-6 animate-pulse bg-line"
                           style={{ height: `${25 + ((i * 37) % 50)}%` }}
                         />
                       </div>
@@ -159,10 +154,10 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
                         className="flex w-3/4 max-w-6 flex-col gap-[2px] transition-opacity group-hover:opacity-85"
                         style={{ height: `${(total / top) * 100}%` }}
                       >
-                        {segments.map(({ key, swatch }, s) => (
+                        {segments.map(({ key, swatch }) => (
                           <span
                             key={key}
-                            className={`${swatch} ${s === 0 ? "rounded-t-[4px]" : ""}`}
+                            className={swatch}
                             style={{ flexGrow: month[key], flexBasis: 0 }}
                           />
                         ))}
@@ -170,11 +165,11 @@ export default function MediaChart({ initial }: { initial?: Summary }) {
 
                       {/* Hover / focus tooltip */}
                       {!upcoming && (
-                        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 rounded-lg border border-line bg-panel px-3 py-2 text-xs text-ink opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 border border-line bg-panel px-3 py-2 text-xs text-ink opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                           <p className="mb-1 font-medium">{name}</p>
                           {SERIES.map(({ key, label, swatch }) => (
                             <p key={key} className="flex items-center gap-2">
-                              <span className={`size-2 rounded-[2px] ${swatch}`} />
+                              <span className={`size-2 ${swatch}`} />
                               {label}
                               <span className="ml-auto pl-3 tabular-nums">{month[key]}</span>
                             </p>

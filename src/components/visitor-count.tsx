@@ -34,7 +34,7 @@ export default function VisitorCount() {
   return (
     <div className="flex items-center gap-2 text-xs text-ink-soft">
       <span>You are visitor</span>
-      <span className="rounded-[4px] bg-black px-2 py-0.5 font-mono tracking-widest text-green-400">
+      <span className="bg-black px-2 py-0.5 font-mono tracking-widest text-green-400">
         #{formattedCount}
       </span>
     </div>

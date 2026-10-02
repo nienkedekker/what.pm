@@ -32,7 +32,7 @@ export default function NowPlaying({ initial }: { initial?: Track | null }) {
       <div className="flex items-center justify-between gap-3">
         <h3 className="font-medium tracking-[-0.01em]">Listening</h3>
         {track && (
-          <span className="flex items-center gap-2 text-xs text-ink-soft">
+          <span className="tag">
             {isNowPlaying && (
               <span className="flex h-2.5 items-end gap-[2px]" aria-hidden="true">
                 {[0, 1, 2].map((i) => (
@@ -53,7 +53,7 @@ export default function NowPlaying({ initial }: { initial?: Track | null }) {
       <div className="my-auto py-8">
         <div className="relative aspect-square w-[70%] max-w-40">
           <div
-            className={`absolute inset-y-[4%] left-[38%] aspect-square rounded-full bg-[repeating-radial-gradient(circle,#0d0d0f_0_2px,#1c1d21_2px_4px)] shadow-xl ring-1 ring-white/5 ${
+            className={`absolute inset-y-[4%] left-[38%] aspect-square rounded-full bg-[repeating-radial-gradient(circle,#0d0d0f_0_2px,#1c1d21_2px_4px)] ring-1 ring-white/5 ${
               isNowPlaying ? "animate-spin-slow" : ""
             }`}
             aria-hidden="true"
@@ -61,7 +61,7 @@ export default function NowPlaying({ initial }: { initial?: Track | null }) {
             <span className="absolute inset-[34%] rounded-full bg-accent" />
             <span className="absolute inset-[47%] rounded-full bg-paper" />
           </div>
-          <div className="relative size-full overflow-hidden rounded-lg bg-panel-2 shadow-xl ring-1 ring-line">
+          <div className="relative size-full overflow-hidden bg-panel-2 ring-1 ring-line">
             {cover ? (
               <img src={cover} alt="" className="size-full object-cover" loading="lazy" />
             ) : (

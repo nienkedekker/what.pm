@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { getSummary, whatpmUrl, type Summary } from "../lib/whatpm";
 
-// Spine styles follow the theme: mostly greys, one in the accent. Light spines
-// get an outline, pulled down 1px so at rest its bottom edge is the shelf line.
+// Spines in the chart's colours: black, blue, white, grey. Title text reaches
+// 4.5:1 on each in both themes. The light spine gets an outline, pulled down
+// 1px so at rest its bottom edge is the shelf line.
 const SPINES = [
-  "bg-accent text-white dark:text-paper",
-  "bg-ink text-paper",
+  "bg-books text-paper",
+  "bg-movies text-white",
   "bg-panel-2 text-ink border border-line-strong -mb-px",
-  "bg-ink-faint text-paper",
-  "bg-panel-2 text-ink border border-line-strong -mb-px",
+  "bg-shows text-[#0b0c0e] dark:text-white",
+  "bg-books text-paper",
 ];
 
 // Stable spine height per title, so the shelf doesn't jump between renders
@@ -49,12 +50,10 @@ export default function ReadingCard({ initial }: { initial?: Summary }) {
             {summary ? summary.counts.books : "–"}
           </p>
         ) : (
-          <div className="h-[4.5rem] w-28 animate-pulse rounded-xl bg-line" />
+          <div className="h-[4.5rem] w-28 animate-pulse bg-line" />
         )}
         {summary ? (
-          <p className="mt-3 text-sm text-ink-soft">
-            books read in {summary.year} so far. These are the latest few, straight from {logLink}.
-          </p>
+          <p className="mt-3 text-sm text-ink-soft">books read in {summary.year} so far.</p>
         ) : failed ? (
           <p className="mt-3 text-ink-soft">
             Couldn't reach my reading log right now. It lives on {logLink}.
@@ -73,7 +72,7 @@ export default function ReadingCard({ initial }: { initial?: Summary }) {
             return (
               <li
                 key={`${book.title}-${book.author}`}
-                className={`group relative flex flex-1 cursor-default justify-center rounded-t-[4px] py-3 transition-transform duration-300 hover:-translate-y-2 ${SPINES[i % SPINES.length]}`}
+                className={`group relative flex flex-1 cursor-default justify-center py-3 transition-transform duration-300 hover:-translate-y-2 ${SPINES[i % SPINES.length]}`}
                 style={{ height: `${spineHeight(book.title)}%` }}
                 tabIndex={0}
                 aria-label={`${book.title} by ${book.author}${book.reread ? ", a reread" : ""}`}
@@ -82,7 +81,7 @@ export default function ReadingCard({ initial }: { initial?: Summary }) {
                 <span className="max-w-full overflow-hidden text-xs font-medium [writing-mode:vertical-rl]">
                   {book.title}
                 </span>
-                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-48 -translate-x-1/2 rounded-md border border-line bg-panel px-2.5 py-1.5 text-xs opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus:opacity-100">
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-48 -translate-x-1/2 border border-line bg-panel px-2.5 py-1.5 text-xs opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100">
                   <span className="block font-medium text-ink">{book.title}</span>
                   <span className="block text-ink-soft">
                     {book.author}

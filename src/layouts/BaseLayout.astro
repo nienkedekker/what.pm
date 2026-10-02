@@ -49,7 +49,7 @@ const canonicalURL = new URL(
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Inter:opsz,wght@14..32,400..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@500&family=Geist+Mono:wght@400;500&family=Inter:opsz,wght@14..32,400..700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -95,15 +95,9 @@ const canonicalURL = new URL(
     </script>
   </head>
   <body class="min-h-screen font-sans antialiased">
-    <!-- Soft glow behind the top of every page -->
-    <div
-      class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[640px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,var(--glow),transparent)]"
-      aria-hidden="true"
-    >
-    </div>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:h-10 focus:px-4 btn btn-primary"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2.5 focus:font-mono focus:text-xs focus:text-paper"
       >Skip to content</a
     >
     <Header />

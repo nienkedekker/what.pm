@@ -8,14 +8,14 @@ const hostname = (href: string) => new URL(href).hostname.replace(/^www\./, "");
 
 <PageLayout title="Links" intro={linksIntro} markdown="/links.md">
   <ul
-    class="grid grid-cols-1 overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-3"
+    class="grid grid-cols-1 overflow-hidden border border-rule sm:grid-cols-2 lg:grid-cols-3"
   >
     {
       links.map(({ name, href }, i) => (
         <li
           data-reveal
           style={`--delay: ${(i % 3) * 50}ms`}
-          class="-mr-px -mb-px border-r border-b border-line"
+          class="-mr-px -mb-px border-r border-b border-rule"
         >
           <a
             href={href}

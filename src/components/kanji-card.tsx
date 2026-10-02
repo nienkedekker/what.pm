@@ -48,7 +48,7 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-3">
         <h3 className="font-medium tracking-[-0.01em]">Learning Japanese</h3>
-        {progress && <span className="text-xs text-ink-soft">WaniKani level {progress.level}</span>}
+        {progress && <span className="tag">WaniKani level {progress.level}</span>}
       </div>
 
       <button
@@ -80,7 +80,7 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
         ) : failed ? (
           <span className="text-sm text-ink-faint">Couldn't reach WaniKani right now.</span>
         ) : (
-          <span className="size-28 animate-pulse rounded-2xl bg-line" />
+          <span className="size-28 animate-pulse bg-line" />
         )}
       </button>
 
@@ -96,9 +96,9 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
             </span>
           )}
         </div>
-        <div className="mt-3 h-1 overflow-hidden rounded-full bg-line">
+        <div className="mt-3 h-1 overflow-hidden bg-line">
           <div
-            className="h-full rounded-full bg-accent transition-[width] duration-700"
+            className="h-full bg-accent transition-[width] duration-700"
             style={{ width: `${percent}%` }}
           />
         </div>
