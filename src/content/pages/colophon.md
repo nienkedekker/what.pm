@@ -14,7 +14,7 @@ The reading and watching stats come straight from my media log, [what.pm](https:
 
 ## Typography
 
-The headings use [Bricolage Grotesque](https://fonts.google.com/specimen/Bricolage+Grotesque), the body text uses [Geist](https://vercel.com/font), and the little details use Geist Mono.
+The headings use [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif), the body text uses [Inter](https://rsms.me/inter/), and the menu uses [Geist](https://vercel.com/font). The little details use [Geist Mono](https://vercel.com/font), the kanji use [Kosugi](https://fonts.google.com/specimen/Kosugi), and their meanings are set in the IBM PS/55 screen font.
 
 ## Hosting
 
@@ -27,3 +27,5 @@ The kaomoji on the /now page are from [Nukochannel](https://nukochannel.neocitie
 The 88x31 buttons in the footer are from [here](https://cyber.dabamos.de/88x31/).
 
 The tiny icons are from [Phosphor Icons](https://phosphoricons.com).
+
+The IBM PS/55 font is from [The Ultimate Oldschool PC Font Pack](https://int10h.org/oldschool-pc-fonts/) by VileR, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).

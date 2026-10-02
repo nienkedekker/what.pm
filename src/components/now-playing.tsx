@@ -29,10 +29,11 @@ export default function NowPlaying({ initial }: { initial?: Track | null }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between gap-3">
+      {/* Tag under the title, like the kanji card */}
+      <div className="flex flex-col items-start gap-2">
         <h3 className="font-medium tracking-[-0.01em]">Listening</h3>
         {track && (
-          <span className="tag">
+          <span className="tag whitespace-nowrap">
             {isNowPlaying && (
               <span className="flex h-2.5 items-end gap-[2px]" aria-hidden="true">
                 {[0, 1, 2].map((i) => (

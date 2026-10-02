@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* IBM PS/55 screen font from The Ultimate Oldschool PC Font Pack by VileR
+   (int10h.org), CC BY-SA 4.0; licence in public/fonts */
+@font-face {
+  font-family: "IBM PS/55";
+  src: url("/fonts/Web437_IBM_PS-55_re.woff") format("woff");
+  font-display: swap;
+}
+
 /* ---------------------------------------------------------------------------
    Tokens — flat surfaces, hard hairlines, film grain, one indigo accent.
    --------------------------------------------------------------------------- */
@@ -47,10 +55,13 @@
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
+  /* Old IBM screen font for the kanji card's meanings (it has no kanji) */
+  --font-pc: "IBM PS/55", "Geist Mono", ui-monospace, monospace;
   --font-display: "Instrument Serif", serif;
   /* The menu, after alpinetable.com */
   --font-geist: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-jp: "Noto Sans JP", sans-serif;
+  /* Plain system gothic, like old Japanese Windows/Mac (MS Gothic, Osaka) */
+  --font-jp: "Kosugi", sans-serif;
 
   --color-paper: var(--paper);
   --color-panel: var(--panel);

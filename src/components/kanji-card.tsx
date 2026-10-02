@@ -46,9 +46,10 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between gap-3">
+      {/* Tag under the title, like the listening card */}
+      <div className="flex flex-col items-start gap-2">
         <h3 className="font-medium tracking-[-0.01em]">Learning Japanese</h3>
-        {progress && <span className="tag">WaniKani level {progress.level}</span>}
+        {progress && <span className="tag whitespace-nowrap">WaniKani lvl. {progress.level}</span>}
       </div>
 
       <button
@@ -60,17 +61,13 @@ export default function KanjiCard({ initial }: { initial?: Progress }) {
       >
         {current ? (
           <>
-            <span
-              ref={charRef}
-              lang="ja"
-              className="font-jp text-[7.5rem] leading-none font-medium text-ink"
-            >
+            <span ref={charRef} lang="ja" className="font-jp text-[112px] leading-none text-ink">
               {current.char}
             </span>
-            <span lang="ja" className="mt-6 font-jp text-accent">
+            <span lang="ja" className="mt-6 font-jp text-[16px] text-accent">
               {current.reading}
             </span>
-            <span className="mt-1 text-sm text-ink-soft" aria-live="polite">
+            <span className="mt-1 font-pc text-sm text-ink-soft" aria-live="polite">
               {current.meaning}
             </span>
             <span className="mt-4 text-xs text-ink-faint opacity-0 transition-opacity group-hover:opacity-100">

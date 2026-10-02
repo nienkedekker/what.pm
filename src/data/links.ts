@@ -19,6 +19,7 @@ export const links = [
   { name: "reigen.moe", href: "https://reigen.moe/" },
   { name: "strange.website", href: "https://strange.website/" },
   { name: "strangersbyspring.com", href: "https://strangersbyspring.com/" },
+  { name: "oubliette.nu", href: "https://oubliette.nu/" },
   { name: "Neocities", href: "https://neocities.org/" },
   { name: "nownownow", href: "https://nownownow.com/" },
   { name: "what happens next", href: "https://whathappensnext.webcomic.ws/" },
